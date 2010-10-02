@@ -5,7 +5,8 @@ import qualified Data.ByteString.Char8 as C
 import Prelude hiding (init)
 import Snap.Http.Server
 import Snap.Types
-import System.Directory (getCurrentDirectory, getDirectoryContents)
+import System.Directory (doesDirectoryExist, doesFileExist, getCurrentDirectory,
+                         getDirectoryContents)
 import System.Environment
 import System.Exit
 import System.FilePath ((</>))
