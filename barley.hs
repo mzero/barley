@@ -10,7 +10,7 @@ import System.Environment
 import System.Exit
 import System.FilePath ((</>))
 import System.Plugins
-import Text.Html hiding ((</>), start)
+import Text.Html hiding ((</>), address, content, start)
 
 main :: IO ()
 main = do
