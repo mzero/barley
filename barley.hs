@@ -49,8 +49,8 @@ run = do
         port = 8080
         hostname = "myserver"
     putStrLn $ "Running on http://localhost:" ++ show port ++ "/"
-    httpServe (C.pack address) port (C.pack hostname) Nothing Nothing
-        genericHandler
+    httpServe (C.pack address) port (C.pack hostname) (Just "access.log")
+        (Just "error.log") genericHandler
 
 -- | Compile a template and return the generate HTML as a String.
 compile :: FilePath -> IO String
@@ -60,7 +60,8 @@ compile filename = do
         MakeSuccess _ objfile -> do
             loadStatus <- load_ objfile [] "page"
             case loadStatus of
-                LoadSuccess _ page -> return $ (page :: Html)
+                LoadSuccess mod page -> do page `seq` unloadAll mod
+                                           return $ (page :: Html)
                 LoadFailure errs -> errorHtml errs filename
         MakeFailure errs -> errorHtml errs filename
     return $ renderHtml html
@@ -95,6 +96,7 @@ genericHandler = do
                     serveTemplateIfExists tmpl
                 else serveTemplateIfExists $ filename <.> "hs"
   where
+    serveTemplateIfExists :: FilePath -> Snap ()
     serveTemplateIfExists tmpl = do
         isFile <- liftIO $ doesFileExist tmpl
         if isFile
