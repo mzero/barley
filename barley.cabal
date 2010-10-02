@@ -7,6 +7,7 @@ Maintainer:          johan.tibell@gmail.com
 Category:            Web
 Build-type:          Simple
 Cabal-version:       >=1.2
+data-files: public/scaffold.hs index.hs
 
 Executable barley
   Main-is: barley.hs
