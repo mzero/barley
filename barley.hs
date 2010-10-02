@@ -76,8 +76,12 @@ errorHtml :: Errors -> FilePath -> IO Html
 errorHtml errs filename = do
     content <- readFile filename
     length content `seq` return ()
-    let html = thehtml << body << (thediv ! [theclass "errors"] << [
-                                        h2 << "Errors",
-                                        pre << unlines errs]) +++
-               pre (toHtml content)
+    let html = thehtml <<
+               body << [
+                   thediv ! [theclass "errors"] << [
+                        h2 << "Errors",
+                        pre << unlines errs
+                        ],
+                   pre ! [theclass "sourcefile"] << content
+               ]
     return html
