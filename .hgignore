@@ -1,0 +1,20 @@
+syntax: glob
+
+# this is the testing directory
+playground/*
+
+*\#
+*.eventlog
+*.hi
+*.hp
+*.o
+*.orig
+*.p_hi
+*.p_o
+*.prof
+*.tix
+*~
+.\#*
+.*.swp
+.hpc/*
+dist/*
