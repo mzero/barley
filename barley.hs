@@ -1,5 +1,6 @@
 module Main (main) where
 
+import Control.Monad (when)
 import Control.Monad.IO.Class
 import qualified Data.ByteString.Char8 as C
 import Prelude hiding (init)
@@ -17,7 +18,7 @@ main = do
     args <- getArgs
     case args of
         ["start"] -> start
-        ["init"] -> init
+        ["init"] -> init True
         ["run"] -> run
         [cmd] -> do putStrLn $ "unknown command: " ++ cmd
                     exitFailure
@@ -25,13 +26,14 @@ main = do
 
 -- | Create a project directory structure and run the web server.
 start :: IO ()
-start = init >> run
+start = init False >> run
 
 -- | Create a project directory structure.
-init :: IO ()
-init = nothingHere >>= \b -> if b
+init :: Bool -> IO ()
+init warnIfNotEmpty = nothingHere >>= \b -> if b
     then copyInitialProject
-    else putStrLn "This directory is not empty. Not initializing"
+    else when warnIfNotEmpty $
+        putStrLn "This directory is not empty. Not initializing"
   where
     nothingHere = whatsHere >>= return . null . filter notDot
     whatsHere = getCurrentDirectory >>= getDirectoryContents 
