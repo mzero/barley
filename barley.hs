@@ -67,6 +67,7 @@ genericHandler = do
     cwd <- liftIO getCurrentDirectory
     -- XXX: directory traversal
     html <- liftIO $ compile (cwd </> tail (C.unpack uri))
+    modifyResponse $ setContentType (C.pack "text/html")
     writeBS (C.pack html)
 
 -- | Given a list of errors and a template, create an HTML page that
