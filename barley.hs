@@ -6,13 +6,13 @@ import qualified Data.ByteString.Char8 as C
 import Prelude hiding (init)
 import Snap.Http.Server
 import Snap.Types
-import System.Directory (doesDirectoryExist, getCurrentDirectory,
-            getDirectoryContents, setCurrentDirectory)
+import System.Directory (doesDirectoryExist, doesFileExist,
+            getCurrentDirectory, getDirectoryContents, setCurrentDirectory)
 import System.Environment
 import System.Exit
-import System.FilePath ((</>))
+import System.FilePath ((<.>), (</>))
 import System.Plugins
-import Text.Html hiding ((</>), start)
+import Text.Html hiding ((</>), address, content, start)
 
 main :: IO ()
 main = do
@@ -74,17 +74,41 @@ compile filename = do
         MakeFailure errs -> errorHtml errs filename
     return $ renderHtml html
 
+serveTemplate :: FilePath -> Snap ()
+serveTemplate filename = do
+    html <- liftIO $ compile filename
+    modifyResponse $ setContentType (C.pack "text/html")
+    writeBS $ C.pack html
+
+serveStatic :: FilePath -> Snap ()
+serveStatic filename = do
+    modifyResponse $ setContentType (C.pack "text/html")
+    sendFile filename
+
 -- | Given a URL, render the corresponding template.
 genericHandler :: Snap ()
 genericHandler = do
-    -- TODO: Check if the URL points inside the templates directory.
-    -- TODO: Server public/index.html for /
     uri <- rqURI `fmap` getRequest
     cwd <- liftIO getCurrentDirectory
+
     -- XXX: directory traversal
-    html <- liftIO $ compile (cwd </> tail (C.unpack uri))
-    modifyResponse $ setContentType (C.pack "text/html")
-    writeBS (C.pack html)
+    let filename = cwd </> tail (C.unpack uri)
+    isFile <- liftIO $ doesFileExist filename
+    if isFile
+        then serveStatic filename
+        else do
+            isDir <- liftIO $ doesDirectoryExist filename
+            if isDir
+                then do
+                    let tmpl = filename </> "index.hs"
+                    serveTemplateIfExists tmpl
+                else serveTemplateIfExists $ filename <.> "hs"
+  where
+    serveTemplateIfExists tmpl = do
+        isFile <- liftIO $ doesFileExist tmpl
+        if isFile
+            then serveTemplate tmpl
+            else pass
 
 -- | Given a list of errors and a template, create an HTML page that
 -- displays the errors.
