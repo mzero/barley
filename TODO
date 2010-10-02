@@ -1,0 +1,62 @@
+****
+**** This file is just a snapshot. The live file is here:
+****
+****           http://ietherpad.com/hMrw0URncq
+****
+
+
+=== BARLEY TODO ===
+
+--- Tasks ----
+
+[] make barely start work outside of ghci
+[] create a playground dir and exclude it's contents (but not it) from the repo
+[] notice that the directory started in is empty and call init-project
+[] init-project should copy a set of files from data dir
+[] ensure that loading / defaults to index.hs
+[] write index.hs that gives the user a hello and what to do next
+[] move template.hs to data-dir
+[] updated template.hs that is a basic hello page
+    [] what to do
+    [] suggested re-edit in haskell comments
+    [] reload button
+[] create add page step to index.html
+[] create addpage.hs page with form w/name and description
+[] generate new page from addpage.hs form
+[] error page give instructions for what to do
+
+
+--- User Stories ---
+
+User downloads, unpacks, installs (ick)
+    barley start
+    opens browser
+    sees nice intro page
+
+User goes intro page
+    clicks on Sample page
+    sees result
+    told to go to file
+    opens file
+    file contains text on a suggested edit
+    user returns to browser
+    reloads
+    "WOW"
+
+User goes to intro page
+    clicks add
+    fills out form w/name and description
+    system generates file
+    goes to file to edit
+    reloads
+    "WOW"
+
+User reloads a new page
+    there is a compilation error
+    error page directs them what to do next
+    the edits in the file
+    there is a reload button
+    
+
+
+
