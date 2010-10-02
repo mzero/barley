@@ -11,7 +11,11 @@ data-files: public/scaffold.hs index.hs
 
 Executable barley
   Main-is: barley.hs
-  
+  hs-source-dirs: . src
+
+  other-modules:
+    Barley.Init
+    
   Build-depends:
     base < 4.3,
     bytestring < 1.0,

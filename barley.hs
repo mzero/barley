@@ -1,13 +1,13 @@
 module Main (main) where
 
-import Control.Monad (when)
+import Barley.Init (init)
 import Control.Monad.IO.Class
 import qualified Data.ByteString.Char8 as C
 import Prelude hiding (init)
 import Snap.Http.Server
 import Snap.Types
 import System.Directory (doesDirectoryExist, doesFileExist,
-            getCurrentDirectory, getDirectoryContents, setCurrentDirectory)
+            getCurrentDirectory, setCurrentDirectory)
 import System.Environment
 import System.Exit
 import System.FilePath ((<.>), (</>))
@@ -31,19 +31,6 @@ main = do
 start :: IO ()
 start = init False >> run
 
--- | Create a project directory structure.
-init :: Bool -> IO ()
-init warnIfNotEmpty = nothingHere >>= \b -> if b
-    then copyInitialProject
-    else when warnIfNotEmpty $
-        putStrLn "This directory is not empty. Not initializing"
-  where
-    nothingHere = whatsHere >>= return . null . filter notDot
-    whatsHere = getCurrentDirectory >>= getDirectoryContents 
-    notDot ('.':_) = False
-    notDot _ = True
-    copyInitialProject = putStrLn "Should be creating the default project here"
-    
 -- | Run the web server.
 run :: IO ()
 run = do
