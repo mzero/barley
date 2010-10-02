@@ -5,7 +5,7 @@ import qualified Data.ByteString.Char8 as C
 import Prelude hiding (init)
 import Snap.Http.Server
 import Snap.Types
-import System.Directory (getCurrentDirectory)
+import System.Directory (getCurrentDirectory, getDirectoryContents)
 import System.Environment
 import System.Exit
 import System.FilePath ((</>))
@@ -29,7 +29,15 @@ start = init >> run
 
 -- | Create a project directory structure.
 init :: IO ()
-init = return ()
+init = nothingHere >>= \b -> if b
+    then copyInitialProject
+    else putStrLn "This directory is not empty. Not initializing"
+  where
+    nothingHere = whatsHere >>= return . null . filter notDot
+    whatsHere = getCurrentDirectory >>= getDirectoryContents 
+    notDot ('.':_) = False
+    notDot _ = True
+    copyInitialProject = putStrLn "Should be creating the default project here"
 
 -- | Run the web server.
 run :: IO ()
