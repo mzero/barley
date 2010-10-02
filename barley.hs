@@ -6,7 +6,8 @@ import qualified Data.ByteString.Char8 as C
 import Prelude hiding (init)
 import Snap.Http.Server
 import Snap.Types
-import System.Directory (getCurrentDirectory, getDirectoryContents)
+import System.Directory (doesDirectoryExist, getCurrentDirectory,
+            getDirectoryContents, setCurrentDirectory)
 import System.Environment
 import System.Exit
 import System.FilePath ((</>))
@@ -19,6 +20,8 @@ main = do
     case args of
         ["start"] -> start
         ["init"] -> init True
+        ["start", projectDir] -> startInDirectory projectDir >> start
+        ["init", projectDir] -> startInDirectory projectDir >> init True
         ["run"] -> run
         [cmd] -> do putStrLn $ "unknown command: " ++ cmd
                     exitFailure
@@ -40,7 +43,7 @@ init warnIfNotEmpty = nothingHere >>= \b -> if b
     notDot ('.':_) = False
     notDot _ = True
     copyInitialProject = putStrLn "Should be creating the default project here"
-
+    
 -- | Run the web server.
 run :: IO ()
 run = do
@@ -51,6 +54,13 @@ run = do
     httpServe (C.pack address) port (C.pack hostname) Nothing Nothing
         genericHandler
 
+-- | Change into the project directory
+startInDirectory :: FilePath -> IO ()
+startInDirectory projectDir = doesDirectoryExist projectDir >>= \b -> if b
+    then setCurrentDirectory projectDir
+    else putStrLn ("Project directory doesn't exist: " ++ projectDir) >>
+         exitFailure
+    
 -- | Compile a template and return the generate HTML as a String.
 compile :: FilePath -> IO String
 compile filename = do
