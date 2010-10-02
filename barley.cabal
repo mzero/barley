@@ -1,0 +1,23 @@
+Name:                barley
+Version:             0.1
+License:             BSD3
+License-file:        LICENSE
+Author:              Johan Tibell, Mark Lentczner
+Maintainer:          johan.tibell@gmail.com
+Category:            Web
+Build-type:          Simple
+Cabal-version:       >=1.2
+
+Executable barley
+  Main-is: barley.hs
+  
+  Build-depends:
+    base < 4.3,
+    bytestring < 1.0,
+    directory < 1.1,
+    filepath < 1.2,
+    plugins,
+    snap-core,
+    snap-server,
+    html < 1.1.2,
+    transformers
