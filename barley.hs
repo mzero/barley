@@ -47,15 +47,11 @@ compile filename = do
     status <- make filename []
     html <- case status of
         MakeSuccess _ objfile -> do
-            putStrLn objfile
             loadStatus <- load_ objfile [] "page"
             case loadStatus of
-                LoadSuccess _ page -> do
-                    return $ (page :: Html)
-                LoadFailure errs -> do
-                    errorHtml errs filename
-        MakeFailure errs -> do
-            errorHtml errs filename
+                LoadSuccess _ page -> return $ (page :: Html)
+                LoadFailure errs -> errorHtml errs filename
+        MakeFailure errs -> errorHtml errs filename
     return $ renderHtml html
 
 -- | Given a URL, render the corresponding template.
