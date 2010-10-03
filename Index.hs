@@ -1,4 +1,4 @@
-module Template where
+module Index where
 
 import Text.Html
 
