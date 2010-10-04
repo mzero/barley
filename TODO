@@ -10,26 +10,19 @@
 --- Tasks ----
 
 [j] make barely start work outside of ghci
-[*m] init-project should copy a set of files from data dir
-    x[m] move Init.hs to Project.hs
-    x[m] provide init and enter functions
-    x[m] rename skeleton to seed
-    x[m] use a .barley-project file to check if project dir is really a project dir
-    [m] look for seed in current dir first, before looking at path's from GHC
-    x[m] remove playground from repo
-x[*m] when providing a project directory on the command line with init, create if it doesn't exist
 [m] make common error and warn functions for command line processing
 [*j] write index.hs that gives the user a hello and what to do next
-x[*m] move template.hs, etc... to seed
 [] updated template.hs that is a basic hello page
     [] what to do
     [] suggested re-edit in haskell comments
     [] reload button
+[*m] make index page look like a tutorial with task steps
+    [] step 2 points at Template.hs
+    [] add sp,e css so it is at least nice to look at
 [] create add page step to index.html
 [] create addpage.hs page with form w/name and description
 [] generate new page from addpage.hs form
 [] error page give instructions for what to do
-x[*m] create scaffold.css in seed
 [*j] unload modules after evaluating 'page'
 [] add a README file
 
@@ -42,21 +35,10 @@ User downloads, unpacks, installs (ick)
     opens browser
     sees nice intro page
 
-Running barley at the command line:
-    barley has three commands: "start", "init", and "run"
-    "start" is just "init" if needed followed by "run"
-    all three commands take an optional directory to be the project directory
-        if none is given, then the project directory defaults to the current directory
-    "init" copies the "seed" skeleton project into the project directory
-        it creates the project directory if needed
-        it fails if the project directory isn't empty
-        if the current directory contains a "seed" directory, that is used as the seed
-            otherwise, the "seed" directory in the data dir (via cabal install) is used
-            if even that is missing, "init" fails and complains
-    "run" checks that the project directory is okay - that is, was once "init"'d
-        if fails if it wasn't
-    if barley is run w/o a command, it is treated as help
-        and an error message with suggestions is printed
+User runs barley w/o a command
+    some helpful text is printed out, suggesting commands that could be run
+    such as
+        barley start playground
 
 User goes intro page
     clicks on Sample page
@@ -91,9 +73,34 @@ There is file of allowed URL to file mappings so that not ALL of the project dir
 When running "barley init", if the current dir is not-empty, it won't overwrite
     there is a "--force" flag to overwrite that
 
+=== USER STORIES DONE ===
+Running barley at the command line:
+    barley has three commands: "start", "init", and "run"
+    "start" is just "init" if needed followed by "run"
+    all three commands take an optional directory to be the project directory
+        if none is given, then the project directory defaults to the current directory
+    "init" copies the "seed" skeleton project into the project directory
+        it creates the project directory if needed
+        it fails if the project directory isn't empty
+        if the current directory contains a "seed" directory, that is used as the seed
+            otherwise, the "seed" directory in the data dir (via cabal install) is used
+            if even that is missing, "init" fails and complains
+    "run" checks that the project directory is okay - that is, was once "init"'d
+        if fails if it wasn't
+
 === TODO DONE ===
 [m] create a playground dir and exclude it's contents (but not it) from the repo
 [m] notice that the directory started in is empty and call init-project
 [m] if init is called from start, then it shouldn't complain about the non-empty dir
 [m] init and start take an optional directory to cd into first
+[m] init-project should copy a set of files from data dir
+    [m] move Init.hs to Project.hs
+    [m] provide init, check, and enter functions
+    [m] rename skeleton to seed
+    [m] use a .barley-project file to check if project dir is really a project dir
+    [m] look for seed in current dir first, before looking at path's from GHC
+    [m] remove playground from repo
+[m] when providing a project directory on the command line with init, create if it doesn't exist
+[m] move template.hs, etc... to data-dir
+[m] create scaffold.css in data dir
 

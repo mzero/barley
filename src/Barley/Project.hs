@@ -65,12 +65,27 @@ init warnIfNotEmpty projectDir = nothingHere >>= \b -> if b
 -- | Copy the initial project skeleton to the project directory.
 copyInitialProject :: ProjectDir -> IO ()
 copyInitialProject projectDir = do
-    fromDir <- getDataDir >>= return . (</> "seed")
+    fromDir <- getSeedDir
     let toDir = projectPath projectDir
     putStrLn "Creating default project files..."
     copyTree fromDir toDir
     writeFile (toDir </> markerFile) ""
     putStrLn "...done."
+
+-- | Locate seed dir in current dir, or data dir, or if neither, fail.
+getSeedDir :: IO FilePath
+getSeedDir = findFirstSeed [ getCurrentDirectory, getDataDir ]
+  where
+    findFirstSeed (g:gs) = do
+        s <- g >>= return . (</> "seed")
+        exists <- doesDirectoryExist s
+        if exists
+            then return s
+            else findFirstSeed gs
+    findFirstSeed [] = do
+        putStrLn "** No seed directory found."
+        putStrLn "** You should try reinstalling Barley."
+        exitFailure
 
 -- | Copy a directory tree from one place to another. The destination, or
 -- the subtrees needn't exist. If they do, existing files with the same names
@@ -83,7 +98,7 @@ copyTree from to = pick
     pick ((test, act):rest) = do
         bool <- test from
         if bool
-            then putStrLn ("..." ++ to) >> act
+            then putStrLn ("   " ++ to) >> act
             else pick rest
     pick [] =
         putStrLn $ "** Skipping funny thing in skeleton tree: " ++ from
