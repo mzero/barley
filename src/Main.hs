@@ -1,6 +1,6 @@
 module Main (main) where
 
-import Barley.Init (init)
+import Barley.Project (init)
 import Control.Monad.IO.Class
 import qualified Data.ByteString.Char8 as C
 import Prelude hiding (init)

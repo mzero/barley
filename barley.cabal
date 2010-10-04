@@ -14,11 +14,11 @@ data-files:
   seed/Template.hs
 
 Executable barley
-  Main-is: barley.hs
-  hs-source-dirs: . src
+  Main-is: Main.hs
+  hs-source-dirs: src
 
   other-modules:
-    Barley.Init
+    Barley.Project
     
   Build-depends:
     base < 4.3,

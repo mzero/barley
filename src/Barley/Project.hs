@@ -1,4 +1,4 @@
-module Barley.Init (
+module Barley.Project (
     init
     ) where
 
