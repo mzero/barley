@@ -11,16 +11,16 @@
 
 [j] make barely start work outside of ghci
 [*m] init-project should copy a set of files from data dir
-    [m] move Init.hs to Project.hs
-    [m] provide init, check, and enter functions
+    x[m] move Init.hs to Project.hs
+    x[m] provide init and enter functions
     x[m] rename skeleton to seed
-    [m] use a .barley-project file to check if project dir is really a project dir
+    x[m] use a .barley-project file to check if project dir is really a project dir
     [m] look for seed in current dir first, before looking at path's from GHC
-    [m] remove playground from repo
-[*m] when providing a project directory on the command line with init, create if it doesn't exist
+    x[m] remove playground from repo
+x[*m] when providing a project directory on the command line with init, create if it doesn't exist
 [m] make common error and warn functions for command line processing
 [*j] write index.hs that gives the user a hello and what to do next
-[*m] move template.hs, etc... to data-dir
+x[*m] move template.hs, etc... to seed
 [] updated template.hs that is a basic hello page
     [] what to do
     [] suggested re-edit in haskell comments
@@ -29,7 +29,7 @@
 [] create addpage.hs page with form w/name and description
 [] generate new page from addpage.hs form
 [] error page give instructions for what to do
-[*m] create scaffold.css in data dir
+x[*m] create scaffold.css in seed
 [*j] unload modules after evaluating 'page'
 [] add a README file
 
@@ -55,9 +55,8 @@ Running barley at the command line:
             if even that is missing, "init" fails and complains
     "run" checks that the project directory is okay - that is, was once "init"'d
         if fails if it wasn't
-    if barley is run w/o a command, it is treated as "start"
-        note that no project dir can be named in this case
-            (as it would be taken as the barley command)
+    if barley is run w/o a command, it is treated as help
+        and an error message with suggestions is printed
 
 User goes intro page
     clicks on Sample page

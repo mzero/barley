@@ -1,13 +1,13 @@
 module Main (main) where
 
-import Barley.Project (init)
+import Barley.Project
 import Control.Monad.IO.Class
 import qualified Data.ByteString.Char8 as C
-import Prelude hiding (init)
+import Prelude hiding (init, mod)
 import Snap.Http.Server
 import Snap.Types
 import System.Directory (doesDirectoryExist, doesFileExist,
-            getCurrentDirectory, setCurrentDirectory)
+            getCurrentDirectory)
 import System.Environment
 import System.Exit
 import System.FilePath ((<.>), (</>))
@@ -16,37 +16,39 @@ import Text.Html hiding ((</>), address, content, start)
 
 main :: IO ()
 main = do
+    args <- parseArgs
+    case args of
+        Just ("start", pd) -> start pd
+        Just ("init", pd) -> init True pd
+        Just ("run", pd) -> run pd
+        Just (cmd, _) -> do putStrLn $ "unknown command: " ++ cmd
+                            exitFailure
+        Nothing -> do putStrLn "Usage: barley <command> [project dir]"
+                      exitFailure
+
+parseArgs :: IO (Maybe (String, ProjectDir))
+parseArgs = do
     args <- getArgs
     case args of
-        ["start"] -> start
-        ["init"] -> init True
-        ["start", projectDir] -> startInDirectory projectDir >> start
-        ["init", projectDir] -> startInDirectory projectDir >> init True
-        ["run"] -> run
-        [cmd] -> do putStrLn $ "unknown command: " ++ cmd
-                    exitFailure
-        _ -> putStrLn "Usage: barley <command>" >> exitFailure
+        [] -> return Nothing
+        [cmd] -> return $ Just (cmd, CurrentDir)
+        [cmd,fp] -> return $ Just (cmd, ProjectDir fp)
+        _ -> putStrLn "Too many arguments." >> return Nothing
 
 -- | Create a project directory structure and run the web server.
-start :: IO ()
-start = init False >> run
+start :: ProjectDir -> IO ()
+start pd = init False pd >> run pd
 
 -- | Run the web server.
-run :: IO ()
-run = do
+run :: ProjectDir -> IO ()
+run pd = do
+    enter pd
     let address = "*"
         port = 8080
         hostname = "myserver"
     putStrLn $ "Running on http://localhost:" ++ show port ++ "/"
     httpServe (C.pack address) port (C.pack hostname) (Just "access.log")
         (Just "error.log") genericHandler
-
--- | Change into the project directory
-startInDirectory :: FilePath -> IO ()
-startInDirectory projectDir = doesDirectoryExist projectDir >>= \b -> if b
-    then setCurrentDirectory projectDir
-    else putStrLn ("Project directory doesn't exist: " ++ projectDir) >>
-         exitFailure
     
 -- | Compile a template and return the generate HTML as a String.
 compile :: FilePath -> IO String
