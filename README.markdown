@@ -1,0 +1,60 @@
+Barley - A seed for learning Haskell
+====================================
+
+Barley is an environment for tinkering with [Haskell][1]. It is a web server
+with an embedded simple programming environment rendered as web pages.
+The environment allows you to easily edit Haskell code and quickly see the
+result of running it.
+
+Barley includes a tutorial aimed at people with some programming and web
+experience, but it assumes no exposure to Haskell or functional programming.
+The tutorial takes the developer from generating a simple web page through
+a modest web application with database backend storage. Along the way it
+exposes the programmer to the basic idioms needed to do simple programming
+tasks.
+
+Barley is based on the [Snap framework][2] for creating web programming in
+Haskell. Barley adds a simple web application skeleton to support both the
+live development environment and the tutorial projects. After going through
+the tutorial, developers can use Barley to create and explore their own
+simple web projects. Beyond that, they can smoothly transition to using the
+whole Snap framework and the wealth of available Haskell libraries.
+
+[1]: http://www.haskell.org/
+[2]: http://snapframework.com/
+
+Status
+======
+
+This is in the *very early concept stage*. We aren't even at a 0.1 release!
+Read this code at your own risk!
+
+Developers
+----------
+
+Barley was conceived during a flurry of Nepalese food by [Johan Tibell][jt]
+and [Mark Lentczner][ml]. We got immediate encouragement from others 'round
+the table and spent the rest of the night plotting, and in Johan's case coding.
+The next morning we found ourselves in a coffee house with other Haskellers
+cheering us on as we knocked off the first coding tasks.
+
+[jt]: http://github.com/tibbe
+[ml]: http://github.com/mtnviewmark
+
+Running
+-------
+
+If you can't hold back and download this code, you can run it like so:
+
+    cabal configure
+    cabal build
+    dist/build/barley/barley start playground
+
+Note:
+
+* `start` = initialize a new project if needed, then run barley on it.
+* `playground` is just the name of a project directory, barley will create
+  it if needed.
+* If you don't `cabal install` barley, then it won't have access to its
+  data directory unless you start it from the root of the dev. tree.
+
