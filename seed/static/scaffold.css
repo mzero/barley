@@ -1,3 +1,74 @@
+/* @override http://localhost:8080/static/scaffold.css */
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background: #fff url(ribbon.jpg) repeat-x scroll 0 0;
+}
+
+html.with-topbar {
+  border-top: 29px solid rgb(78,98,114);
+}
+
+body {
+  padding: 100px 15px 0;
+  min-width: 400px;
+  font: 13pt/1.25em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+  color: #424242;
+  position: relative;
+  background: url(barley-and-beetle.png) no-repeat right top;
+}
+
+p {
+  margin: 0.5em 0;
+  font-size: 0.846em;
+}
+
+h1, h2, h3, h4, h5, h6, b {
+  color: #cc2900;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: Skia, "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+
 h1 {
-   font-size: 13pt;
+  font-style: normal;
+  font-size: 150%;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 100%;
+  font-weight: bold;
+}
+
+h3, b {
+  font-size: 100%;
+  font-weight: normal;
+}
+
+ul, ol, dl {
+  margin: 0.5em 3em;
+}
+
+#topbar {
+  background: rgb(41,56,69) url(hslogo-16.png) no-repeat 4px 4px;
+  color: #white;
+  position: absolute;
+  top: -22px;
+  right: 0;
+  left: 0;
+  height: 22px;
+}
+
+#topbar p {
+  font-size: 12px;
+  font-family: sans-serif;
+  text-align: right;
+  padding: 0 6px;
+  margin: 1px 0;
 }
