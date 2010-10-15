@@ -3,6 +3,7 @@ module Main (main) where
 import Barley.Project
 import Control.Monad.IO.Class
 import qualified Data.ByteString.Char8 as C
+import qualified Data.Map as M
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import Prelude hiding (init, mod)
@@ -12,7 +13,7 @@ import System.Directory (doesDirectoryExist, doesFileExist,
             getCurrentDirectory)
 import System.Environment
 import System.Exit
-import System.FilePath ((<.>), (</>))
+import System.FilePath ((<.>), (</>), takeExtension)
 import System.Plugins
 import Text.Html hiding ((</>), address, content, start)
 
@@ -64,7 +65,10 @@ compile filename = do
                                            return $ (page :: Html)
                 LoadFailure errs -> errorHtml errs filename
         MakeFailure errs -> errorHtml errs filename
-    return $ renderHtml html
+    return $ prettyHtml html
+        -- renderHtml would be more efficient, and perhaps more correct
+        -- but it puts the content into an additional HTML element
+        -- (for some ungodly reason)
 
 serveTemplate :: FilePath -> Snap ()
 serveTemplate filename = do
@@ -74,9 +78,28 @@ serveTemplate filename = do
 
 serveStatic :: FilePath -> Snap ()
 serveStatic filename = do
-    modifyResponse $ setContentType (C.pack "text/html")
+    modifyResponse $ setContentType (C.pack mimeType)
     sendFile filename
-
+  where
+    mimeType = M.findWithDefault defMimeType extension extToMimeType
+    extension = takeExtension filename
+    defMimeType = "application/octet-stream" 
+    extToMimeType = M.fromList
+        [ (".css",  "text/css")
+        , (".gif",  "image/gif")
+        , (".html", "text/thml")
+        , (".jpeg", "image/jpeg")
+        , (".jpg",  "image/jpeg")
+        , (".js",   "application/javascript")
+        , (".json", "application/json")
+        , (".pdf",  "application/pdf")
+        , (".png",  "image/png")
+        , (".svg",  "image/svg+xml")
+        , (".txt",  "text/plain")
+        , (".xhtml","application/xhtml+xml")
+        , (".xml",  "application/xml")
+        ]
+        
 -- | Given a URL, render the corresponding template.
 genericHandler :: Snap ()
 genericHandler = do

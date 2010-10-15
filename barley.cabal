@@ -23,6 +23,7 @@ Executable barley
   Build-depends:
     base < 4.3,
     bytestring < 1.0,
+    containers < 0.4,
     directory < 1.1,
     filepath < 1.2,
     plugins,
