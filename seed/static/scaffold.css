@@ -56,19 +56,49 @@ ul, ol, dl {
 }
 
 #topbar {
-  background: rgb(41,56,69) url(hslogo-16.png) no-repeat 4px 4px;
+  background: rgb(41,56,69);
   color: #white;
   position: absolute;
   top: -22px;
   right: 0;
   left: 0;
   height: 22px;
+  font-size: 12px;
+  font-family: sans-serif;
 }
 
 #topbar p {
-  font-size: 12px;
-  font-family: sans-serif;
-  text-align: right;
-  padding: 0 6px;
-  margin: 1px 0;
+  float: left;
+  margin: 0;
+  background: url(hslogo-16.png) no-repeat 5px 3px;
+  font-size: 100%;
+  padding: 0.2em 0 0.2em 32px;
 }
+
+#topbar ul {
+  list-style: none;
+  text-align: left;
+  float: right;
+  display: inline-table;
+  margin: 0 0 0 1em;
+}
+
+#topbar ul li {
+  display: inline;
+  border-left: 1px solid #d5d5d5; 
+  white-space: nowrap;
+  padding: 0;
+}
+
+#topbar ul li a {
+  padding: 0.2em 0.5em;
+}
+
+#topbar a:link,
+#topbar a:visited {
+	text-decoration: none;
+	color: white;
+}
+
+#topbar a:hover { background: rgb(78,98,114); }
+

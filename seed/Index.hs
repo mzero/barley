@@ -15,8 +15,7 @@ page =
         p << "This is a first tutorial in Barley. Our aim is to make your \
              \first encounter with Haskell fun, enjoyable, and practical. " ,
         steps,
-        thediv ! [identifier "topbar"] <<
-            p << "Haskell | Platform | Hackage | λ Reddit | λ Stack Overflow"
+        topbar
         ]
     ]
 
@@ -24,7 +23,7 @@ page =
 type Step = (String, Html)
 
 steps :: Html
-steps = unordList $ map mkStep [step1, step2]
+steps = ordList $ map mkStep [step1, step2]
   where
     mkStep (title, text) = p << bold << title +++ thediv << text
     
@@ -44,4 +43,21 @@ step2 = ("Try out your first page",
     \reload the template page to see the result." +++
   p << "Congratulations! You're writing Haskell!"
   )
- 
+
+topbar :: Html
+topbar =thediv ! [identifier "topbar"] << [
+    p << makelink haskellLink,
+    unordList $ map makelink communityLinks
+    ]
+  where
+    makelink (title, url) = anchor ! [href url] << title
+    haskellLink = ("Haskell", "http://haskell.org/")
+    communityLinks =
+        [ ("Platform", "http://hackage.haskell.org/platform/")
+        , ("Hackage", "http://hackage.haskell.org/packages/hackage.html")
+        , ("λ Reddit", "http://www.reddit.com/r/haskell/")
+        , ("λ Stack Overflow",
+            "http://stackoverflow.com/questions/tagged?tagnames=haskell")
+        ]
+
+    
