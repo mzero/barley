@@ -29,6 +29,7 @@ Executable barley
     snap-core,
     snap-server,
     html < 1.1.2,
+    text < 0.8,
     transformers
 
   ghc-options: -Wall

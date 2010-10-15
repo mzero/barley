@@ -5,15 +5,15 @@ import Text.Html
 page =
   thehtml ! [theclass "with-topbar"] << [
     header << [
-      meta ! [httpequiv "Content-Type", content "text/html; charset=UTF-8"],
       thelink ! [href "static/scaffold.css", rel "stylesheet",
                    thetype "text/css"] << noHtml,
       thetitle << "Barley"
       ],
     body << [
-        h1 << "Barley: Welcome aboard!",
-        p << "This is a first tutorial in Barley. Our aim is to make your \
-             \first encounter with Haskell fun, enjoyable, and practical. " ,
+        h1 << "Welcome aboard!",
+        p << "Barley is an environment and tutorial for exploring Haskell. \
+             \Our aim is to make your first encounter with Haskell fun, \
+             \enjoyable, and practical. " ,
         steps,
         topbar
         ]

@@ -3,6 +3,8 @@ module Main (main) where
 import Barley.Project
 import Control.Monad.IO.Class
 import qualified Data.ByteString.Char8 as C
+import qualified Data.Text as T
+import qualified Data.Text.Encoding as T
 import Prelude hiding (init, mod)
 import Snap.Http.Server
 import Snap.Types
@@ -67,8 +69,8 @@ compile filename = do
 serveTemplate :: FilePath -> Snap ()
 serveTemplate filename = do
     html <- liftIO $ compile filename
-    modifyResponse $ setContentType (C.pack "text/html")
-    writeBS $ C.pack html
+    modifyResponse $ setContentType (C.pack "text/html; charset=UTF-8")
+    writeBS $ (T.encodeUtf8 . T.pack) html
 
 serveStatic :: FilePath -> Snap ()
 serveStatic filename = do
