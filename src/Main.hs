@@ -122,11 +122,11 @@ serveStatic filename = do
 -- | Given a URL, render the corresponding template.
 genericHandler :: Snap ()
 genericHandler = do
-    uri <- rqURI `fmap` getRequest
+    path <- rqPathInfo `fmap` getRequest
     cwd <- liftIO getCurrentDirectory
 
     -- XXX: directory traversal
-    let filename = cwd </> tail (C.unpack uri)
+    let filename = cwd </> C.unpack path
     isFile <- liftIO $ doesFileExist filename
     if isFile
         then serveStatic filename

@@ -60,6 +60,19 @@ ul, ol, dl {
   margin: 0.5em 3em;
 }
 
+pre {
+  font-family:monospace;
+  font-size: 0.727em;
+  line-height: 124%;
+  margin: 1em 0;
+  overflow: auto;
+}
+
+.src {
+  padding: 0.5em 1em;
+  background: rgb(229,237,244);
+}
+
 #sidebar {
   width: 12em;
   position: absolute;
