@@ -1,6 +1,7 @@
 module Main (main) where
 
 import Barley.Project
+import Control.Monad (liftM2)
 import Control.Monad.IO.Class
 import qualified Data.ByteString.Char8 as C
 import qualified Data.Map as M
@@ -54,26 +55,45 @@ run pd = do
         (Just "error.log") genericHandler
     
 -- | Compile a template and return the generate HTML as a String.
-compile :: FilePath -> IO String
-compile filename = do
+compileAndLoad :: FilePath -> IO (Snap ())
+compileAndLoad filename = do
     status <- make filename []
-    html <- case status of
+    case status of
         MakeSuccess _ objfile -> do
-            loadStatus <- load_ objfile [] "page"
-            case loadStatus of
-                LoadSuccess mod page -> do page `seq` unloadAll mod
-                                           return $ (page :: Html)
-                LoadFailure errs -> errorHtml errs filename
-        MakeFailure errs -> errorHtml errs filename
-    return $ renderHtml html
+            v <- liftM2 eplus (loadHandler objfile) (loadPage objfile)
+            either errorResult return $ v
+        MakeFailure errs -> errorResult errs
+  where errorResult errs = errorHtml errs filename >>= return . htmlResult
+
+loadHandler :: FilePath -> IO (Either Errors (Snap ()))
+loadHandler = loadAndFetch "handler"
+
+loadPage :: FilePath -> IO (Either Errors (Snap ()))
+loadPage = ((htmlResult `fmap`) `fmap`) . loadAndFetch "page"
+
+loadAndFetch :: Symbol -> FilePath -> IO (Either Errors a)
+loadAndFetch sym objfile = do
+    loadStatus <- load_ objfile [] sym
+    case loadStatus of
+        LoadSuccess mod v -> do v `seq` unloadAll mod
+                                return $ Right v
+        LoadFailure errs -> return $ Left errs
+
+htmlResult :: Html -> Snap ()
+htmlResult html = do
+    modifyResponse $ setContentType (C.pack "text/html; charset=UTF-8")
+    writeBS $ (T.encodeUtf8 . T.pack) $ renderHtml html
         -- warning: renderHTML wraps an additional HTML element around the
         -- content (for some ungodly reason)
 
+eplus :: (Either a b) -> (Either a b) -> (Either a b)
+(Left _) `eplus` b = b
+a        `eplus` _ = a
+
 serveTemplate :: FilePath -> Snap ()
 serveTemplate filename = do
-    html <- liftIO $ compile filename
-    modifyResponse $ setContentType (C.pack "text/html; charset=UTF-8")
-    writeBS $ (T.encodeUtf8 . T.pack) html
+    handler <- liftIO $ compileAndLoad filename
+    handler
 
 serveStatic :: FilePath -> Snap ()
 serveStatic filename = do
