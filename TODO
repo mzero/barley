@@ -1,6 +1,7 @@
 ****
-**** This file is just a snapshot. The live file is here:
+**** This file is now AUTHORATATIVE.
 ****
+**** The older, live file is here:
 ****           http://ietherpad.com/hMrw0URncq
 ****
 
@@ -10,22 +11,34 @@
 --- Tasks ----
 
 [j] make barely start work outside of ghci
+[m] broke reloading somehow...
 [m] make common error and warn functions for command line processing
+[m] view source page
+    [m] request handler option for templates
+    [m] read file and display contents
+    [] open file as link in separate window
+    [] open file via file: link
+    [] edit file (js to convert text to edit field
+    [] save edits (js to submit, then reload?)
+    [] side-by-side view (via iframe)
+    [] refresh of either iframe and/or link in separate window
+[] refactor barley IDE page utilities into a common module (Index & Source)
+
 [*j] write index.hs that gives the user a hello and what to do next
 [] updated template.hs that is a basic hello page
     [] what to do
     [] suggested re-edit in haskell comments
     [] reload button
-[*m] make index page look like a tutorial with task steps
-    [] step 2 points at Template.hs
-    [] add sp,e css so it is at least nice to look at
 [] create add page step to index.html
 [] create addpage.hs page with form w/name and description
 [] generate new page from addpage.hs form
 [] error page give instructions for what to do
 [*j] unload modules after evaluating 'page'
-[] add a README file
-
+[] scaffold.css should probably be named something better like barley.css
+[] Text.Html is forcing us to use prettyHtml instead of renderHtml
+    [] either wrap the body contents in a div, and make page return an [Html]
+        -- which is icky 'cause then the top html element isn't clear to users
+    [] switch to some other HTML library
 [] handle errors during copyTree
 
 --- User Stories ---
@@ -73,6 +86,9 @@ There is file of allowed URL to file mappings so that not ALL of the project dir
 When running "barley init", if the current dir is not-empty, it won't overwrite
     there is a "--force" flag to overwrite that
 
+The user can edit .hs source in the web browser
+    (probably using http://codemirror.net/ )
+    
 === USER STORIES DONE ===
 Running barley at the command line:
     barley has three commands: "start", "init", and "run"
@@ -103,4 +119,19 @@ Running barley at the command line:
 [m] when providing a project directory on the command line with init, create if it doesn't exist
 [m] move template.hs, etc... to data-dir
 [m] create scaffold.css in data dir
+[m] make index page look like a tutorial with task steps
+    [] step 2 points at Template.hs
+    [] add sp,e css so it is at least nice to look at
+[m] output encoding should be correct: UTF-8
+[m] static files are served with incorrect MIME type
+[m] add a README file
+[m] side bars
+
+
+=== NOTES FOR SNAP ===
+writeText writes out in UTF-8 but doesn't make that garuntee in the docs
+
+=== NOTES FOR HTML ===
+renderHtml is BROKEN - it puts things inside an extra HTML element!?!?!?
+
 
