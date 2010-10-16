@@ -5,26 +5,31 @@
   padding: 0;
 }
 
-html {
-  background: #fff url(ribbon.jpg) repeat-x scroll 0 0;
-}
-
-html.with-topbar {
-  border-top: 29px solid rgb(78,98,114);
-}
-
 body {
-  padding: 100px 15px 0;
+  background: #fff url(ribbon.jpg) repeat-x scroll 0 0;
   min-width: 400px;
-  font: 13pt/1.25em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+  font: 11pt/15pt "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
   color: #424242;
   position: relative;
+}
+
+body.with-topbar {
+  border-top: 29px solid rgb(78,98,114);
+  background-position: 0 29px;
+}
+
+#content {
+  position: relative;
+  padding: 100px 15px 0;
   background: url(barley-and-beetle.png) no-repeat right top;
+}
+
+#content.with-sidebar {
+  padding-right: 13em;
 }
 
 p {
   margin: 0.5em 0;
-  font-size: 0.846em;
 }
 
 h1, h2, h3, h4, h5, h6, b {
@@ -37,7 +42,7 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   font-style: normal;
-  font-size: 150%;
+  font-size: 145%;
   font-weight: bold;
 }
 
@@ -53,6 +58,30 @@ h3, b {
 
 ul, ol, dl {
   margin: 0.5em 3em;
+}
+
+#sidebar {
+  width: 12em;
+  position: absolute;
+  top: 100px;
+  right: 0;
+  border-left: 1px dashed #cc2900;
+}
+
+#sidebar .module {
+  font-size: 0.727em;
+  line-height: 1.25em;
+  margin: 0 1.5em;
+}
+
+#sidebar .module + .module {
+  margin-top: 1.5em;
+  padding-top: 1.5em;
+  border-top: 1px dashed #cc2900;
+}
+
+#sidebar pre {
+  overflow: hidden;
 }
 
 #topbar {

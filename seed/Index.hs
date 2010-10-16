@@ -3,20 +3,23 @@ module Index where
 import Text.Html
 
 page =
-  thehtml ! [theclass "with-topbar"] << [
+  thehtml << [
     header << [
       thelink ! [href "static/scaffold.css", rel "stylesheet",
                    thetype "text/css"] << noHtml,
       thetitle << "Barley"
       ],
-    body << [
+    body ! [theclass "with-topbar"] << [
+      thediv ! [identifier "content", theclass "with-sidebar"] << [
         h1 << "Welcome aboard!",
         p << "Barley is an environment and tutorial for exploring Haskell. \
              \Our aim is to make your first encounter with Haskell fun, \
              \enjoyable, and practical. " ,
         steps,
-        topbar
-        ]
+        sidebar
+        ],
+      topbar
+      ]
     ]
 
 
@@ -44,8 +47,35 @@ step2 = ("Try out your first page",
   p << "Congratulations! You're writing Haskell!"
   )
 
+sidebar :: Html
+sidebar = thediv ! [identifier "sidebar"] <<
+    map (thediv ! [theclass "module"]) [ modMessage, modSteps, modTagLine ]
+
+modMessage :: Html
+modMessage = (h2 << "pre-Alpha version") +++
+    (p << ("Just in case it wasn't totally clear: This is very early, \
+          \pre-Alpha software. We're making it up as fast as we can! \
+          \In the spirit of open source, we are developing in public, \
+          \so please be gentle!" +++ br +++ "— Johan & Mark"))
+
+modSteps :: Html
+modSteps = (h2 << "Tutorial Steps") +++
+    ordList [ "Step", "Step", "Quick-Step", "Slide" ] +++
+    p << "This will be a list of the steps some day…"
+
+modTagLine :: Html
+modTagLine = pre << (
+    "webSite :: " +++ (bold << "Haskell") +++ "\n\
+    \webSite = madeWith\n\
+    \  [ haskellPlatform\n\
+    \  , snapFramework\n\
+    \  , plugins\n\
+    \  , ghc\n\
+    \  ]"
+    )
+
 topbar :: Html
-topbar =thediv ! [identifier "topbar"] << [
+topbar = thediv ! [identifier "topbar"] << [
     p << makelink haskellLink,
     unordList $ map makelink communityLinks
     ]
@@ -60,4 +90,3 @@ topbar =thediv ! [identifier "topbar"] << [
             "http://stackoverflow.com/questions/tagged?tagnames=haskell")
         ]
 
-    

@@ -65,10 +65,9 @@ compile filename = do
                                            return $ (page :: Html)
                 LoadFailure errs -> errorHtml errs filename
         MakeFailure errs -> errorHtml errs filename
-    return $ prettyHtml html
-        -- renderHtml would be more efficient, and perhaps more correct
-        -- but it puts the content into an additional HTML element
-        -- (for some ungodly reason)
+    return $ renderHtml html
+        -- warning: renderHTML wraps an additional HTML element around the
+        -- content (for some ungodly reason)
 
 serveTemplate :: FilePath -> Snap ()
 serveTemplate filename = do
