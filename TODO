@@ -3,6 +3,8 @@
 ****
 **** The older, live file is here:
 ****           http://ietherpad.com/hMrw0URncq
+**** There is a now a version in the git wiki, but I'm still working here:
+****           http://github.com/mtnviewmark/barley/wiki/To-do-list
 ****
 
 
@@ -11,7 +13,6 @@
 --- Tasks ----
 
 [j] make barely start work outside of ghci
-[m] broke reloading somehow...
 [m] make common error and warn functions for command line processing
 [m] view source page
     [m] request handler option for templates
@@ -22,7 +23,6 @@
     [] save edits (js to submit, then reload?)
     [] side-by-side view (via iframe)
     [] refresh of either iframe and/or link in separate window
-[] refactor barley IDE page utilities into a common module (Index & Source)
 
 [*j] write index.hs that gives the user a hello and what to do next
 [] updated template.hs that is a basic hello page
@@ -33,13 +33,67 @@
 [] create addpage.hs page with form w/name and description
 [] generate new page from addpage.hs form
 [] error page give instructions for what to do
-[*j] unload modules after evaluating 'page'
 [] scaffold.css should probably be named something better like barley.css
 [] Text.Html is forcing us to use prettyHtml instead of renderHtml
     [] either wrap the body contents in a div, and make page return an [Html]
         -- which is icky 'cause then the top html element isn't clear to users
     [] switch to some other HTML library
 [] handle errors during copyTree
+
+[] factor common code between index.hs and source.hs into common.hs
+[] move source.hs and common.hs into a dev directory
+
+[] need a better term than "run" for the act of invoking code to return a page
+    equivalent of "run" in IDEs, but what is it here?
+    opens the page in a new browser window
+    
+Source Editor
+    [] add hoogle and hayoo search fields to a new search side bar module
+    [] use jQuery to fill them with the selection in the source view
+    [] link to open user page in new window
+        [] ? user page windows are named with the path so they reuse by page
+    [] turn edit area yellow and editable on edit
+    [] on edit save, submit in background to a new endpoint
+    [] compile end point calls into Barley compile
+        - returns either OK or ERROR on first line
+        - returns warnings or error lines after status line 
+    [] source editor can display compile results
+    [] source view, on ERROR stays on edit mode
+    [] source view, on OK returns to view mode, and opens page in new window
+
+Compilation
+    [*j] unload modules after evaluating 'page'
+    [] make nu hack robust: check for "\nnu =" before reload
+    [] handle reloading with something better than the nu hack... 
+        [] ?patch plugins to have better API
+        [] ?magic from dons, if he comes up with some
+    [] ensure loading modules that import user modules works
+    [] editing an included, but not viewed module should trigger recompile
+        for modules that use
+    [] compilation system tracks mod and compilation times to avoid reloading
+        [] clear compilation state user control per file and/or whole
+    [] be certain that we can unload w/o breaking (thinking about dangling thunks)
+    [] be certain that loading is safe in light of type mismatches
+    [] catch error and exceptions during template running
+    [] how to handle when the user wants to use some other package?
+
+Project View
+    [] shows all files in project w/access to view/edit/run links
+    [] rename of files in project view
+    [] delete of files in project view
+    [] move/copy files in project view
+
+Prisitine system
+    [] when init'ing a project put a duplicate copy in .pristine
+    [] add a restore button that copies from .pristine
+    [] diff view that diffs from .pristine 
+
+History
+    [] keep a linear view of file versions in a .history dir:
+        name the files something like <isodate>-<filepath>.hs
+    [] diff through history
+    [] integrate with hg or git if available 
+
 
 --- User Stories ---
 
@@ -126,10 +180,11 @@ Running barley at the command line:
 [m] static files are served with incorrect MIME type
 [m] add a README file
 [m] side bars
+[m] broke reloading somehow...
 
 
 === NOTES FOR SNAP ===
-writeText writes out in UTF-8 but doesn't make that garuntee in the docs
+writeText writes out in UTF-8 but doesn't make that guaruntee in the docs
 
 === NOTES FOR HTML ===
 renderHtml is BROKEN - it puts things inside an extra HTML element!?!?!?
