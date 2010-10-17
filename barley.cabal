@@ -18,6 +18,7 @@ Executable barley
   hs-source-dirs: src
 
   other-modules:
+    Barley.Loader
     Barley.Project
     
   Build-depends:

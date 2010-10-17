@@ -1,7 +1,7 @@
 module Main (main) where
 
+import Barley.Loader
 import Barley.Project
-import Control.Monad (liftM2)
 import Control.Monad.IO.Class
 import qualified Data.ByteString.Char8 as C
 import qualified Data.Map as M
@@ -15,7 +15,6 @@ import System.Directory (doesDirectoryExist, doesFileExist,
 import System.Environment
 import System.Exit
 import System.FilePath ((<.>), (</>), takeExtension)
-import System.Plugins
 import Text.Html hiding ((</>), address, content, start)
 
 main :: IO ()
@@ -55,29 +54,16 @@ run pd = do
         (Just "error.log") genericHandler
     
 -- | Compile a template and return the generate HTML as a String.
-compileAndLoad :: FilePath -> IO (Snap ())
-compileAndLoad filename = do
-    status <- make filename []
-    case status of
-        MakeSuccess _ objfile -> do
-            v <- liftM2 eplus (loadHandler objfile) (loadPage objfile)
-            either errorResult return $ v
-        MakeFailure errs -> errorResult errs
-  where errorResult errs = errorHtml errs filename >>= return . htmlResult
-
-loadHandler :: FilePath -> IO (Either Errors (Snap ()))
-loadHandler = loadAndFetch "handler"
-
-loadPage :: FilePath -> IO (Either Errors (Snap ()))
-loadPage = ((htmlResult `fmap`) `fmap`) . loadAndFetch "page"
-
-loadAndFetch :: Symbol -> FilePath -> IO (Either Errors a)
-loadAndFetch sym objfile = do
-    loadStatus <- load_ objfile [] sym
-    case loadStatus of
-        LoadSuccess mod v -> do v `seq` unloadAll mod
-                                return $ Right v
-        LoadFailure errs -> return $ Left errs
+runTemplate :: FilePath -> IO (Snap ())
+runTemplate filename = do
+    v <- compileAndLoadFirst filename templateEntryPoints
+    either errorResult return $ v
+  where
+    errorResult errs = errorHtml errs filename >>= return . htmlResult
+    templateEntryPoints =
+        [ entryPoint "handler" id
+        , entryPoint "page" htmlResult
+        ]
 
 htmlResult :: Html -> Snap ()
 htmlResult html = do
@@ -86,13 +72,10 @@ htmlResult html = do
         -- warning: renderHTML wraps an additional HTML element around the
         -- content (for some ungodly reason)
 
-eplus :: (Either a b) -> (Either a b) -> (Either a b)
-(Left _) `eplus` b = b
-a        `eplus` _ = a
 
 serveTemplate :: FilePath -> Snap ()
 serveTemplate filename = do
-    handler <- liftIO $ compileAndLoad filename
+    handler <- liftIO $ runTemplate filename
     handler
 
 serveStatic :: FilePath -> Snap ()
@@ -122,11 +105,11 @@ serveStatic filename = do
 -- | Given a URL, render the corresponding template.
 genericHandler :: Snap ()
 genericHandler = do
-    path <- rqPathInfo `fmap` getRequest
+    rpi <- rqPathInfo `fmap` getRequest
     cwd <- liftIO getCurrentDirectory
 
     -- XXX: directory traversal
-    let filename = cwd </> C.unpack path
+    let filename = cwd </> C.unpack rpi
     isFile <- liftIO $ doesFileExist filename
     if isFile
         then serveStatic filename
@@ -147,7 +130,7 @@ genericHandler = do
 
 -- | Given a list of errors and a template, create an HTML page that
 -- displays the errors.
-errorHtml :: Errors -> FilePath -> IO Html
+errorHtml :: String -> FilePath -> IO Html
 errorHtml errs filename = do
     content <- readFile filename
     length content `seq` return ()
@@ -155,7 +138,7 @@ errorHtml errs filename = do
                body << [
                    thediv ! [theclass "errors"] << [
                         h2 << "Errors",
-                        pre << unlines errs
+                        pre << errs
                         ],
                    pre ! [theclass "sourcefile"] << content
                ]
