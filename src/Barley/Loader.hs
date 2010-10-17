@@ -3,7 +3,6 @@ module Barley.Loader (
     entryPoint,
     
     compileAndLoadFirst,
-    
     )
     where
 
@@ -12,7 +11,7 @@ import System.Plugins
 
 -- | An representation of a possible entry point in a file that, when
 -- loaded, run, returns an a value of type a
-newtype EntryPoint a = EntryPoint { loadEntryPoint :: FilePath -> IO (Maybe a) }
+newtype EntryPoint a = EntryPoint { loadEntryPoint :: Module -> IO (Maybe a) }
 
 -- | Builds an entry point. The entry point is named with the given symbol
 -- and returns a value of type a. The supplied transformer function is used
@@ -37,18 +36,24 @@ compileAndLoadFirst srcFile eps = do
 -- so. See, for example, how the implementation of load uses several functions
 -- that are not exported and are rather too complicated to replicate.
 
+-- The current hack is to insist that every loaded module have a symbol nu.
+-- This code uses the high level interface to load that module, which succeeds
+-- and then uses the low level interface to probe the other entry points.
+
 loadFirst :: FilePath -> [EntryPoint a] -> IO (Either String a)
-loadFirst m (ep:eps) =
-    loadEntryPoint ep m >>= maybe (loadFirst m eps) (return . Right)
-loadFirst _ [] = return (Left "No matching entry points found.")
+loadFirst objFile eps = do
+    v <- load_ objFile [] "nu"
+    case v of
+        LoadFailure _ -> return (Left "yer dead now: no nu")
+        LoadSuccess m _ -> do
+            w <- tryEntryPoints m eps
+            w `seq` unloadAll m
+            return w
 
-loadWith :: String -> (a -> b) -> FilePath -> IO (Maybe b)
-loadWith sym xfn objFile = do
-    loadStatus <- load_ objFile [] sym 
-    case loadStatus of
-        LoadSuccess m v -> do v `seq` unloadAll m
-                              return . Just . xfn $ v
-        LoadFailure _ -> return Nothing
-            -- turns out the error string isn't useful
+tryEntryPoints :: Module -> [EntryPoint a] -> IO (Either String a)
+tryEntryPoints m (ep:eps) =
+    loadEntryPoint ep m >>= maybe (tryEntryPoints m eps) (return . Right)
+tryEntryPoints _ [] = return (Left "No matching entry points found.")
 
-    
+loadWith :: String -> (a -> b) -> Module -> IO (Maybe b)
+loadWith sym xfn m = (xfn `fmap`) `fmap` loadFunction m sym

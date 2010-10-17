@@ -2,6 +2,8 @@ module Index where
 
 import Text.Html
 
+nu = () -- DO NOT DELETE THIS
+
 page =
   thehtml << [
     header << [

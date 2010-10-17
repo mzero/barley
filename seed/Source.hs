@@ -9,6 +9,8 @@ import System.Directory (doesFileExist, getCurrentDirectory)
 import System.FilePath ((</>))
 import Text.Html hiding ((</>))
 
+nu = () -- DO NOT DELETE THIS
+
 handler :: Snap ()
 handler = do
     mfile <- getParam (C.pack "file")

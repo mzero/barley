@@ -6,6 +6,8 @@ import qualified Data.Text.Encoding as T
 import Snap.Types
 import Text.Html
 
+nu = () -- DO NOT DELETE THIS
+
 handler :: Snap ()
 handler = do
     req <- getRequest
