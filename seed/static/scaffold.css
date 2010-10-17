@@ -73,6 +73,10 @@ pre {
   background: rgb(229,237,244);
 }
 
+select, input, button, textarea {
+	font:99% sans-serif;
+}
+
 #sidebar {
   width: 12em;
   position: absolute;
@@ -95,6 +99,17 @@ pre {
 
 #sidebar pre {
   overflow: hidden;
+}
+
+#sidebar form {
+  margin-top: 0.5em;
+}
+#sidebar input[type=text] {
+  width: 8em;
+  margin-right: 1em;
+}
+#sidebar input[type=submit] {
+  font-size: 0.727em;
 }
 
 #topbar {

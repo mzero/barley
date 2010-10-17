@@ -70,7 +70,7 @@ srcPage si =
 
 sidebar :: SrcInfo -> Html
 sidebar si = thediv ! [identifier "sidebar"] <<
-    map (thediv ! [theclass "module"]) [ modFStat si, modActions si]
+    map (thediv ! [theclass "module"]) [ modFStat si, modActions si, modSearch]
 
 modFStat :: SrcInfo -> Html
 modFStat si = (h2 << "File Info") +++
@@ -81,14 +81,31 @@ modFStat si = (h2 << "File Info") +++
 
 modActions :: SrcInfo -> Html
 modActions si = (h2 << "Actions") +++
-    unordList [ anchor ! [href (dropExtension $ siPath si)] << "View"
+    unordList [ anchor ! [href (dropExtension $ siPath si), target "barley-run",
+                    title "Run this code by browsing its page in another window"]
+                    << "Run"
               , italics << "Edit"
               , italics << "Revert"
               ] +++
-    unordList [ anchor ! [href ("file://" ++ siFullPath si)] << "File"
+    unordList [ anchor ! [href ("file://" ++ siFullPath si),
+                    title "Provides a file:// scheme URL to the local file"]
+                    << "Local File"
               , anchor ! [href (siPath si)] << "Download"
               ]
 
+modSearch :: Html
+modSearch = (h2 << "Research") +++
+    [ form ! [action "http://holumbus.fh-wedel.de/hayoo/hayoo.html"
+                , target "barley-reseach"] <<
+        [ input ! [thetype "text", name "query"]
+        , input ! [thetype "submit", value "Hayoo"]
+        ]
+    , form ! [action "http://haskell.org/hoogle", target "barley-reseach"] <<
+        [ input ! [thetype "text", name "q"] 
+        , input ! [thetype "submit",  value "Hoogle"]
+        ]
+    ]
+              
 emptyModule :: FilePath -> String
 emptyModule filename = 
     "module " ++ modName ++ " where\n\

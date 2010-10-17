@@ -7,6 +7,13 @@
 ****           http://github.com/mtnviewmark/barley/wiki/To-do-list
 ****
 
+[] codes:
+    j = Johan, m = Mark
+    [x] = x plans on doing this
+    [*x] = x is in the middle of doing this (used when it make take awhile
+    [+] = it's done, x did it
+    [?] = unclear if we should do this
+    [-] = won't do or decided not to do
 
 === BARLEY TODO ===
 
@@ -48,10 +55,12 @@
     opens the page in a new browser window
     
 Source Editor
-    [] add hoogle and hayoo search fields to a new search side bar module
+    [+m] add hoogle and hayoo search fields to a new search side bar module
     [] use jQuery to fill them with the selection in the source view
-    [] link to open user page in new window
+    [+m] link to open user page in new window
         [] ? user page windows are named with the path so they reuse by page
+        [] pop window to the top (in Chrome it opens in a tab and 2nd time
+            stays behind
     [] turn edit area yellow and editable on edit
     [] on edit save, submit in background to a new endpoint
     [] compile end point calls into Barley compile
