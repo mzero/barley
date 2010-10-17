@@ -5,64 +5,89 @@ import qualified Data.ByteString.Char8 as C
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import Snap.Types
-import System.Directory (doesFileExist, getCurrentDirectory)
-import System.FilePath ((</>))
+import System.Directory
+import System.FilePath ((</>), dropExtension)
+import System.Time (ClockTime, getClockTime)
 import Text.Html hiding ((</>))
 
 nu = () -- DO NOT DELETE THIS
 
 handler :: Snap ()
 handler = do
-    mfile <- getParam (C.pack "file")
-    case mfile of
-        Just file -> liftIO (mkSrcPage (C.unpack file)) >>= returnHtml
-        Nothing   -> returnHtml $ mkNewSrcPage "<rename me>"
-  where
-    returnHtml html = do 
-        modifyResponse $ setContentType (C.pack "text/html; charset=UTF-8")
-        writeBS $ (T.encodeUtf8 . T.pack) $ renderHtml html
+    file <- getParam (C.pack "file")
+    html <- liftIO . mkSrcPage $ maybe "<rename me>" C.unpack file
+    modifyResponse $ setContentType (C.pack "text/html; charset=UTF-8")
+    writeBS $ (T.encodeUtf8 . T.pack) $ renderHtml html
+
+
+data SrcInfo = SrcInfo { siPath :: FilePath
+                       , siFullPath :: FilePath
+                       , siExists :: Bool
+                       , siWritable :: Bool
+                       , siModTime :: ClockTime
+                       , siContents :: String
+                       }
+
+srcInfo :: FilePath -> IO SrcInfo
+srcInfo path = do
+    cwd <- getCurrentDirectory
+    let fullPath = cwd </> path
+    exists <- doesFileExist path
+    canWrite <- if exists then writable `fmap` getPermissions path else return False
+    modTime <- if exists then getModificationTime path else getClockTime
+    contents <- if exists then readFile fullPath else return (emptyModule path)
+        -- maybe these should all be Maybe
+    return SrcInfo { siPath = path
+                   , siFullPath = fullPath
+                   , siExists = exists
+                   , siWritable = canWrite
+                   , siModTime = modTime
+                   , siContents = contents
+                   }
 
 mkSrcPage :: FilePath -> IO Html
-mkSrcPage filename = do
-    cwd <- getCurrentDirectory
-    let fullname = cwd </> filename
-    isFile <- doesFileExist fullname
-    if isFile
-        then readFile fullname >>= return . srcPage filename
-        else return $ mkNewSrcPage filename
+mkSrcPage path = srcInfo path >>= return . srcPage
 
-mkNewSrcPage :: FilePath -> Html
-mkNewSrcPage filename = srcPage filename (emptyModule filename)
 
-srcPage :: FilePath -> String -> Html
-srcPage filename contents =
+srcPage :: SrcInfo -> Html
+srcPage si =
   thehtml << [
     header << [
       thelink ! [href "static/scaffold.css", rel "stylesheet",
                    thetype "text/css"] << noHtml,
-      thetitle << ("Source of " ++ filename)
+      thetitle << ("Source of " ++ siPath si)
       ],
     body << [
       thediv ! [identifier "content", theclass "with-sidebar"] << [
-        h1 << filename,
-        pre ! [theclass "src"] << contents,
-        sidebar
+        h1 << siPath si,
+        p << small << siFullPath si,
+        pre ! [theclass "src"] << siContents si,
+        sidebar si
         ]
       ]
     ]
 
-sidebar :: Html
-sidebar = thediv ! [identifier "sidebar"] <<
-    map (thediv ! [theclass "module"]) [ modFStat, modActions ]
 
-modFStat :: Html
-modFStat = (h2 << "File Info") +++
-    (p << ("Sure be nice to have some fstat info here."))
+sidebar :: SrcInfo -> Html
+sidebar si = thediv ! [identifier "sidebar"] <<
+    map (thediv ! [theclass "module"]) [ modFStat si, modActions si]
 
-modActions :: Html
-modActions = (h2 << "Actions") +++
-    unordList [ "View", "Edit", "Revert" ] +++
-    unordList [ "Show", "Side & Side" ]
+modFStat :: SrcInfo -> Html
+modFStat si = (h2 << "File Info") +++
+    if siExists si
+        then [if siWritable si then noHtml else p << bold << "read only",
+              p << show (siModTime si)]
+        else [p << bold << "new file"]
+
+modActions :: SrcInfo -> Html
+modActions si = (h2 << "Actions") +++
+    unordList [ anchor ! [href (dropExtension $ siPath si)] << "View"
+              , italics << "Edit"
+              , italics << "Revert"
+              ] +++
+    unordList [ anchor ! [href ("file://" ++ siFullPath si)] << "File"
+              , anchor ! [href (siPath si)] << "Download"
+              ]
 
 emptyModule :: FilePath -> String
 emptyModule filename = 
