@@ -176,3 +176,7 @@ select, input, button, textarea {
   padding: 0.5em 1em;
   background: #ffc;
 }
+
+#editor textarea.src[readonly] {
+  background: rgb(229,237,244);
+}

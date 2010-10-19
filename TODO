@@ -57,8 +57,8 @@ How to use this list:
     equivalent of "run" in IDEs, but what is it here?
     opens the page in a new browser window
 
-[m] add jQuery to system
-    [] ensure serving as correct type
+[+m] add jQuery to system
+    [+m] ensure serving as correct type
 
 Source Editor
     [+m] request handler option for templates
@@ -70,13 +70,15 @@ Source Editor
     [+m] open file via file: link
     [+m] editable form
     [+m] save file from form
-    [] js to convert text to edit field
+    [+m] js to convert text to edit field
        - turn edit area yellow and editable on edit
     [] on edit save, submit in background to a new endpoint
     [] side-by-side view (via iframe)
     [] refresh of either iframe and/or link in separate window
     [+m] add hoogle and hayoo search fields to a new search side bar module
         [] use jQuery to fill search fields with the selection in the source view
+    [] make text area be the right size
+        - perhaps use the elasitc jQuery plugin
     [] validate that file is rational for both reading and writing
     [] compile end point calls into Barley compile
         - returns either OK or ERROR on first line

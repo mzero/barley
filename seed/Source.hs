@@ -74,12 +74,18 @@ srcPage si =
       thediv ! [identifier "content", theclass "with-sidebar"] << [
         h1 << siPath si,
         p << small << siFullPath si,
-        pre ! [theclass "src"] << siContents si,
         form ! [Html.method "POST", identifier "editor"] <<
-          [ textarea ! [theclass "src", name "contents"] << siContents si
-          , input ! [thetype "submit", value "Save"]
+          [ input ! [thetype "button", value "Edit", identifier "btn-edit"],
+            textarea ! [theclass "src", name "contents", identifier "txt-src",
+                strAttr "readonly" "readonly" ] << siContents si
+          , input ! [thetype "button", value "Cancel", identifier "btn-cancel",
+                strAttr "disabled" "disabled"]
+          , input ! [thetype "submit", value "Save", identifier "btn-save",
+                strAttr "disabled" "disabled"]
           ],
-        sidebar si
+        sidebar si,
+        jQuery,
+        scripts
         ]
       ]
     ]
@@ -101,7 +107,6 @@ modActions si = (h2 << "Actions") +++
     unordList [ anchor ! [href (dropExtension $ siPath si), target "barley-run",
                     title "Run this code by browsing its page in another window"]
                     << "Run"
-              , italics << "Edit"
               , italics << "Revert"
               ] +++
     unordList [ anchor ! [href ("file://" ++ siFullPath si),
@@ -135,4 +140,34 @@ emptyModule filename =
     \    ]\n"
  where
    modName = filename  -- TODO should replace slashes with dots
+
+jQuery :: Html
+jQuery = tag "script"
+    ! [ thetype "text/javascript", src "static/jquery.js" ]
+    << noHtml
+
+scripts :: Html
+scripts = tag "script" ! [ thetype "text/javascript"] <<
+    [ "bEnable = function(i) {\
+            \$(i).removeAttr('disabled').animate({opacity: 1.0}, 'fast');\
+        \};\n"
+    , "bDisable = function(i) {\
+            \$(i).attr('disabled', 'disabled').animate({opacity: 0.2}, 'fast');\
+        \}\n"
+    , "mkEditable = function() {\
+            \$('#txt-src').removeAttr('readonly');\
+            \bDisable('#btn-edit');\
+            \bEnable('#btn-cancel');\
+            \bEnable('#btn-save');\
+        \};\n"
+    , "mkReadOnly = function() {\
+            \$('#txt-src').attr('readonly', 'readonly');\
+            \bEnable('#btn-edit');\
+            \bDisable('#btn-cancel');\
+            \bDisable('#btn-save');\
+        \};\n"
+    , "$('#btn-edit').click(mkEditable);\n"
+    , "$('#btn-cancel').click(mkReadOnly);\n"
+    , "mkReadOnly();\n"
+    ]
 
