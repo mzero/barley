@@ -1,5 +1,5 @@
 ****
-**** This file is now AUTHORATATIVE.
+**** This file is now AUTHORITATIVE.
 ****
 **** The older, live file is here:
 ****           http://ietherpad.com/hMrw0URncq
@@ -15,23 +15,26 @@
     [?] = unclear if we should do this
     [-] = won't do or decided not to do
 
+How to use this list:
+    - add items as you think of them
+    - edit, resort, split, combine, categorize items as you think of it
+    - when you planning on doing something, add your initial
+        (someone else might still sneak in a do it!)
+    - when you've started something, and it will take a while, put a *
+        (don't do things with a * without talking to the owner!)
+    - when you're done with an item mark with a +, but leave it there
+        (feel free to resort)
+    - when we make a release, we'll collect all the + items, generate
+        release notes, then remove them.
+        
 === BARLEY TODO ===
 
 --- Tasks ----
 
 [j] make barely start work outside of ghci
-[m] make common error and warn functions for command line processing
-[m] view source page
-    [m] request handler option for templates
-    [m] read file and display contents
-    [] open file as link in separate window
-    [] open file via file: link
-    [] edit file (js to convert text to edit field
-    [] save edits (js to submit, then reload?)
-    [] side-by-side view (via iframe)
-    [] refresh of either iframe and/or link in separate window
+[] make common error and warn functions for command line processing
 
-[*j] write index.hs that gives the user a hello and what to do next
+[+m] write index.hs that gives the user a hello and what to do next
 [] updated template.hs that is a basic hello page
     [] what to do
     [] suggested re-edit in haskell comments
@@ -53,16 +56,28 @@
 [] need a better term than "run" for the act of invoking code to return a page
     equivalent of "run" in IDEs, but what is it here?
     opens the page in a new browser window
-    
+
+[m] add jQuery to system
+    [] ensure serving as correct type
+
 Source Editor
-    [+m] add hoogle and hayoo search fields to a new search side bar module
-    [] use jQuery to fill them with the selection in the source view
+    [+m] request handler option for templates
+    [+m] read file and display contents
     [+m] link to open user page in new window
         [] ? user page windows are named with the path so they reuse by page
         [] pop window to the top (in Chrome it opens in a tab and 2nd time
             stays behind
-    [] turn edit area yellow and editable on edit
+    [+m] open file via file: link
+    [+m] editable form
+    [+m] save file from form
+    [] js to convert text to edit field
+       - turn edit area yellow and editable on edit
     [] on edit save, submit in background to a new endpoint
+    [] side-by-side view (via iframe)
+    [] refresh of either iframe and/or link in separate window
+    [+m] add hoogle and hayoo search fields to a new search side bar module
+        [] use jQuery to fill search fields with the selection in the source view
+    [] validate that file is rational for both reading and writing
     [] compile end point calls into Barley compile
         - returns either OK or ERROR on first line
         - returns warnings or error lines after status line 
@@ -92,7 +107,7 @@ Project View
     [] delete of files in project view
     [] move/copy files in project view
 
-Prisitine system
+Pristine system
     [] when init'ing a project put a duplicate copy in .pristine
     [] add a restore button that copies from .pristine
     [] diff view that diffs from .pristine 

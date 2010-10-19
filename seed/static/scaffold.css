@@ -74,7 +74,8 @@ pre {
 }
 
 select, input, button, textarea {
-	font:99% sans-serif;
+  font:99% sans-serif;
+  color: #424242;
 }
 
 #sidebar {
@@ -99,6 +100,7 @@ select, input, button, textarea {
 
 #sidebar pre {
   overflow: hidden;
+  font-size: 100%;
 }
 
 #sidebar form {
@@ -159,3 +161,18 @@ select, input, button, textarea {
 
 #topbar a:hover { background: rgb(78,98,114); }
 
+#editor {
+  text-align: right;
+}
+
+#editor textarea.src {
+  width: 100%;
+  height: 25em;
+  font-family:monospace;
+  font-size: 0.727em;
+  line-height: 124%;
+  margin: 1em 0;
+  overflow: auto;
+  padding: 0.5em 1em;
+  background: #ffc;
+}

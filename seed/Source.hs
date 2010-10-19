@@ -1,25 +1,38 @@
 module Source where
 
+import Control.Monad (when)
 import Control.Monad.IO.Class
 import qualified Data.ByteString.Char8 as C
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import Snap.Types
+import qualified Snap.Types as Snap
 import System.Directory
 import System.FilePath ((</>), dropExtension)
 import System.Time (ClockTime, getClockTime)
 import Text.Html hiding ((</>))
+import qualified Text.Html as Html
 
 nu = () -- DO NOT DELETE THIS
 
 handler :: Snap ()
 handler = do
+    meth <- rqMethod `fmap` getRequest
+    when (meth == POST) handleSave
     file <- getParam (C.pack "file")
     html <- liftIO . mkSrcPage $ maybe "<rename me>" C.unpack file
     modifyResponse $ setContentType (C.pack "text/html; charset=UTF-8")
     writeBS $ (T.encodeUtf8 . T.pack) $ renderHtml html
 
-
+handleSave :: Snap()
+handleSave = do
+    file <- getParam (C.pack "file")
+    contents <- getParam (C.pack "contents")
+    save file contents
+  where
+    save (Just f) (Just c) = liftIO $ writeFile (C.unpack f) (C.unpack c)
+    save _ _ = modifyResponse $ setResponseCode 400
+    
 data SrcInfo = SrcInfo { siPath :: FilePath
                        , siFullPath :: FilePath
                        , siExists :: Bool
@@ -62,6 +75,10 @@ srcPage si =
         h1 << siPath si,
         p << small << siFullPath si,
         pre ! [theclass "src"] << siContents si,
+        form ! [Html.method "POST", identifier "editor"] <<
+          [ textarea ! [theclass "src", name "contents"] << siContents si
+          , input ! [thetype "submit", value "Save"]
+          ],
         sidebar si
         ]
       ]
