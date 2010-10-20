@@ -142,9 +142,9 @@ emptyModule filename =
    modName = filename  -- TODO should replace slashes with dots
 
 jQuery :: Html
-jQuery = tag "script"
-    ! [ thetype "text/javascript", src "static/jquery.js" ]
-    << noHtml
+jQuery = toHtml $ map script ["static/jquery.js", "static/jquery.elastic.js"]
+  where
+    script s = tag "script" ! [ thetype "text/javascript", src s ] << noHtml
 
 scripts :: Html
 scripts = tag "script" ! [ thetype "text/javascript"] <<
@@ -166,6 +166,7 @@ scripts = tag "script" ! [ thetype "text/javascript"] <<
             \bDisable('#btn-cancel');\
             \bDisable('#btn-save');\
         \};\n"
+    , "$('#txt-src').elastic();\n"
     , "$('#btn-edit').click(mkEditable);\n"
     , "$('#btn-cancel').click(mkReadOnly);\n"
     , "mkReadOnly();\n"

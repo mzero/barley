@@ -58,3 +58,14 @@ Note:
 * If you don't `cabal install` barley, then it won't have access to its
   data directory unless you start it from the root of the dev. tree.
 
+Additional Credits
+------------------
+
+* [jQuery][c1] *-- MIT License*
+* [Elastic][c2] a jQuery plugin by Jan Jarfalk *-- MIT License* 
+* ["A Lady Beetle Perches on Barley"][c3] by T. Voekler
+  *-- Creative Commons Attribution-ShareAlike 3.0 Unported*
+
+[c1]: http://jquery.com/
+[c2]: http://www.unwrongest.com/projects/elastic/
+[c3]: http://commons.wikimedia.org/wiki/File:A_lady_beetle_perches_on_barley.JPG

@@ -167,7 +167,6 @@ select, input, button, textarea {
 
 #editor textarea.src {
   width: 100%;
-  height: 25em;
   font-family:monospace;
   font-size: 0.727em;
   line-height: 124%;

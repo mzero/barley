@@ -77,8 +77,10 @@ Source Editor
     [] refresh of either iframe and/or link in separate window
     [+m] add hoogle and hayoo search fields to a new search side bar module
         [] use jQuery to fill search fields with the selection in the source view
-    [] make text area be the right size
+    [+m] make text area be the right size
         - perhaps use the elasitc jQuery plugin
+    [] elastic.js seems to not handle missing trailing newline well
+        - see what happens when you add text on last line of source
     [] validate that file is rational for both reading and writing
     [] compile end point calls into Barley compile
         - returns either OK or ERROR on first line
