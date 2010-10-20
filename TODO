@@ -53,9 +53,10 @@ How to use this list:
 [] factor common code between index.hs and source.hs into common.hs
 [] move source.hs and common.hs into a dev directory
 
-[] need a better term than "run" for the act of invoking code to return a page
+[+m] need a better term than "run" for the act of invoking code to return a page
     equivalent of "run" in IDEs, but what is it here?
     opens the page in a new browser window
+    I choose "View Page" and "View the generated page"
 
 [+m] add jQuery to system
     [+m] ensure serving as correct type
@@ -64,17 +65,16 @@ Source Editor
     [+m] request handler option for templates
     [+m] read file and display contents
     [+m] link to open user page in new window
-        [] ? user page windows are named with the path so they reuse by page
-        [] pop window to the top (in Chrome it opens in a tab and 2nd time
+        [-] ? user page windows are named with the path so they reuse by page
+        [-] pop window to the top (in Chrome it opens in a tab and 2nd time
             stays behind
+        [m] open up in _blank target
     [+m] open file via file: link
     [+m] editable form
     [+m] save file from form
     [+m] js to convert text to edit field
        - turn edit area yellow and editable on edit
-    [] on edit save, submit in background to a new endpoint
-    [] side-by-side view (via iframe)
-    [] refresh of either iframe and/or link in separate window
+    [+m] rendering preview (via iframe)
     [+m] add hoogle and hayoo search fields to a new search side bar module
         [] use jQuery to fill search fields with the selection in the source view
     [+m] make text area be the right size
@@ -82,9 +82,19 @@ Source Editor
     [] elastic.js seems to not handle missing trailing newline well
         - see what happens when you add text on last line of source
     [] validate that file is rational for both reading and writing
+        - doesn't contain .. path elements, for example
+        [] protect against Source.hs viewing itself (infinite iframes...)
+    [] need a way to make the preview optional, and know for which
+        pages it should be on or not
+    [] optional setting to get side-by-side for the preview and edit panels
+    
+[] AJAX Compile
+    [] on edit save, submit in background to a new endpoint
+        [] then refresh preview iframe or show errors on result
     [] compile end point calls into Barley compile
         - returns either OK or ERROR on first line
         - returns warnings or error lines after status line 
+        - doesn't overwrite existing file if compilation errors (?)
     [] source editor can display compile results
     [] source view, on ERROR stays on edit mode
     [] source view, on OK returns to view mode, and opens page in new window

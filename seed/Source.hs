@@ -83,6 +83,12 @@ srcPage si =
           , input ! [thetype "submit", value "Save", identifier "btn-save",
                 strAttr "disabled" "disabled"]
           ],
+        thediv ! [ theclass "with-preview" ] <<
+            [ h1 << "Rendering Preview"
+            , tag "iframe"
+                ! [src (dropExtension $ siPath si), identifier "preview"]
+                << noHtml
+            ],
         sidebar si,
         scripts
         ]
@@ -103,9 +109,9 @@ modFStat si = (h2 << "File Info") +++
 
 modActions :: SrcInfo -> Html
 modActions si = (h2 << "Actions") +++
-    unordList [ anchor ! [href (dropExtension $ siPath si), target "barley-run",
-                    title "Run this code by browsing its page in another window"]
-                    << "Run"
+    unordList [ anchor ! [href (dropExtension $ siPath si), target "_blank",
+                    title "View the generated page in another window"]
+                    << "View Page"
               , italics << "Revert"
               ] +++
     unordList [ anchor ! [href ("file://" ++ siFullPath si),
