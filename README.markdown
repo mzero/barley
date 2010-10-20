@@ -48,7 +48,8 @@ If you can't hold back and download this code, you can run it like so:
 
     cabal configure
     cabal build
-    dist/build/barley/barley start playground
+    ghci -isrc:dist/build/autogen src/Main.hs
+    > :main start playground
 
 Note:
 

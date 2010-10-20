@@ -117,6 +117,8 @@ Compilation
     [] be certain that loading is safe in light of type mismatches
     [] catch error and exceptions during template running
     [] how to handle when the user wants to use some other package?
+    [] prefix line number in error page display
+        -- at least until we have line numbers in the source view
 
 Project View
     [] shows all files in project w/access to view/edit/run links
