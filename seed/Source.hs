@@ -84,7 +84,6 @@ srcPage si =
                 strAttr "disabled" "disabled"]
           ],
         sidebar si,
-        jQuery,
         scripts
         ]
       ]
@@ -141,34 +140,12 @@ emptyModule filename =
  where
    modName = filename  -- TODO should replace slashes with dots
 
-jQuery :: Html
-jQuery = toHtml $ map script ["static/jquery.js", "static/jquery.elastic.js"]
+scripts :: Html
+scripts = toHtml $ map script
+    [ "static/jquery.js"
+    , "static/jquery.elastic.js"
+    , "Source.js"
+    ]
   where
     script s = tag "script" ! [ thetype "text/javascript", src s ] << noHtml
-
-scripts :: Html
-scripts = tag "script" ! [ thetype "text/javascript"] <<
-    [ "bEnable = function(i) {\
-            \$(i).removeAttr('disabled').animate({opacity: 1.0}, 'fast');\
-        \};\n"
-    , "bDisable = function(i) {\
-            \$(i).attr('disabled', 'disabled').animate({opacity: 0.2}, 'fast');\
-        \}\n"
-    , "mkEditable = function() {\
-            \$('#txt-src').removeAttr('readonly');\
-            \bDisable('#btn-edit');\
-            \bEnable('#btn-cancel');\
-            \bEnable('#btn-save');\
-        \};\n"
-    , "mkReadOnly = function() {\
-            \$('#txt-src').attr('readonly', 'readonly');\
-            \bEnable('#btn-edit');\
-            \bDisable('#btn-cancel');\
-            \bDisable('#btn-save');\
-        \};\n"
-    , "$('#txt-src').elastic();\n"
-    , "$('#btn-edit').click(mkEditable);\n"
-    , "$('#btn-cancel').click(mkReadOnly);\n"
-    , "mkReadOnly();\n"
-    ]
 
