@@ -124,11 +124,11 @@ modSearch :: Html
 modSearch = (h2 << "Research") +++
     [ form ! [action "http://holumbus.fh-wedel.de/hayoo/hayoo.html"
                 , target "barley-reseach"] <<
-        [ input ! [thetype "text", name "query"]
+        [ input ! [thetype "text", name "query", theclass "research-query"]
         , input ! [thetype "submit", value "Hayoo"]
         ]
     , form ! [action "http://haskell.org/hoogle", target "barley-reseach"] <<
-        [ input ! [thetype "text", name "q"] 
+        [ input ! [thetype "text", name "q", theclass "research-query"] 
         , input ! [thetype "submit",  value "Hoogle"]
         ]
     ]

@@ -20,7 +20,20 @@ mkReadOnly = function() {
     bDisable('#btn-save');
 };
 
-$('#txt-src').elastic();
+setResearch = function(e) {
+    if ('selectionStart' in e) {
+        var len = e.selectionEnd - e.selectionStart;
+        var sel = e.value.substr(e.selectionStart, len);
+        var mat = sel.match(/\S(.*\S)?/);
+        if (mat) {
+            $('.research-query').val(mat[0]);
+        }
+    };
+};
+
+$('#txt-src')
+    .select(function () { setResearch($(this).get(0)); })
+    .elastic();
 $('#btn-edit').click(mkEditable);
 $('#btn-cancel').click(mkReadOnly);
 mkReadOnly();

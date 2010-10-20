@@ -76,11 +76,14 @@ Source Editor
        - turn edit area yellow and editable on edit
     [+m] rendering preview (via iframe)
     [+m] add hoogle and hayoo search fields to a new search side bar module
-        [] use jQuery to fill search fields with the selection in the source view
+        [+m] use jQuery to fill search fields with the selection in the source view
     [+m] make text area be the right size
         - perhaps use the elasitc jQuery plugin
     [] elastic.js seems to not handle missing trailing newline well
         - see what happens when you add text on last line of source
+    [] research fill-from-selection should work even when source is read-only
+        - but form elements don't have a selection when disabled.. hack?
+    [] combine research text entry fields into one
     [] validate that file is rational for both reading and writing
         - doesn't contain .. path elements, for example
         [] protect against Source.hs viewing itself (infinite iframes...)
