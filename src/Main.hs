@@ -91,7 +91,7 @@ serveStatic filename = do
     extToMimeType = M.fromList
         [ (".css",  "text/css")
         , (".gif",  "image/gif")
-        , (".html", "text/thml")
+        , (".html", "text/html")
         , (".jpeg", "image/jpeg")
         , (".jpg",  "image/jpeg")
         , (".js",   "application/javascript")

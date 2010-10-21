@@ -9,7 +9,8 @@ import qualified Data.Text.Encoding as T
 import Snap.Types
 import qualified Snap.Types as Snap
 import System.Directory
-import System.FilePath ((</>), dropExtension, joinPath, splitDirectories)
+import System.FilePath ((</>), dropExtension, joinPath,
+    splitDirectories, takeExtension)
 import System.Time (ClockTime, getClockTime)
 import Text.Html hiding ((</>))
 import qualified Text.Html as Html
@@ -60,6 +61,16 @@ srcInfo path = do
                    , siContents = contents
                    }
 
+previewPath :: SrcInfo -> Maybe FilePath
+previewPath si = pp (siExists si) (takeExtension f) (splitDirectories f)
+  where
+    f = siPath si
+    pp False _ _ = Nothing
+    pp _ ".html" _ = Just f
+    pp _ ".hs" ("Library":_) = Nothing
+    pp _ ".hs" _ = Just $ dropExtension f
+    pp _ _ _ = Nothing
+
 mkSrcPage :: FilePath -> IO Html
 mkSrcPage path = srcInfo path >>= return . srcPage
 
@@ -85,18 +96,21 @@ srcPage si =
           , input ! [thetype "submit", value "Save", identifier "btn-save",
                 strAttr "disabled" "disabled"]
           ],
-        thediv ! [ theclass "with-preview" ] <<
-            [ h1 << "Rendering Preview"
-            , tag "iframe"
-                ! [src (dropExtension $ siPath si), identifier "preview"]
-                << noHtml
-            ],
+        preview si,
         sidebar si,
         scripts
         ]
       ]
     ]
 
+preview :: SrcInfo -> Html
+preview = maybe noHtml build . previewPath
+  where
+    build p = 
+        thediv ! [ theclass "with-preview" ] <<
+            [ h1 << "Rendering Preview"
+            , tag "iframe" ! [src p, identifier "preview"] << noHtml
+            ]
 
 sidebar :: SrcInfo -> Html
 sidebar si = thediv ! [identifier "sidebar"] <<
@@ -111,11 +125,14 @@ modFStat si = (h2 << "File Info") +++
 
 modActions :: SrcInfo -> Html
 modActions si = (h2 << "Actions") +++
-    unordList [ anchor ! [href (dropExtension $ siPath si), target "_blank",
+    unordList (catMaybes
+              [ (\p ->
+                 anchor ! [href p, target "_blank",
                     title "View the generated page in another window"]
                     << "View Page"
-              , italics << "Revert"
-              ] +++
+                 ) `fmap` previewPath si
+              , Just $ italics << "Revert"
+              ]) +++
     unordList [ anchor ! [href ("file://" ++ siFullPath si),
                     title "Provides a file:// scheme URL to the local file"]
                     << "Local File"

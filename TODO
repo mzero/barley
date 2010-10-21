@@ -50,8 +50,8 @@ How to use this list:
     [] switch to some other HTML library
 [] handle errors during copyTree
 
-[] factor common code between index.hs and source.hs into common.hs
-[] move source.hs and common.hs into a dev directory
+[] factor common code between index.hs and source.hs into Library/common.hs
+[] move source.hs into a dev directory
 
 [+m] make sure file path is rational before serving:
     - no ".." elements, no ".*" elements
@@ -103,9 +103,9 @@ Source Editor
         - doesn't contain .. path elements, for example
         [-m] protect against Source.hs viewing itself (infinite iframes...)
             -- no need, it works...
-    [] need a way to make the preview optional, and know for which
+    [+m] need a way to make the preview optional, and know for which
         pages it should be on or not
-        [] Add a siHasPreview field = ext is .HTML or (.hs and not in ./Library)
+        -- previews if ext is .html or (.hs and not in ./Library)
     [] optional setting to get side-by-side for the preview and edit panels
     
 [] AJAX Compile

@@ -163,6 +163,7 @@ select, input, button, textarea {
 
 #editor {
   text-align: right;
+  margin: 0.5em 0 1em;
 }
 
 #editor textarea.src {
