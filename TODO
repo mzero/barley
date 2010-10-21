@@ -53,6 +53,17 @@ How to use this list:
 [] factor common code between index.hs and source.hs into common.hs
 [] move source.hs and common.hs into a dev directory
 
+[+m] make sure file path is rational before serving:
+    - no ".." elements, no ".*" elements
+[] Make ribbon.jpg longer, or figure out a way to put the Barley logotype in a
+    separate image.
+[] Add the circle navigation buttons for: Home, Project List, Help
+
+[] --force flags:
+    [] run --force = run w/o marker file so we can develop directly out of seed.
+    [] init --force = copy even if the dest is not empty.
+    ** Do not add these flags to start, which should always be safe.
+
 [+m] need a better term than "run" for the act of invoking code to return a page
     equivalent of "run" in IDEs, but what is it here?
     opens the page in a new browser window
@@ -79,16 +90,22 @@ Source Editor
         [+m] use jQuery to fill search fields with the selection in the source view
     [+m] make text area be the right size
         - perhaps use the elasitc jQuery plugin
+    [] On source editing cancel, if the text was changed, show a button (or link):
+        "Undo Cancel" save and restore the text as needed.
+        [] Not clear if Edit in this state should restore or not.
+
     [] elastic.js seems to not handle missing trailing newline well
         - see what happens when you add text on last line of source
     [] research fill-from-selection should work even when source is read-only
         - but form elements don't have a selection when disabled.. hack?
     [] combine research text entry fields into one
-    [] validate that file is rational for both reading and writing
+    [+m] validate that file is rational for both reading and writing
         - doesn't contain .. path elements, for example
-        [] protect against Source.hs viewing itself (infinite iframes...)
+        [-m] protect against Source.hs viewing itself (infinite iframes...)
+            -- no need, it works...
     [] need a way to make the preview optional, and know for which
         pages it should be on or not
+        [] Add a siHasPreview field = ext is .HTML or (.hs and not in ./Library)
     [] optional setting to get side-by-side for the preview and edit panels
     
 [] AJAX Compile
@@ -119,7 +136,9 @@ Compilation
     [] how to handle when the user wants to use some other package?
     [] prefix line number in error page display
         -- at least until we have line numbers in the source view
-
+    [?] Source.hs includes stuff from Barley/Utils.hs as it has no way to import
+        that - should it? can it?
+        
 Project View
     [] shows all files in project w/access to view/edit/run links
     [] rename of files in project view
@@ -127,8 +146,9 @@ Project View
     [] move/copy files in project view
 
 Pristine system
-    [] when init'ing a project put a duplicate copy in .pristine
-    [] add a restore button that copies from .pristine
+    [] when init'ing a project put a duplicate copy in pristine, r/o
+    [] add a siHasPristine filed to SourceInfo
+    [] add show pristine & restore button that copies from pristine
     [] diff view that diffs from .pristine 
 
 History

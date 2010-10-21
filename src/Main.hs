@@ -2,9 +2,11 @@ module Main (main) where
 
 import Barley.Loader
 import Barley.Project
+import Barley.Utils
 import Control.Monad.IO.Class
 import qualified Data.ByteString.Char8 as C
 import qualified Data.Map as M
+import Data.Maybe
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import Prelude hiding (init, mod)
@@ -105,28 +107,21 @@ serveStatic filename = do
 -- | Given a URL, render the corresponding template.
 genericHandler :: Snap ()
 genericHandler = do
-    rpi <- rqPathInfo `fmap` getRequest
-    cwd <- liftIO getCurrentDirectory
-
-    -- XXX: directory traversal
-    let filename = cwd </> C.unpack rpi
-    isFile <- liftIO $ doesFileExist filename
-    if isFile
-        then serveStatic filename
-        else do
-            isDir <- liftIO $ doesDirectoryExist filename
-            if isDir
-                then do
-                    let tmpl = filename </> "index.hs"
-                    serveTemplateIfExists tmpl
-                else serveTemplateIfExists $ filename <.> "hs"
+    mpath <- (legalPath . C.unpack . rqPathInfo) `fmap` getRequest
+    case mpath of
+        Nothing -> errorNotFound
+        Just relpath -> do
+            cwd <- liftIO getCurrentDirectory
+            let fullpath = cwd </> relpath
+            routeWhenIO (doesFileExist fullpath)      $ serveStatic fullpath
+            routeWhenIO (doesDirectoryExist fullpath) $ serveIndex fullpath
+            serveTemplateIfExists $ fullpath <.> "hs"
   where
+    serveIndex :: FilePath -> Snap ()
+    serveIndex fullpath = serveTemplateIfExists $ fullpath </> "index.hs"
     serveTemplateIfExists :: FilePath -> Snap ()
-    serveTemplateIfExists tmpl = do
-        isFile <- liftIO $ doesFileExist tmpl
-        if isFile
-            then serveTemplate tmpl
-            else pass
+    serveTemplateIfExists tmplpath = do
+        routeWhenIO (doesFileExist tmplpath) $ serveTemplate tmplpath
 
 -- | Given a list of errors and a template, create an HTML page that
 -- displays the errors.
@@ -143,3 +138,4 @@ errorHtml errs filename = do
                    pre ! [theclass "sourcefile"] << content
                ]
     return html
+

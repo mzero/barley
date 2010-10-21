@@ -3,12 +3,13 @@ module Source where
 import Control.Monad (when)
 import Control.Monad.IO.Class
 import qualified Data.ByteString.Char8 as C
+import Data.Maybe
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import Snap.Types
 import qualified Snap.Types as Snap
 import System.Directory
-import System.FilePath ((</>), dropExtension)
+import System.FilePath ((</>), dropExtension, joinPath, splitDirectories)
 import System.Time (ClockTime, getClockTime)
 import Text.Html hiding ((</>))
 import qualified Text.Html as Html
@@ -17,21 +18,22 @@ nu = () -- DO NOT DELETE THIS
 
 handler :: Snap ()
 handler = do
-    meth <- rqMethod `fmap` getRequest
-    when (meth == POST) handleSave
-    file <- getParam (C.pack "file")
-    html <- liftIO . mkSrcPage $ maybe "<rename me>" C.unpack file
-    modifyResponse $ setContentType (C.pack "text/html; charset=UTF-8")
-    writeBS $ (T.encodeUtf8 . T.pack) $ renderHtml html
+    fileparam <- getParam (C.pack "file")
+    case maybe Nothing (legalPath . C.unpack) fileparam of
+        Nothing -> errorBadRequest
+        Just file -> do
+            meth <- rqMethod `fmap` getRequest
+            when (meth == POST) $ handleSave file
+            html <- liftIO $ mkSrcPage file
+            modifyResponse $ setContentType (C.pack "text/html; charset=UTF-8")
+            writeBS $ (T.encodeUtf8 . T.pack) $ renderHtml html
 
-handleSave :: Snap()
-handleSave = do
-    file <- getParam (C.pack "file")
+handleSave :: FilePath -> Snap()
+handleSave file = do
     contents <- getParam (C.pack "contents")
-    save file contents
-  where
-    save (Just f) (Just c) = liftIO $ writeFile (C.unpack f) (C.unpack c)
-    save _ _ = modifyResponse $ setResponseCode 400
+    case contents of
+        Nothing -> errorBadRequest
+        Just c -> liftIO $ C.writeFile file c
     
 data SrcInfo = SrcInfo { siPath :: FilePath
                        , siFullPath :: FilePath
@@ -154,4 +156,27 @@ scripts = toHtml $ map script
     ]
   where
     script s = tag "script" ! [ thetype "text/javascript", src s ] << noHtml
+
+--
+-- These are copied from Barley.Utils for now as there is no way to import it
+--
+legalPath :: FilePath -> Maybe FilePath
+legalPath p =
+    if any illegalComponent components
+        then Nothing
+        else Just $ joinPath components
+  where
+    components = splitDirectories p
+    illegalComponent "" = True
+    illegalComponent ('.':_) = True
+    illegalComponent s = any (`elem` "/\\:") s 
+    
+-- | Immediately finish with an HTTP error status
+finishWithError :: Int -> String -> Snap ()
+finishWithError status message =
+    finishWith $ setResponseStatus status (C.pack message) emptyResponse
+
+-- | Common HTTP error statuses
+errorBadRequest :: Snap ()
+errorBadRequest = finishWithError 400 "Bad Request"
 
