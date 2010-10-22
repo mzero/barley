@@ -28,8 +28,8 @@ Executable barley
     directory < 1.1,
     filepath < 1.2,
     plugins,
-    snap-core,
-    snap-server,
+    snap-core == 0.2.*,
+    snap-server == 0.2.*,
     html < 1.1.2,
     text < 0.8,
     transformers
