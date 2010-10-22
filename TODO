@@ -108,7 +108,9 @@ Source Editor
         -- previews if ext is .html or (.hs and not in ./Library)
         [+m] preview disabled for things under lib/
     [m] optional setting to get side-by-side for the preview and edit panels
-    [m] line numbers
+    [+m] line numbers
+    [] line numbers don't track when user resizes text area, or changes
+        number of lines of text
     [m] icons for the action links
     
 [] AJAX Compile

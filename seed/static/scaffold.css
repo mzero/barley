@@ -166,19 +166,43 @@ select, input, button, textarea {
   margin: 0.5em 0 1em;
 }
 
-#editor textarea.src {
-  width: 100%;
+#editor textarea,
+#editor .linenos {
   font-family:monospace;
   font-size: 0.727em;
   line-height: 124%;
   margin: 1em 0;
   overflow: auto;
   padding: 0.5em 1em;
+}
+
+#editor textarea.src {
+  width: 100%;
   background: #ffc;
 }
 
 #editor textarea.src[readonly] {
   background: rgb(229,237,244);
+}
+
+#editor .with-linenos {
+  position: relative;
+}
+
+#editor .with-linenos .src {
+  padding-left: 4em;
+}
+
+#editor .with-linenos .linenos {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  width: 3em;
+  overflow: hidden;
+  text-align: right;
+  color: #b95c8b;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .with-preview {

@@ -31,9 +31,22 @@ setResearch = function(e) {
     };
 };
 
+buildLineNos = function() {
+    var ns = "";
+    for (var i in $(this).get(0).innerHTML.split("\n")) {
+        ns += (1*i + 1) + "\n";
+    }
+    var n = $("<pre>"+ns+"</pre>");
+    n.attr("class", "linenos");
+    
+    $(this).wrap("<div class=\"with-linenos\" />")
+     .before(n);
+};
+
 $('#txt-src')
     .select(function () { setResearch($(this).get(0)); })
-    .elastic();
+    .elastic()
+    .each(buildLineNos);
 $('#btn-edit').click(mkEditable);
 $('#btn-cancel').click(mkReadOnly);
 mkReadOnly();
