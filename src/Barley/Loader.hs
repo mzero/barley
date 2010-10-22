@@ -25,7 +25,7 @@ entryPoint symbol xform = EntryPoint (loadWith symbol xform)
 -- or the the loading fails, then an error string is returned (Left).
 compileAndLoadFirst :: FilePath -> [EntryPoint a] -> IO (Either String a)
 compileAndLoadFirst srcFile eps = do
-    status <- make srcFile []
+    status <- makeAll srcFile ["-ilib"]
     case status of
         MakeSuccess _ objFile -> loadFirst objFile eps
         MakeFailure errs -> return $ Left $ unlines errs
@@ -42,7 +42,7 @@ compileAndLoadFirst srcFile eps = do
 
 loadFirst :: FilePath -> [EntryPoint a] -> IO (Either String a)
 loadFirst objFile eps = do
-    v <- load_ objFile [] "nu"
+    v <- load_ objFile [".", "lib"] "nu"
     case v of
         LoadFailure _ -> return (Left "yer dead now: no nu")
         LoadSuccess m _ -> do

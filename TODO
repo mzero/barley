@@ -50,12 +50,12 @@ How to use this list:
     [] switch to some other HTML library
 [] handle errors during copyTree
 
-[] factor common code between index.hs and source.hs into Library/common.hs
+[+m] factor common code between Index.hs and Source.hs into lib/DevUtils.hs
 [] move source.hs into a dev directory
 
 [+m] make sure file path is rational before serving:
     - no ".." elements, no ".*" elements
-[] Make ribbon.jpg longer, or figure out a way to put the Barley logotype in a
+[m] Make ribbon.jpg longer, or figure out a way to put the Barley logotype in a
     separate image.
 [] Add the circle navigation buttons for: Home, Project List, Help
 
@@ -106,7 +106,10 @@ Source Editor
     [+m] need a way to make the preview optional, and know for which
         pages it should be on or not
         -- previews if ext is .html or (.hs and not in ./Library)
-    [] optional setting to get side-by-side for the preview and edit panels
+        [+m] preview disabled for things under lib/
+    [m] optional setting to get side-by-side for the preview and edit panels
+    [m] line numbers
+    [m] icons for the action links
     
 [] AJAX Compile
     [] on edit save, submit in background to a new endpoint
@@ -125,7 +128,10 @@ Compilation
     [] handle reloading with something better than the nu hack... 
         [] ?patch plugins to have better API
         [] ?magic from dons, if he comes up with some
-    [] ensure loading modules that import user modules works
+    [+m] ensure loading modules that import user modules works
+        [+m] make dependent modules as needed
+        [+m] look for dependent modules rooted in both "." and "lib"
+            for both compilation and loading
     [] editing an included, but not viewed module should trigger recompile
         for modules that use
     [] compilation system tracks mod and compilation times to avoid reloading
@@ -222,34 +228,36 @@ Running barley at the command line:
         if fails if it wasn't
 
 === TODO DONE ===
-[m] create a playground dir and exclude it's contents (but not it) from the repo
-[m] notice that the directory started in is empty and call init-project
-[m] if init is called from start, then it shouldn't complain about the non-empty dir
-[m] init and start take an optional directory to cd into first
-[m] init-project should copy a set of files from data dir
-    [m] move Init.hs to Project.hs
-    [m] provide init, check, and enter functions
-    [m] rename skeleton to seed
-    [m] use a .barley-project file to check if project dir is really a project dir
-    [m] look for seed in current dir first, before looking at path's from GHC
-    [m] remove playground from repo
-[m] when providing a project directory on the command line with init, create if it doesn't exist
-[m] move template.hs, etc... to data-dir
-[m] create scaffold.css in data dir
-[m] make index page look like a tutorial with task steps
-    [] step 2 points at Template.hs
-    [] add sp,e css so it is at least nice to look at
-[m] output encoding should be correct: UTF-8
-[m] static files are served with incorrect MIME type
-[m] add a README file
-[m] side bars
-[m] broke reloading somehow...
+[+m] create a playground dir and exclude it's contents (but not it) from the repo
+[+m] notice that the directory started in is empty and call init-project
+[+m] if init is called from start, then it shouldn't complain about the non-empty dir
+[+m] init and start take an optional directory to cd into first
+[+m] init-project should copy a set of files from data dir
+    [+m] move Init.hs to Project.hs
+    [+m] provide init, check, and enter functions
+    [+m] rename skeleton to seed
+    [+m] use a .barley-project file to check if project dir is really a project dir
+    [+m] look for seed in current dir first, before looking at path's from GHC
+    [+m] remove playground from repo
+[+m] when providing a project directory on the command line with init, create if it doesn't exist
+[+m] move template.hs, etc... to data-dir
+[+m] create scaffold.css in data dir
+[+m] make index page look like a tutorial with task steps
+[+m] output encoding should be correct: UTF-8
+[+m] static files are served with incorrect MIME type
+[+m] add a README file
+[+m] side bars
+[+m] broke reloading somehow...
 
 
 === NOTES FOR SNAP ===
 writeText writes out in UTF-8 but doesn't make that guaruntee in the docs
-
+finishWith is awkward
+even I'm confused about when to use finishWith vs. pass
+    -- seems like two different ways of doing `mplus`
+    
 === NOTES FOR HTML ===
 renderHtml is BROKEN - it puts things inside an extra HTML element!?!?!?
+unordList etc. would be nice if they'd take HTML a => [a] rather than [Html]
 
 

@@ -1,28 +1,19 @@
 module Index where
 
+import DevUtils
 import Text.Html
 
 nu = () -- DO NOT DELETE THIS
 
-page =
-  thehtml << [
-    header << [
-      thelink ! [href "static/scaffold.css", rel "stylesheet",
-                   thetype "text/css"] << noHtml,
-      thetitle << "Barley"
-      ],
-    body ! [theclass "with-topbar"] << [
-      thediv ! [identifier "content", theclass "with-sidebar"] << [
-        h1 << "Welcome aboard!",
-        p << "Barley is an environment and tutorial for exploring Haskell. \
+page = devpage "Barley"
+        [ h1 << "Welcome aboard!"
+        , p << "Barley is an environment and tutorial for exploring Haskell. \
              \Our aim is to make your first encounter with Haskell fun, \
-             \enjoyable, and practical. " ,
-        steps,
-        sidebar
-        ],
-      topbar
-      ]
-    ]
+             \enjoyable, and practical. "
+        , steps
+        ]
+        [ modMessage, modSteps, modTagLine ]
+        []
 
 
 type Step = (String, Html)
@@ -50,9 +41,6 @@ step2 = ("Try out your first page",
   p << "Congratulations! You're writing Haskell!"
   )
 
-sidebar :: Html
-sidebar = thediv ! [identifier "sidebar"] <<
-    map (thediv ! [theclass "module"]) [ modMessage, modSteps, modTagLine ]
 
 modMessage :: Html
 modMessage = (h2 << "pre-Alpha version") +++
@@ -77,19 +65,4 @@ modTagLine = pre << (
     \  ]"
     )
 
-topbar :: Html
-topbar = thediv ! [identifier "topbar"] << [
-    p << makelink haskellLink,
-    unordList $ map makelink communityLinks
-    ]
-  where
-    makelink (title, url) = anchor ! [href url] << title
-    haskellLink = ("Haskell", "http://haskell.org/")
-    communityLinks =
-        [ ("Platform", "http://hackage.haskell.org/platform/")
-        , ("Hackage", "http://hackage.haskell.org/packages/hackage.html")
-        , ("λ Reddit", "http://www.reddit.com/r/haskell/")
-        , ("λ Stack Overflow",
-            "http://stackoverflow.com/questions/tagged?tagnames=haskell")
-        ]
 

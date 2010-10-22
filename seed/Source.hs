@@ -1,5 +1,7 @@
 module Source where
 
+import DevUtils
+
 import Control.Monad (when)
 import Control.Monad.IO.Class
 import qualified Data.ByteString.Char8 as C
@@ -67,7 +69,7 @@ previewPath si = pp (siExists si) (takeExtension f) (splitDirectories f)
     f = siPath si
     pp False _ _ = Nothing
     pp _ ".html" _ = Just f
-    pp _ ".hs" ("Library":_) = Nothing
+    pp _ ".hs" ("lib":_) = Nothing
     pp _ ".hs" _ = Just $ dropExtension f
     pp _ _ _ = Nothing
 
@@ -76,32 +78,22 @@ mkSrcPage path = srcInfo path >>= return . srcPage
 
 
 srcPage :: SrcInfo -> Html
-srcPage si =
-  thehtml << [
-    header << [
-      thelink ! [href "static/scaffold.css", rel "stylesheet",
-                   thetype "text/css"] << noHtml,
-      thetitle << ("Source of " ++ siPath si)
-      ],
-    body << [
-      thediv ! [identifier "content", theclass "with-sidebar"] << [
-        h1 << siPath si,
-        p << small << siFullPath si,
-        form ! [Html.method "POST", identifier "editor"] <<
-          [ input ! [thetype "button", value "Edit", identifier "btn-edit"],
-            textarea ! [theclass "src", name "contents", identifier "txt-src",
-                strAttr "readonly" "readonly" ] << siContents si
-          , input ! [thetype "button", value "Cancel", identifier "btn-cancel",
-                strAttr "disabled" "disabled"]
-          , input ! [thetype "submit", value "Save", identifier "btn-save",
-                strAttr "disabled" "disabled"]
-          ],
-        preview si,
-        sidebar si,
-        scripts
+srcPage si = devpage ("Source of " ++ siPath si)
+    [ h1 << siPath si
+    , p << small << siFullPath si
+    , form ! [Html.method "POST", identifier "editor"] <<
+        [ input ! [thetype "button", value "Edit", identifier "btn-edit"],
+          textarea ! [theclass "src", name "contents", identifier "txt-src",
+              strAttr "readonly" "readonly" ] << siContents si
+        , input ! [thetype "button", value "Cancel", identifier "btn-cancel",
+              strAttr "disabled" "disabled"]
+        , input ! [thetype "submit", value "Save", identifier "btn-save",
+              strAttr "disabled" "disabled"]
         ]
-      ]
+    , preview si
     ]
+    [ modFStat si, modActions si, modSearch]
+    scriptSrcs
 
 preview :: SrcInfo -> Html
 preview = maybe noHtml build . previewPath
@@ -111,10 +103,6 @@ preview = maybe noHtml build . previewPath
             [ h1 << "Rendering Preview"
             , tag "iframe" ! [src p, identifier "preview"] << noHtml
             ]
-
-sidebar :: SrcInfo -> Html
-sidebar si = thediv ! [identifier "sidebar"] <<
-    map (thediv ! [theclass "module"]) [ modFStat si, modActions si, modSearch]
 
 modFStat :: SrcInfo -> Html
 modFStat si = (h2 << "File Info") +++
@@ -165,14 +153,12 @@ emptyModule filename =
  where
    modName = filename  -- TODO should replace slashes with dots
 
-scripts :: Html
-scripts = toHtml $ map script
+scriptSrcs :: [String]
+scriptSrcs =
     [ "static/jquery.js"
     , "static/jquery.elastic.js"
     , "Source.js"
     ]
-  where
-    script s = tag "script" ! [ thetype "text/javascript", src s ] << noHtml
 
 --
 -- These are copied from Barley.Utils for now as there is no way to import it
