@@ -10,14 +10,17 @@ devpage pageTitle contents modules scriptSrcs =
     header << [
       thelink ! [href "static/scaffold.css", rel "stylesheet",
                    thetype "text/css"] << noHtml,
-      thetitle << pageTitle
+      thetitle << fullTitle
       ] +++
     body ! [theclass "with-topbar"] << [
+      h1 ! [identifier "logo"] << "Barley",
       thediv ! [identifier "content", theclass "with-sidebar"] <<
         (toHtml contents +++ toHtml (sidebar modules)),
       topbar,
       scripts scriptSrcs
       ]
+  where
+    fullTitle = if null pageTitle then "Barley" else "Barley - " ++ pageTitle
 
 sidebar :: [Html] -> Html
 sidebar modules = thediv ! [identifier "sidebar"] <<

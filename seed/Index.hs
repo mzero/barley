@@ -5,7 +5,7 @@ import Text.Html
 
 nu = () -- DO NOT DELETE THIS
 
-page = devpage "Barley"
+page = devpage "Start"
         [ h1 << "Welcome aboard!"
         , p << "Barley is an environment and tutorial for exploring Haskell. \
              \Our aim is to make your first encounter with Haskell fun, \
