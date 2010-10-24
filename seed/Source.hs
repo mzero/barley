@@ -9,11 +9,6 @@ import Data.Maybe
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import Snap.Types
-import qualified Snap.Types as Snap
-import System.Directory
-import System.FilePath ((</>), dropExtension, joinPath,
-    splitDirectories, takeExtension)
-import System.Time (ClockTime, getClockTime)
 import Text.Html hiding ((</>))
 import qualified Text.Html as Html
 
@@ -38,40 +33,6 @@ handleSave file = do
         Nothing -> errorBadRequest
         Just c -> liftIO $ C.writeFile file c
     
-data SrcInfo = SrcInfo { siPath :: FilePath
-                       , siFullPath :: FilePath
-                       , siExists :: Bool
-                       , siWritable :: Bool
-                       , siModTime :: ClockTime
-                       , siContents :: String
-                       }
-
-srcInfo :: FilePath -> IO SrcInfo
-srcInfo path = do
-    cwd <- getCurrentDirectory
-    let fullPath = cwd </> path
-    exists <- doesFileExist path
-    canWrite <- if exists then writable `fmap` getPermissions path else return False
-    modTime <- if exists then getModificationTime path else getClockTime
-    contents <- if exists then readFile fullPath else return (emptyModule path)
-        -- maybe these should all be Maybe
-    return SrcInfo { siPath = path
-                   , siFullPath = fullPath
-                   , siExists = exists
-                   , siWritable = canWrite
-                   , siModTime = modTime
-                   , siContents = contents
-                   }
-
-previewPath :: SrcInfo -> Maybe FilePath
-previewPath si = pp (siExists si) (takeExtension f) (splitDirectories f)
-  where
-    f = siPath si
-    pp False _ _ = Nothing
-    pp _ ".html" _ = Just f
-    pp _ ".hs" ("lib":_) = Nothing
-    pp _ ".hs" _ = Just $ dropExtension f
-    pp _ _ _ = Nothing
 
 mkSrcPage :: FilePath -> IO Html
 mkSrcPage path = srcInfo path >>= return . srcPage
@@ -84,7 +45,8 @@ srcPage si = devpage ("Source of " ++ siPath si)
     , form ! [Html.method "POST", identifier "editor"] <<
         [ input ! [thetype "button", value "Edit", identifier "btn-edit"],
           textarea ! [theclass "src", name "contents", identifier "txt-src",
-              strAttr "readonly" "readonly" ] << siContents si
+              strAttr "readonly" "readonly" ] <<
+                    fromMaybe (emptyModule $ siPath si) (siContents si)
         , input ! [thetype "button", value "Cancel", identifier "btn-cancel",
               strAttr "disabled" "disabled"]
         , input ! [thetype "submit", value "Save", identifier "btn-save",
@@ -159,27 +121,4 @@ scriptSrcs =
     , "static/jquery.elastic.js"
     , "Source.js"
     ]
-
---
--- These are copied from Barley.Utils for now as there is no way to import it
---
-legalPath :: FilePath -> Maybe FilePath
-legalPath p =
-    if any illegalComponent components
-        then Nothing
-        else Just $ joinPath components
-  where
-    components = splitDirectories p
-    illegalComponent "" = True
-    illegalComponent ('.':_) = True
-    illegalComponent s = any (`elem` "/\\:") s 
-    
--- | Immediately finish with an HTTP error status
-finishWithError :: Int -> String -> Snap ()
-finishWithError status message =
-    finishWith $ setResponseStatus status (C.pack message) emptyResponse
-
--- | Common HTTP error statuses
-errorBadRequest :: Snap ()
-errorBadRequest = finishWithError 400 "Bad Request"
 
