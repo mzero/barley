@@ -47,6 +47,8 @@ How to use this list:
         -- which is icky 'cause then the top html element isn't clear to users
     [] switch to some other HTML library
 [] handle errors during copyTree
+[] since jQuery, and images are copied into project tree, there should
+    be a copy of the license & attributions copied in there as well
 
 [+m] write index.hs that gives the user a hello and what to do next
 
@@ -136,6 +138,7 @@ Compilation
     [] handle reloading with something better than the nu hack... 
         [] ?patch plugins to have better API
         [] ?magic from dons, if he comes up with some
+    [m] put .hi and .o files in some .build tree
     [+m] ensure loading modules that import user modules works
         [+m] make dependent modules as needed
         [+m] look for dependent modules rooted in both "." and "lib"

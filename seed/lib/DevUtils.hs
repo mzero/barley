@@ -6,10 +6,13 @@ module DevUtils (
     SrcInfo(..), srcInfo,
     previewPath,
     
+    htmlResponse,
     finishWithError, errorBadRequest,
     ) where
     
 import qualified Data.ByteString.Char8 as C
+import qualified Data.Text as T
+import qualified Data.Text.Encoding as T
 import Snap.Types
 import System.Directory
 import System.FilePath ((</>), dropExtension, joinPath,
@@ -121,7 +124,12 @@ legalPath p =
 --
 -- SNAP UTILITIES
 --
-  
+
+htmlResponse :: HTML a => a -> Snap ()
+htmlResponse html = do
+    modifyResponse $ setContentType (C.pack "text/html; charset=UTF-8")
+    writeBS $ (T.encodeUtf8 . T.pack) $ renderHtml html
+
 -- copied from Barley.Utils for now as there is no way to import it
   
 -- | Immediately finish with an HTTP error status

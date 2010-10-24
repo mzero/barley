@@ -6,8 +6,6 @@ import Control.Monad (when)
 import Control.Monad.IO.Class
 import qualified Data.ByteString.Char8 as C
 import Data.Maybe
-import qualified Data.Text as T
-import qualified Data.Text.Encoding as T
 import Snap.Types
 import Text.Html hiding ((</>))
 import qualified Text.Html as Html
@@ -23,8 +21,7 @@ handler = do
             meth <- rqMethod `fmap` getRequest
             when (meth == POST) $ handleSave file
             html <- liftIO $ mkSrcPage file
-            modifyResponse $ setContentType (C.pack "text/html; charset=UTF-8")
-            writeBS $ (T.encodeUtf8 . T.pack) $ renderHtml html
+            htmlResponse html
 
 handleSave :: FilePath -> Snap()
 handleSave file = do

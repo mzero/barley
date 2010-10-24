@@ -234,3 +234,41 @@ select, input, button, textarea {
   margin: 0.5em 0 0;
   border: 1px solid #919191;
 }
+
+table#filelist {
+  margin: 1em 0;
+  padding: 0;
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #c0c0c0;
+}
+
+#filelist td {
+  padding: 0.125em 0.5em;
+}
+
+#filelist p {
+  margin: 0;
+}
+
+#filelist .name,
+#filelist .dir {
+}
+
+#filelist .dir {
+  font-style: italic;
+  color: #c0c0c0;
+  font-size: 75%;
+  padding-right: 0.5em;
+}
+
+#filelist .even {
+  background-color: #f4f4f4;
+}
+#filelist .odd {
+  background-color: #fafafa;
+}
+
+#filelist tr:hover {
+  background-color: #ffc;
+}
