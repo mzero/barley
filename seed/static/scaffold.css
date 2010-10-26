@@ -243,25 +243,6 @@ table#filelist {
   border: 1px solid #c0c0c0;
 }
 
-#filelist td {
-  padding: 0.125em 0.5em;
-}
-
-#filelist p {
-  margin: 0;
-}
-
-#filelist .name,
-#filelist .dir {
-}
-
-#filelist .dir {
-  font-style: italic;
-  color: #c0c0c0;
-  font-size: 75%;
-  padding-right: 0.5em;
-}
-
 #filelist .even {
   background-color: #f4f4f4;
 }
@@ -271,4 +252,56 @@ table#filelist {
 
 #filelist tr:hover {
   background-color: #ffc;
+}
+
+#filelist td {
+  padding: 0.125em 0.5em;
+}
+
+#filelist p {
+  margin: 0;
+}
+
+#filelist .dir {
+  font-style: italic;
+  color: #c0c0c0;
+  font-size: 75%;
+  padding-right: 0.5em;
+}
+
+#filelist .name {
+  padding-left: 20px;
+  background-repeat: no-repeat;
+  background-position: 0 1px;
+}
+#filelist .src-page { background-image: url(silk/page_white_world.png); }
+#filelist .src-text { background-image: url(silk/page_white_code.png); }
+#filelist .src-image { background-image: url(silk/image.png); }
+#filelist .src-script { background-image: url(silk/page_white_code_red.png); }
+#filelist .src-other { background-image: url(silk/page_white.png); }
+#filelist .src-dir { background-image: url(silk/folder.png); }
+
+#filelist .op { 
+  padding: 0;
+  width: 30px;
+}
+#filelist .op a {
+  font-size: 16px;
+  background-repeat: no-repeat;
+  padding: 0 0 0 16px;
+}
+#filelist .op-preview {
+  background-image: url(silk/magnifier.png);
+}
+#filelist .op-edit {
+  background-image: url(silk/pencil.png);
+}
+#filelist .op-download {
+  background-image: url(silk/arrow_down.png);
+}
+#filelist .op-file {
+  background-image: url(silk/link.png);
+}
+#filelist a span {
+  display: none;
 }

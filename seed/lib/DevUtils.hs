@@ -142,9 +142,9 @@ previewPath si = if not (srcExists si) || libDir
 previewLink :: SrcInfo -> Maybe Html
 previewLink si = build (srcClass si) `fmap` previewPath si
   where
-    build fc p = anchor ! [href p, target "_blank",
+    build fc p = anchor ! [href p, target "_blank", theclass "op-preview",
                     title ("View the " ++ long fc ++ "in another window")]
-                    << ("View " ++ short fc)
+                    << thespan << ("View " ++ short fc)
                     
     short SCPage = "Page"
     short SCScript = "Page"
@@ -163,7 +163,8 @@ previewLink si = build (srcClass si) `fmap` previewPath si
 editLink :: SrcInfo -> Maybe Html
 editLink si = build `fmap` ee (srcClass si)
   where
-    build n = anchor ! [href src, title ("Edit the " ++ n)] << "Edit"
+    build n = anchor ! [href src, theclass "op-edit", title ("Edit the " ++ n)]
+                << thespan << "Edit"
     src = "source?file=" ++ srcPath si
     ee SCPage = Just "page"
     ee SCScript = Just "script"
@@ -173,16 +174,18 @@ editLink si = build `fmap` ee (srcClass si)
 downloadLink :: SrcInfo -> Maybe Html
 downloadLink si = build `fmap` dd (srcClass si)
   where
-    build n = anchor ! [href (srcPath si), title ("Download the " ++ n)]
-                    << "Download"
+    build n = anchor ! [href (srcPath si), theclass "op-download",
+                    title ("Download the " ++ n)]
+                    << thespan << "Download"
     dd SCText = Just "text"
     dd SCScript = Just "script"
     dd _ = Nothing
 
 fileLink :: SrcInfo -> Maybe Html
 fileLink si = Just $ anchor ! [href ("file://" ++ srcFullPath si),
+                    theclass "op-file",
                     title "Provides a file:// scheme URL to the local file"]
-                    << "Local File"
+                    << thespan << "Local File"
 
 
 -- copied from Barley.Utils for now as there is no way to import it

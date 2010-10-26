@@ -48,7 +48,15 @@ fileList tree = table ! [identifier "filelist"] <<
         dirPart = let d = takeDirectory path
                       e = addTrailingPathSeparator d in
             if null d then noHtml else thespan ! [theclass "dir"] << e
-        namePart = thespan ! [theclass "name"] << takeFileName path
+        namePart = thespan ! [theclass $ "name " ++ fileType]
+                        << takeFileName path
+        fileType = case srcClass si of
+                    SCPage -> "src-page"
+                    SCImage -> "src-image"
+                    SCScript -> "src-script"
+                    SCText -> "src-text"
+                    SCOther -> "src-other"
+                    SCDir -> "src-dir"
         col (c, h) = td ! [theclass c] << fromMaybe spaceHtml h
     
 {- add links for:

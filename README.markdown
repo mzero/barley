@@ -66,7 +66,9 @@ Additional Credits
 * [Elastic][c2] a jQuery plugin by Jan Jarfalk *-- MIT License* 
 * ["A Lady Beetle Perches on Barley"][c3] by T. Voekler
   *-- Creative Commons Attribution-ShareAlike 3.0 Unported*
+* [Silk Icons][c4] by Mark James *-- Creative Commons Attribution 2.5*
 
 [c1]: http://jquery.com/
 [c2]: http://www.unwrongest.com/projects/elastic/
 [c3]: http://commons.wikimedia.org/wiki/File:A_lady_beetle_perches_on_barley.JPG
+[c4]: http://www.famfamfam.com/lab/icons/silk/
