@@ -4,13 +4,16 @@ module DevUtils (
     legalPath,
     
     SrcInfo(..), srcInfo,
+    FileClass(..),
     previewPath,
+    previewLink, editLink, downloadLink, fileLink,
     
     htmlResponse,
     finishWithError, errorBadRequest,
     ) where
     
 import qualified Data.ByteString.Char8 as C
+import qualified Data.Map as M
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import Snap.Types
@@ -71,41 +74,115 @@ scripts = toHtml . map script
 -- PROJECT FILE UTILITIES
 --
 
-data SrcInfo = SrcInfo { siPath :: FilePath
-                       , siFullPath :: FilePath
-                       , siExists :: Bool
+data SrcInfo = SrcInfo { siPath     :: FilePath -- | path relative to project
+                       , siFullPath :: FilePath -- | absolute path
+                       , siExists   :: Bool
                        , siWritable :: Bool
-                       , siModTime :: ClockTime
-                       , siContents :: Maybe String
+                       , siModTime  :: Maybe ClockTime
+                       , siClass    :: FileClass
                        }
 
-
+data FileClass = FCPage | FCImage | FCScript | FCText | FCOther | FCDir
+    deriving (Eq)
+    
 srcInfo :: FilePath -> IO SrcInfo
 srcInfo path = do
     cwd <- getCurrentDirectory
-    let fullPath = cwd </> path
-    exists <- doesFileExist path
-    canWrite <- if exists then writable `fmap` getPermissions path else return False
-    modTime <- if exists then getModificationTime path else getClockTime
-    contents <- if exists then Just `fmap` readFile fullPath else return Nothing
-        -- maybe these should all be Maybe
+    isDir <- doesDirectoryExist path
+    isFile <- doesFileExist path
+    let exists = isDir || isFile
+    canWrite <- if exists
+        then writable `fmap` getPermissions path 
+        else return False -- TODO: should be writable of containing dir
+    modTime <- if exists
+        then Just `fmap` getModificationTime path
+        else return Nothing
+    let cls = if isDir
+            then FCDir
+            else M.findWithDefault FCOther (takeExtension path) extToFileClass
     return SrcInfo { siPath = path
-                   , siFullPath = fullPath
+                   , siFullPath = cwd </> path
                    , siExists = exists
                    , siWritable = canWrite
                    , siModTime = modTime
-                   , siContents = contents
+                   , siClass = cls
                    }
 
+extToFileClass = M.fromList
+    [ (".html", FCPage)
+    , (".xhtml",FCPage)
+    , (".txt",  FCPage)
+    , (".hs",   FCScript)
+    , (".css",  FCText)
+    , (".js",   FCText)
+    , (".json", FCText)
+    , (".xml",  FCText)
+    , (".gif",  FCImage)
+    , (".jpeg", FCImage)
+    , (".jpg",  FCImage)
+    , (".pdf",  FCImage)
+    , (".png",  FCImage)
+    , (".svg",  FCImage)
+    ]
+      
 previewPath :: SrcInfo -> Maybe FilePath
-previewPath si = pp (siExists si) (takeExtension f) (splitDirectories f)
+previewPath si = if not (siExists si) || libDir
+                        then Nothing
+                        else pp $ siClass si
   where
-    f = siPath si
-    pp False _ _ = Nothing
-    pp _ ".html" _ = Just f
-    pp _ ".hs" ("lib":_) = Nothing
-    pp _ ".hs" _ = Just $ dropExtension f
-    pp _ _ _ = Nothing
+    libDir = case splitDirectories path of
+                        ("lib":_) -> True
+                        _ -> False
+    path = siPath si
+    pp FCPage = Just path
+    pp FCScript = Just $ dropExtension path
+    pp FCImage = Just path
+    pp _ = Nothing
+
+previewLink :: SrcInfo -> Maybe Html
+previewLink si = build (siClass si) `fmap` previewPath si
+  where
+    build fc p = anchor ! [href p, target "_blank",
+                    title ("View the " ++ long fc ++ "in another window")]
+                    << ("View " ++ short fc)
+                    
+    short FCPage = "Page"
+    short FCScript = "Page"
+    short FCImage = "Image"
+    short FCText = "Text"
+    short FCOther = "File"
+    short FCDir = "Dir"
+
+    long FCPage = "page"
+    long FCScript = "generated page"
+    long FCImage = "image"
+    long FCText = "text"
+    long FCOther = "file"
+    long FCDir = "dir"
+
+editLink :: SrcInfo -> Maybe Html
+editLink si = build `fmap` ee (siClass si)
+  where
+    build n = anchor ! [href src, title ("Edit the " ++ n)] << "Edit"
+    src = "source?file=" ++ siPath si
+    ee FCPage = Just "page"
+    ee FCScript = Just "script"
+    ee FCText = Just "text"
+    ee _ = Nothing
+    
+downloadLink :: SrcInfo -> Maybe Html
+downloadLink si = build `fmap` dd (siClass si)
+  where
+    build n = anchor ! [href (siPath si), title ("Download the " ++ n)]
+                    << "Download"
+    dd FCText = Just "text"
+    dd FCScript = Just "script"
+    dd _ = Nothing
+
+fileLink :: SrcInfo -> Maybe Html
+fileLink si = Just $ anchor ! [href ("file://" ++ siFullPath si),
+                    title "Provides a file:// scheme URL to the local file"]
+                    << "Local File"
 
 
 -- copied from Barley.Utils for now as there is no way to import it

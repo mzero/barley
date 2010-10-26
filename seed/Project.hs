@@ -19,55 +19,66 @@ mkProjPage :: IO Html
 mkProjPage = do
     projPath <- getCurrentDirectory
     let projName = takeFileName projPath
-    projDir <- loadDir
+    projTree <- loadTree
     return $ devpage ("Project " ++ projName)
         [ h1 << projName
         , p << small << projPath
-        , mkProjDir projDir
+        , fileList projTree
         ]
         []
         []
 
-mkProjDir :: ProjDir -> Html
-mkProjDir dir = table ! [identifier "filelist"] <<
-                    stripe (concatMap mkEntry dir)
+fileList :: [SrcTree] -> Html
+fileList tree = table ! [identifier "filelist"] <<
+                    stripe (concatMap mkEntry tree)
   where
-    mkEntry pe = mkItem pe : concatMap mkEntry (peSub pe)
-    mkItem pe = tr << td << p << [ dirPart pe, namePart pe ]
-    dirPart pe = if null $ pePrefix pe
-                     then noHtml
-                     else thespan ! [theclass "dir"] << (pePrefix pe ++ sep)
-    namePart pe = thespan ! [theclass "name"] << peName pe
-    sep = [pathSeparator]
     stripe = zipWith (\c e -> e ! [theclass c]) (cycle ["even", "odd"])
     
+    mkEntry (SrcTree si sub) = mkItem si : concatMap mkEntry sub
 
-data ProjEntry = ProjEntry { peFull :: FilePath
-                           , pePrefix :: FilePath
-                           , peName :: FilePath
-                           , peSub :: ProjDir
-                           }
-type ProjDir = [ProjEntry]
+    mkItem si = tr << map col
+        [ ("path", Just $ p << [ dirPart, namePart ])
+        , ("op", previewLink si)
+        , ("op", editLink si)
+        , ("op", downloadLink si)
+        , ("op", fileLink si)
+        ]
+      where
+        path = siPath si
+        dirPart = let d = takeDirectory path
+                      e = addTrailingPathSeparator d in
+            if null d then noHtml else thespan ! [theclass "dir"] << e
+        namePart = thespan ! [theclass "name"] << takeFileName path
+        col (c, h) = td ! [theclass c] << fromMaybe spaceHtml h
+    
+{- add links for:
+    add
+    
+    rename
+    move
+    delete
+-}
 
-loadDir :: IO ProjDir
-loadDir = do
-    cwd <- getCurrentDirectory
-    buildSub cwd ""
+
+data SrcTree = SrcTree SrcInfo [SrcTree]
+
+loadTree :: IO [SrcTree]
+loadTree = do
+    buildSub ""
   where
-    buildSub :: FilePath -> FilePath -> IO ProjDir
-    buildSub fp rp = do
-        names <- getDirectoryContents fp
-        let names' = catMaybes $ map legalPath names
-        sequence $ map (buildEntry fp rp) names'
-    buildEntry :: FilePath -> FilePath -> FilePath -> IO ProjEntry
-    buildEntry fp rp name = do
-        let fp' = fp </> name
-        let rp' = rp </> name
-        isDir <- doesDirectoryExist fp'
-        sub <- if isDir then buildSub fp' rp' else return []
-        return ProjEntry { peFull = rp'
-                         , pePrefix = rp
-                         , peName = name
-                         , peSub = sub
-                         }
+    buildSub :: FilePath -> IO [SrcTree]
+    buildSub root = do
+        names <- getDirectoryContents (if null root then "." else root)
+        let names' = filter okName names
+        sequence $ map (buildEntry root) names'
+    buildEntry :: FilePath -> FilePath -> IO SrcTree
+    buildEntry root name = do
+        let path = if null root then name else root </> name
+        si <- srcInfo path
+        sub <- if siClass si == FCDir then buildSub path else return []
+        return $ SrcTree si sub
+    okName "" = False
+    okName ('.':_) = False
+    okName _ = True
+    
         

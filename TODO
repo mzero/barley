@@ -155,6 +155,8 @@ Compilation
         -- at least until we have line numbers in the source view
     [?] Source.hs includes stuff from Barley/Utils.hs as it has no way to import
         that - should it? can it?
+    [] enable -Wall, or at least -W things that most users want, like
+        non-exhaustive patterns (just lost HOURS to this one!)
         
 Project View
     [] shows all files in project w/access to view/edit/run links

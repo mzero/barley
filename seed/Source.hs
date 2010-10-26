@@ -32,18 +32,21 @@ handleSave file = do
     
 
 mkSrcPage :: FilePath -> IO Html
-mkSrcPage path = srcInfo path >>= return . srcPage
+mkSrcPage path = do
+    si <- srcInfo path
+    contents <- if siExists si
+        then readFile (siPath si)
+        else return $ emptyModule (siPath si)
+    return $ srcPage si contents
 
-
-srcPage :: SrcInfo -> Html
-srcPage si = devpage ("Source of " ++ siPath si)
+srcPage :: SrcInfo -> String -> Html
+srcPage si contents = devpage ("Source of " ++ siPath si)
     [ h1 << siPath si
     , p << small << siFullPath si
     , form ! [Html.method "POST", identifier "editor"] <<
         [ input ! [thetype "button", value "Edit", identifier "btn-edit"],
           textarea ! [theclass "src", name "contents", identifier "txt-src",
-              strAttr "readonly" "readonly" ] <<
-                    fromMaybe (emptyModule $ siPath si) (siContents si)
+              strAttr "readonly" "readonly" ] << contents
         , input ! [thetype "button", value "Cancel", identifier "btn-cancel",
               strAttr "disabled" "disabled"]
         , input ! [thetype "submit", value "Save", identifier "btn-save",
@@ -73,18 +76,11 @@ modFStat si = (h2 << "File Info") +++
 modActions :: SrcInfo -> Html
 modActions si = (h2 << "Actions") +++
     unordList (catMaybes
-              [ (\p ->
-                 anchor ! [href p, target "_blank",
-                    title "View the generated page in another window"]
-                    << "View Page"
-                 ) `fmap` previewPath si
+              [ previewLink si
               , Just $ italics << "Revert"
-              ]) +++
-    unordList [ anchor ! [href ("file://" ++ siFullPath si),
-                    title "Provides a file:// scheme URL to the local file"]
-                    << "Local File"
-              , anchor ! [href (siPath si)] << "Download"
-              ]
+              , downloadLink si
+              , fileLink si
+              ])
 
 modSearch :: Html
 modSearch = (h2 << "Research") +++
