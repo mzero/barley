@@ -3,8 +3,8 @@ module DevUtils (
     
     legalPath,
     
-    SrcInfo(..), srcInfo,
-    FileClass(..),
+    SrcInfo(..), getSrcInfo,
+    SrcClass(..),
     previewPath,
     previewLink, editLink, downloadLink, fileLink,
     
@@ -74,19 +74,19 @@ scripts = toHtml . map script
 -- PROJECT FILE UTILITIES
 --
 
-data SrcInfo = SrcInfo { siPath     :: FilePath -- | path relative to project
-                       , siFullPath :: FilePath -- | absolute path
-                       , siExists   :: Bool
-                       , siWritable :: Bool
-                       , siModTime  :: Maybe ClockTime
-                       , siClass    :: FileClass
+data SrcInfo = SrcInfo { srcPath     :: FilePath -- | path relative to project
+                       , srcFullPath :: FilePath -- | absolute path
+                       , srcExists   :: Bool
+                       , srcWritable :: Bool
+                       , srcModTime  :: Maybe ClockTime
+                       , srcClass    :: SrcClass
                        }
 
-data FileClass = FCPage | FCImage | FCScript | FCText | FCOther | FCDir
+data SrcClass = SCPage | SCImage | SCScript | SCText | SCOther | SCDir
     deriving (Eq)
     
-srcInfo :: FilePath -> IO SrcInfo
-srcInfo path = do
+getSrcInfo :: FilePath -> IO SrcInfo
+getSrcInfo path = do
     cwd <- getCurrentDirectory
     isDir <- doesDirectoryExist path
     isFile <- doesFileExist path
@@ -98,89 +98,89 @@ srcInfo path = do
         then Just `fmap` getModificationTime path
         else return Nothing
     let cls = if isDir
-            then FCDir
-            else M.findWithDefault FCOther (takeExtension path) extToFileClass
-    return SrcInfo { siPath = path
-                   , siFullPath = cwd </> path
-                   , siExists = exists
-                   , siWritable = canWrite
-                   , siModTime = modTime
-                   , siClass = cls
+            then SCDir
+            else M.findWithDefault SCOther (takeExtension path) extToSrcClass
+    return SrcInfo { srcPath = path
+                   , srcFullPath = cwd </> path
+                   , srcExists = exists
+                   , srcWritable = canWrite
+                   , srcModTime = modTime
+                   , srcClass = cls
                    }
 
-extToFileClass = M.fromList
-    [ (".html", FCPage)
-    , (".xhtml",FCPage)
-    , (".txt",  FCPage)
-    , (".hs",   FCScript)
-    , (".css",  FCText)
-    , (".js",   FCText)
-    , (".json", FCText)
-    , (".xml",  FCText)
-    , (".gif",  FCImage)
-    , (".jpeg", FCImage)
-    , (".jpg",  FCImage)
-    , (".pdf",  FCImage)
-    , (".png",  FCImage)
-    , (".svg",  FCImage)
+extToSrcClass = M.fromList
+    [ (".html", SCPage)
+    , (".xhtml",SCPage)
+    , (".txt",  SCPage)
+    , (".hs",   SCScript)
+    , (".css",  SCText)
+    , (".js",   SCText)
+    , (".json", SCText)
+    , (".xml",  SCText)
+    , (".gif",  SCImage)
+    , (".jpeg", SCImage)
+    , (".jpg",  SCImage)
+    , (".pdf",  SCImage)
+    , (".png",  SCImage)
+    , (".svg",  SCImage)
     ]
       
 previewPath :: SrcInfo -> Maybe FilePath
-previewPath si = if not (siExists si) || libDir
+previewPath si = if not (srcExists si) || libDir
                         then Nothing
-                        else pp $ siClass si
+                        else pp $ srcClass si
   where
     libDir = case splitDirectories path of
                         ("lib":_) -> True
                         _ -> False
-    path = siPath si
-    pp FCPage = Just path
-    pp FCScript = Just $ dropExtension path
-    pp FCImage = Just path
+    path = srcPath si
+    pp SCPage = Just path
+    pp SCScript = Just $ dropExtension path
+    pp SCImage = Just path
     pp _ = Nothing
 
 previewLink :: SrcInfo -> Maybe Html
-previewLink si = build (siClass si) `fmap` previewPath si
+previewLink si = build (srcClass si) `fmap` previewPath si
   where
     build fc p = anchor ! [href p, target "_blank",
                     title ("View the " ++ long fc ++ "in another window")]
                     << ("View " ++ short fc)
                     
-    short FCPage = "Page"
-    short FCScript = "Page"
-    short FCImage = "Image"
-    short FCText = "Text"
-    short FCOther = "File"
-    short FCDir = "Dir"
+    short SCPage = "Page"
+    short SCScript = "Page"
+    short SCImage = "Image"
+    short SCText = "Text"
+    short SCOther = "File"
+    short SCDir = "Dir"
 
-    long FCPage = "page"
-    long FCScript = "generated page"
-    long FCImage = "image"
-    long FCText = "text"
-    long FCOther = "file"
-    long FCDir = "dir"
+    long SCPage = "page"
+    long SCScript = "generated page"
+    long SCImage = "image"
+    long SCText = "text"
+    long SCOther = "file"
+    long SCDir = "dir"
 
 editLink :: SrcInfo -> Maybe Html
-editLink si = build `fmap` ee (siClass si)
+editLink si = build `fmap` ee (srcClass si)
   where
     build n = anchor ! [href src, title ("Edit the " ++ n)] << "Edit"
-    src = "source?file=" ++ siPath si
-    ee FCPage = Just "page"
-    ee FCScript = Just "script"
-    ee FCText = Just "text"
+    src = "source?file=" ++ srcPath si
+    ee SCPage = Just "page"
+    ee SCScript = Just "script"
+    ee SCText = Just "text"
     ee _ = Nothing
     
 downloadLink :: SrcInfo -> Maybe Html
-downloadLink si = build `fmap` dd (siClass si)
+downloadLink si = build `fmap` dd (srcClass si)
   where
-    build n = anchor ! [href (siPath si), title ("Download the " ++ n)]
+    build n = anchor ! [href (srcPath si), title ("Download the " ++ n)]
                     << "Download"
-    dd FCText = Just "text"
-    dd FCScript = Just "script"
+    dd SCText = Just "text"
+    dd SCScript = Just "script"
     dd _ = Nothing
 
 fileLink :: SrcInfo -> Maybe Html
-fileLink si = Just $ anchor ! [href ("file://" ++ siFullPath si),
+fileLink si = Just $ anchor ! [href ("file://" ++ srcFullPath si),
                     title "Provides a file:// scheme URL to the local file"]
                     << "Local File"
 

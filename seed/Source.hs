@@ -33,16 +33,16 @@ handleSave file = do
 
 mkSrcPage :: FilePath -> IO Html
 mkSrcPage path = do
-    si <- srcInfo path
-    contents <- if siExists si
-        then readFile (siPath si)
-        else return $ emptyModule (siPath si)
+    si <- getSrcInfo path
+    contents <- if srcExists si
+        then readFile (srcPath si)
+        else return $ emptyModule (srcPath si)
     return $ srcPage si contents
 
 srcPage :: SrcInfo -> String -> Html
-srcPage si contents = devpage ("Source of " ++ siPath si)
-    [ h1 << siPath si
-    , p << small << siFullPath si
+srcPage si contents = devpage ("Source of " ++ srcPath si)
+    [ h1 << srcPath si
+    , p << small << srcFullPath si
     , form ! [Html.method "POST", identifier "editor"] <<
         [ input ! [thetype "button", value "Edit", identifier "btn-edit"],
           textarea ! [theclass "src", name "contents", identifier "txt-src",
@@ -68,9 +68,9 @@ preview = maybe noHtml build . previewPath
 
 modFStat :: SrcInfo -> Html
 modFStat si = (h2 << "File Info") +++
-    if siExists si
-        then [if siWritable si then noHtml else p << bold << "read only",
-              p << show (siModTime si)]
+    if srcExists si
+        then [if srcWritable si then noHtml else p << bold << "read only",
+              p << show (srcModTime si)]
         else [p << bold << "new file"]
 
 modActions :: SrcInfo -> Html

@@ -44,7 +44,7 @@ fileList tree = table ! [identifier "filelist"] <<
         , ("op", fileLink si)
         ]
       where
-        path = siPath si
+        path = srcPath si
         dirPart = let d = takeDirectory path
                       e = addTrailingPathSeparator d in
             if null d then noHtml else thespan ! [theclass "dir"] << e
@@ -74,8 +74,8 @@ loadTree = do
     buildEntry :: FilePath -> FilePath -> IO SrcTree
     buildEntry root name = do
         let path = if null root then name else root </> name
-        si <- srcInfo path
-        sub <- if siClass si == FCDir then buildSub path else return []
+        si <- getSrcInfo path
+        sub <- if srcClass si == SCDir then buildSub path else return []
         return $ SrcTree si sub
     okName "" = False
     okName ('.':_) = False
