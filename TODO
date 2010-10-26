@@ -138,7 +138,8 @@ Compilation
     [] handle reloading with something better than the nu hack... 
         [] ?patch plugins to have better API
         [] ?magic from dons, if he comes up with some
-    [m] put .hi and .o files in some .build tree
+    [+m] put .hi and .o files in some .build tree
+        [] check that hierarchicaly named modules do the right thing
     [+m] ensure loading modules that import user modules works
         [+m] make dependent modules as needed
         [+m] look for dependent modules rooted in both "." and "lib"
@@ -159,7 +160,7 @@ Compilation
         non-exhaustive patterns (just lost HOURS to this one!)
         
 Project View
-    [] shows all files in project w/access to view/edit/run links
+    [+m] shows all files in project w/access to view/edit/run links
     [] rename of files in project view
     [] delete of files in project view
     [] move/copy files in project view

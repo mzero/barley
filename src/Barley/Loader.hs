@@ -6,6 +6,7 @@ module Barley.Loader (
     )
     where
 
+import System.Directory (createDirectoryIfMissing)
 import System.Plugins
 
 
@@ -25,7 +26,12 @@ entryPoint symbol xform = EntryPoint (loadWith symbol xform)
 -- or the the loading fails, then an error string is returned (Left).
 compileAndLoadFirst :: FilePath -> [EntryPoint a] -> IO (Either String a)
 compileAndLoadFirst srcFile eps = do
-    status <- makeAll srcFile ["-ilib"]
+    createDirectoryIfMissing False ".build" -- plugins needs it to pre-exist
+    status <- makeAll srcFile
+        [ "-ilib" -- users can put non-served source here 
+        , "-outputdir", ".build" -- sets odir, hidir, and stubdir in one go
+        , "-odir", ".build" -- plugins only looks for odir, not outputdir
+        ]
     case status of
         MakeSuccess _ objFile -> loadFirst objFile eps
         MakeFailure errs -> return $ Left $ unlines errs
@@ -42,7 +48,7 @@ compileAndLoadFirst srcFile eps = do
 
 loadFirst :: FilePath -> [EntryPoint a] -> IO (Either String a)
 loadFirst objFile eps = do
-    v <- load_ objFile [".", "lib"] "nu"
+    v <- load_ objFile [".build"] "nu"
     case v of
         LoadFailure _ -> return (Left "yer dead now: no nu")
         LoadSuccess m _ -> do
