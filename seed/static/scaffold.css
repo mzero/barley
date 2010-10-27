@@ -130,44 +130,64 @@ select, input, button, textarea {
   right: 0;
   left: 0;
   height: 22px;
-  font-size: 12px;
-  font-family: sans-serif;
-}
-
-#topbar p {
-  float: left;
-  margin: 0;
-  background: url(hslogo-16.png) no-repeat 5px 3px;
-  font-size: 100%;
-  padding: 0.2em 0 0.2em 32px;
+  font: 12px/22px sans-serif;
 }
 
 #topbar ul {
   list-style: none;
-  text-align: left;
-  float: right;
   display: inline-table;
-  margin: 0 0 0 1em;
+  margin: 0;
+}
+
+#topbar ul.left {
+  float: left;
+}
+
+#topbar ul.right {
+  float: right;
 }
 
 #topbar ul li {
   display: inline;
-  border-left: 1px solid #d5d5d5; 
   white-space: nowrap;
-  padding: 0;
+  position: relative;
+}
+
+#topbar ul li + li {
+  border-left: 1px solid #d5d5d5; 
+}
+
+#topbar ul li ul {
+  position: absolute;
+  top: 17px;
+  left: -9999em;
+  background-color: rgba(0,0,0,0.5);
+}
+
+#topbar ul.left li:hover ul {
+  left: 0;
 }
 
 #topbar ul li a {
-  padding: 0.2em 0.5em;
+  padding: 4px 6px;
+}
+
+#topbar ul li a.logo {
+  padding-left: 36px;
+  background: url(hslogo-16.png) no-repeat 8px 3px;
 }
 
 #topbar a:link,
 #topbar a:visited {
-	text-decoration: none;
-	color: white;
+  text-decoration: none;
+  color: white;
 }
 
-#topbar a:hover { background: rgb(78,98,114); }
+#topbar a:hover,
+#topbar ul li a.logo:hover {
+  background-color: rgba(255,255,255,0.25);
+}
+
 
 #editor {
   text-align: right;

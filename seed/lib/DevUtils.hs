@@ -50,18 +50,26 @@ sidebar modules = thediv ! [identifier "sidebar"] <<
 
 topbar :: Html
 topbar = thediv ! [identifier "topbar"] << [
-    p << makelink haskellLink,
-    unordList $ map makelink communityLinks
+    ulist ! [theclass "left"] << li <<
+         [ anchor ! [href "http://haskell.org/", theclass "logo"] << "Haskell" 
+         , unordList $ map makelink communityLinks
+         ]
+    , ulist ! [theclass "right"] << map (li . makelink) siteLinks
     ]
   where
     makelink (title, url) = anchor ! [href url] << title
-    haskellLink = ("Haskell", "http://haskell.org/")
     communityLinks =
         [ ("Platform", "http://hackage.haskell.org/platform/")
         , ("Hackage", "http://hackage.haskell.org/packages/hackage.html")
-        , ("λ Reddit", "http://www.reddit.com/r/haskell/")
-        , ("λ Stack Overflow",
+        , ("Reddit", "http://www.reddit.com/r/haskell/")
+        , ("Stack Overflow",
             "http://stackoverflow.com/questions/tagged?tagnames=haskell")
+        ]
+    siteLinks =
+        [ ("Home", "/")
+        , ("Project", "/project")
+        , ("Documentation", "/doc")
+        , ("Help", "/help")
         ]
 
 scripts :: [String] -> Html
