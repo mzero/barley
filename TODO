@@ -47,31 +47,17 @@ How to use this list:
         -- which is icky 'cause then the top html element isn't clear to users
     [] switch to some other HTML library
 [] handle errors during copyTree
-[] since jQuery, and images are copied into project tree, there should
-    be a copy of the license & attributions copied in there as well
-
-[+m] write index.hs that gives the user a hello and what to do next
-
-[+m] factor common code between Index.hs and Source.hs into lib/DevUtils.hs
-[] move source.hs into a dev directory
-[] scaffold.css should probably be named something better like barley.css
-
-[+m] make sure file path is rational before serving:
-    - no ".." elements, no ".*" elements
-[+m] Make ribbon.jpg longer, or figure out a way to put the Barley logotype in a
-    separate image.
-[] Add the circle navigation buttons for: Home, Project List, Help
-
 [] --force flags:
     [] run --force = run w/o marker file so we can develop directly out of seed.
     [] init --force = copy even if the dest is not empty.
     ** Do not add these flags to start, which should always be safe.
 
+[+m] make sure file path is rational before serving:
+    - no ".." elements, no ".*" elements
 [+m] need a better term than "run" for the act of invoking code to return a page
     equivalent of "run" in IDEs, but what is it here?
     opens the page in a new browser window
     I choose "View Page" and "View the generated page"
-
 [+m] add jQuery to system
     [+m] ensure serving as correct type
 
@@ -79,7 +65,7 @@ Source Editor
     [+m] request handler option for templates
     [+m] read file and display contents
     [+m] link to open user page in new window
-        [-] ? user page windows are named with the path so they reuse by page
+        [-] user page windows are named with the path so they reuse by page
         [-] pop window to the top (in Chrome it opens in a tab and 2nd time
             stays behind
         [+m] open up in _blank target
@@ -90,7 +76,7 @@ Source Editor
        - turn edit area yellow and editable on edit
     [+m] rendering preview (via iframe)
     [+m] add hoogle and hayoo search fields to a new search side bar module
-        [+m] use jQuery to fill search fields with the selection in the source view
+        [+m] use jQuery to fill search fields with the source view selection
     [+m] make text area be the right size
         - perhaps use the elasitc jQuery plugin
     [+m] validate that file is rational for both reading and writing
@@ -102,8 +88,8 @@ Source Editor
         -- previews if ext is .html or (.hs and not in ./Library)
         [+m] preview disabled for things under lib/
     [+m] line numbers
-    [] On source editing cancel, if the text was changed, show a button (or link):
-        "Undo Cancel" save and restore the text as needed.
+    [] On source editing cancel, if the text was changed, show a button
+        (or link): "Undo Cancel" save and restore the text as needed.
         [] Not clear if Edit in this state should restore or not.
 
     [] elastic.js seems to not handle missing trailing newline well
@@ -111,17 +97,17 @@ Source Editor
     [] research fill-from-selection should work even when source is read-only
         - but form elements don't have a selection when disabled.. hack?
     [] combine research text entry fields into one
-    [m] optional setting to get side-by-side for the preview and edit panels
+    [] optional setting to get side-by-side for the preview and edit panels
     [] line numbers don't track when user resizes text area, or changes
         number of lines of text
         [] text field should be non-wrapping
     [m] icons for the action links
-    
+    [?m] switch icon set to Fugue icons
     [] 80 column line would sure be nice
     [] syntax coloring WTF
     [] tab should insert spaces to multiple of four, or indent/outdent
     
-[] AJAX Compile
+AJAX Compile
     [] on edit save, submit in background to a new endpoint
         [] then refresh preview iframe or show errors on result
     [] compile end point calls into Barley compile
@@ -131,13 +117,34 @@ Source Editor
     [] source editor can display compile results
     [] source view, on ERROR stays on edit mode
     [] source view, on OK returns to view mode, and opens page in new window
+    [] preview pages have a AJAX call back to see if they need to auto-refresh
+        ? how do we inject this JS without putting the preview in an iframe?
+        ? have users write something like:   page = head << ... +++ autoupdate
+
+Content
+    [+m] Make ribbon.jpg longer
+        -- or figure out a way to put the Barley logotype in a separate image.
+    [-m] Add the circle navigation buttons for: Home, Project List, Help
+    [+m] add Home, Project, Docs, Help links to top bar
+    [+m] move community links to a sub-menu of Haskell
+    [+m] write index.hs that gives the user a hello and what to do next
+    [+m] factor common code between Index.hs and Source.hs into lib/DevUtils.hs
+    [m] move source.hs into a dev directory
+    [m] scaffold.css should probably be named something better like barley.css
+    [] Better Index page that actually points at the chapters & steps
+    [] Documentation page with links to sources
+        [?] embedded iframe of user's local doc set
+    [] Help page with pointers on what to do, where to go
+        [] FAQ system with sections, questions, jQuery expanding answers
+            generated from a text file or dir of text files 
+    [m] since jQuery, and images are copied into project tree, there should
+        be a copy of the license & attributions copied in there as well
 
 Compilation
     [*j] unload modules after evaluating 'page'
     [] make nu hack robust: check for "\nnu =" before reload
     [] handle reloading with something better than the nu hack... 
-        [] ?patch plugins to have better API
-        [] ?magic from dons, if he comes up with some
+        [] model code used by Happstack plugins
     [+m] put .hi and .o files in some .build tree
         [] check that hierarchicaly named modules do the right thing
     [+m] ensure loading modules that import user modules works
@@ -148,7 +155,8 @@ Compilation
         for modules that use
     [] compilation system tracks mod and compilation times to avoid reloading
         [] clear compilation state user control per file and/or whole
-    [] be certain that we can unload w/o breaking (thinking about dangling thunks)
+    [] be certain that we can unload w/o breaking
+        (thinking about dangling thunks)
     [] be certain that loading is safe in light of type mismatches
     [] catch error and exceptions during template running
     [] how to handle when the user wants to use some other package?
@@ -171,11 +179,6 @@ Pristine system
     [] add show pristine & restore button that copies from pristine
     [] diff view that diffs from .pristine 
 
-History
-    [] keep a linear view of file versions in a .history dir:
-        name the files something like <isodate>-<filepath>.hs
-    [] diff through history
-    [] integrate with hg or git if available 
 
 
 --- User Stories ---
@@ -241,7 +244,7 @@ Running barley at the command line:
     "run" checks that the project directory is okay - that is, was once "init"'d
         if fails if it wasn't
 
-=== TODO DONE ===
+=== TODO DONE FOR 0.1 RELEASE ===
 [+m] create a playground dir and exclude it's contents (but not it) from the repo
 [+m] notice that the directory started in is empty and call init-project
 [+m] if init is called from start, then it shouldn't complain about the non-empty dir
@@ -262,6 +265,14 @@ Running barley at the command line:
 [+m] add a README file
 [+m] side bars
 [+m] broke reloading somehow...
+
+
+=== FUTURE TODO ===
+History
+    [] keep a linear view of file versions in a .history dir:
+        name the files something like <isodate>-<filepath>.hs
+    [] diff through history
+    [] integrate with hg or git if available 
 
 
 === NOTES FOR SNAP ===
