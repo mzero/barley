@@ -30,7 +30,7 @@ import Text.Html hiding ((</>))
 devpage :: HTML a => String -> a -> [Html] -> [String] -> Html
 devpage pageTitle contents modules scriptSrcs =
     header << [
-      thelink ! [href "static/scaffold.css", rel "stylesheet",
+      thelink ! [href "/static/barley.css", rel "stylesheet",
                    thetype "text/css"] << noHtml,
       thetitle << fullTitle
       ] +++
