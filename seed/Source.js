@@ -6,8 +6,28 @@ bDisable = function(i) {
     $(i).attr('disabled', 'disabled').animate({opacity: 0.2}, 'fast');
 }
 
+editor = null;
+
+buildEditor = function(readOnly) {
+    if (editor) {
+        editor.toTextArea();
+        editor = null;
+    }
+    editor = CodeMirror.fromTextArea("txt-src", {
+        basefiles: ["/static/codemirror_base_min.js"],
+        parserfile: ["/static/codemirror_parse_dummy_min.js"],
+        stylesheet: "/static/codemirror.css",
+        autoMatchParens: true,
+        textWrapping: false,
+        lineNumbers: true,
+        indentUnit: 4,
+        tabMode: "spaces",
+        readOnly: readOnly
+    });
+}
 mkEditable = function() {
     $('#txt-src').removeAttr('readonly');
+    buildEditor(false);
     bDisable('#btn-edit');
     bEnable('#btn-cancel');
     bEnable('#btn-save');
@@ -15,6 +35,7 @@ mkEditable = function() {
 
 mkReadOnly = function() {
     $('#txt-src').attr('readonly', 'readonly');
+    buildEditor(true);
     bEnable('#btn-edit');
     bDisable('#btn-cancel');
     bDisable('#btn-save');
@@ -31,22 +52,6 @@ setResearch = function(e) {
     };
 };
 
-buildLineNos = function() {
-    var ns = "";
-    for (var i in $(this).get(0).innerHTML.split("\n")) {
-        ns += (1*i + 1) + "\n";
-    }
-    var n = $("<pre>"+ns+"</pre>");
-    n.attr("class", "linenos");
-    
-    $(this).wrap("<div class=\"with-linenos\" />")
-     .before(n);
-};
-
-$('#txt-src')
-    .select(function () { setResearch($(this).get(0)); })
-    .elastic()
-    .each(buildLineNos);
 $('#btn-edit').click(mkEditable);
 $('#btn-cancel').click(mkReadOnly);
 mkReadOnly();

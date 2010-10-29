@@ -52,6 +52,11 @@ How to use this list:
     [] init --force = copy even if the dest is not empty.
     ** Do not add these flags to start, which should always be safe.
 
+[] reevaluate our file case handling decisions
+    -- we have Haskell code named with initial uppers to match module names
+    -- but then things like .css files w/o... and URLs to said files have lower
+    -- case? i.e.:  /source?file=Source.hs   !!!
+    
 [+m] make sure file path is rational before serving:
     - no ".." elements, no ".*" elements
 [+m] need a better term than "run" for the act of invoking code to return a page
@@ -88,24 +93,22 @@ Source Editor
         -- previews if ext is .html or (.hs and not in ./Library)
         [+m] preview disabled for things under lib/
     [+m] line numbers
+    [+m] integrate CodeMirror as the source editor
+    [] "better" size the code editing box
+    [] change background color on edit/readonly
+    [] selection to research field is broken
+    [] eliminate annoying "shift" when CodeMirror loads the text
+    [] syntax parser for Haskell
     [] On source editing cancel, if the text was changed, show a button
         (or link): "Undo Cancel" save and restore the text as needed.
         [] Not clear if Edit in this state should restore or not.
-
-    [] elastic.js seems to not handle missing trailing newline well
-        - see what happens when you add text on last line of source
     [] research fill-from-selection should work even when source is read-only
         - but form elements don't have a selection when disabled.. hack?
     [] combine research text entry fields into one
     [] optional setting to get side-by-side for the preview and edit panels
-    [] line numbers don't track when user resizes text area, or changes
-        number of lines of text
-        [] text field should be non-wrapping
     [m] icons for the action links
     [?m] switch icon set to Fugue icons
     [] 80 column line would sure be nice
-    [] syntax coloring WTF
-    [] tab should insert spaces to multiple of four, or indent/outdent
     
 AJAX Compile
     [] on edit save, submit in background to a new endpoint
@@ -129,8 +132,9 @@ Content
     [+m] move community links to a sub-menu of Haskell
     [+m] write index.hs that gives the user a hello and what to do next
     [+m] factor common code between Index.hs and Source.hs into lib/DevUtils.hs
-    [m] move source.hs into a dev directory
-    [m] scaffold.css should probably be named something better like barley.css
+    [+m] scaffold.css should probably be named something better like barley.css
+    [] move source.hs & project.hs into a dev directory
+        -- after compilation can handle hierarchical modules
     [] Better Index page that actually points at the chapters & steps
     [] Documentation page with links to sources
         [?] embedded iframe of user's local doc set
@@ -146,11 +150,14 @@ Compilation
     [] handle reloading with something better than the nu hack... 
         [] model code used by Happstack plugins
     [+m] put .hi and .o files in some .build tree
-        [] check that hierarchicaly named modules do the right thing
     [+m] ensure loading modules that import user modules works
         [+m] make dependent modules as needed
         [+m] look for dependent modules rooted in both "." and "lib"
             for both compilation and loading
+    [] handle hierarchically named modules
+        -- currently referenced modules are build correctly
+        -- but the top level module is placed/looked for in wrong .build dir
+        -- if the top level module is in a sub dir: say, Tools/Source.hs
     [] editing an included, but not viewed module should trigger recompile
         for modules that use
     [] compilation system tracks mod and compilation times to avoid reloading

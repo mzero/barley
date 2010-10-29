@@ -1,0 +1,25 @@
+/* @override http://localhost:8080/static/codemirror.css */
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font:13px/1.4 "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;;
+  *font-size:small; /* for IE */
+  *font:x-small; /* for IE in quirks mode */
+}
+
+body.editbox {
+  font-family:monospace;
+  font-size: 93%; /* 12pt */
+  line-height: 124%;
+  overflow: auto;
+  color: #424242;
+  padding: 0.5em 0;
+}
+
+body.editbox[readonly] {
+  background: rgb(229,237,244);
+}

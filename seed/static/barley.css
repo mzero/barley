@@ -1,21 +1,18 @@
-/* @override http://localhost:8080/static/scaffold.css */
+/* @override 
+	http://localhost:8080/static/barley.css
+*/
 
 * {
   margin: 0;
   padding: 0;
 }
 
+/* @group Basics & Layout */
+
 body {
   background: #fff url(ribbon.png) repeat-x scroll 0 0;
   min-width: 400px;
-  font: 11pt/15pt "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
-  color: #424242;
   position: relative;
-}
-
-body.with-topbar {
-  border-top: 29px solid rgb(78,98,114);
-  background-position: 0 29px;
 }
 
 #logo {
@@ -32,36 +29,8 @@ body.with-topbar {
   background: url(barley-and-beetle.png) no-repeat right top;
 }
 
-#content.with-sidebar {
-  padding-right: 13em;
-}
-
 p {
   margin: 0.5em 0;
-}
-
-h1, h2, h3, h4, h5, h6, b {
-  color: #cc2900;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: Skia, "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
-}
-
-h1 {
-  font-style: normal;
-  font-size: 145%;
-  font-weight: bold;
-}
-
-h2 {
-  font-size: 100%;
-  font-weight: bold;
-}
-
-h3, b {
-  font-size: 100%;
-  font-weight: normal;
 }
 
 ul, ol, dl {
@@ -69,9 +38,6 @@ ul, ol, dl {
 }
 
 pre {
-  font-family:monospace;
-  font-size: 0.727em;
-  line-height: 124%;
   margin: 1em 0;
   overflow: auto;
 }
@@ -82,12 +48,71 @@ pre {
 }
 
 select, input, button, textarea {
-  font:99% sans-serif;
   color: #424242;
 }
 
+/* @end */
+
+/* @group Fonts & Sizes */
+
+/* Basic technique & IE workarounds from YUI 3
+   For reasons, see:
+      http://yui.yahooapis.com/3.1.1/build/cssfonts/fonts.css
+ */
+ 
+body {
+  font:13px/1.4 "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;;
+  *font-size:small; /* for IE */
+  *font:x-small; /* for IE in quirks mode */
+  color: #424242;
+}
+
+h1, h2, h3, h4, h5, h6, b {
+  color: #cc2900;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: Skia, "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+
+h1 { font-size: 146.5%; /* 19pt */ } 
+h2 { font-size: 131%;   /* 17pt */ }
+h3 { font-size: 116%;   /* 15pt */ }
+h4 { font-size: 100%;   /* 13pt */ }
+h5 { font-size: 100%;   /* 13pt */ }
+
+b {
+  font-weight: normal;
+}
+
+p small {
+  font-size: 85%; /* 11pt */
+}
+select, input, button, textarea {
+  font:99% sans-serif;
+}
+
+table {
+  font-size:inherit;
+  font:100%;
+}
+
+pre, code, kbd, samp, tt, .src {
+  font-family:monospace;
+  *font-size:108%;
+  line-height: 124%;
+}
+
+/* @end */
+
+/* @group Sidebar */
+
+#content.with-sidebar {
+  padding-right: 15em;
+}
+
 #sidebar {
-  width: 12em;
+  width: 14em;
   position: absolute;
   top: 100px;
   right: 0;
@@ -95,7 +120,7 @@ select, input, button, textarea {
 }
 
 #sidebar .module {
-  font-size: 0.727em;
+  font-size: 85%; /* 11pt */
   line-height: 1.25em;
   margin: 0 1.5em;
 }
@@ -119,7 +144,16 @@ select, input, button, textarea {
   margin-right: 1em;
 }
 #sidebar input[type=submit] {
-  font-size: 0.727em;
+  font-size: 85%; /* 11pt */
+}
+
+/* @end */
+
+/* @group Topbar */
+
+body.with-topbar {
+  border-top: 29px solid rgb(78,98,114);
+  background-position: 0 29px;
 }
 
 #topbar {
@@ -188,6 +222,9 @@ select, input, button, textarea {
   background-color: rgba(255,255,255,0.25);
 }
 
+/* @end */
+
+/* @group Source View */
 
 #editor {
   text-align: right;
@@ -195,20 +232,34 @@ select, input, button, textarea {
 }
 
 #editor textarea,
-#editor .linenos {
+#editor .CodeMirror-line-numbers {
   font-family:monospace;
-  font-size: 0.727em;
+  font-size: 93%; /* 12pt */
   line-height: 124%;
+}
+
+#editor textarea,
+#editor .CodeMirror-wrapping {
   margin: 1em 0;
   overflow: auto;
+}
+
+#editor .CodeMirror-line-numbers {
   padding: 0.5em 1em;
+  color: #a9a9a9;
 }
 
 #editor textarea.src {
   width: 100%;
-  background: #ffc;
 }
 
+#editor .CodeMirror-wrapping,
+#editor textarea.src {
+  background: #ffc;
+  border: 1px solid #b1b18e;
+}
+
+#editor .CodeMirror-wrapping[readonly],
 #editor textarea.src[readonly] {
   background: rgb(229,237,244);
 }
@@ -243,7 +294,6 @@ select, input, button, textarea {
 .with-preview h1 {
   margin: 0.25em 0.25em 0 0.25em;
   font-weight: normal;
-  font-size: 100%;
 }
 
 #preview {
@@ -254,6 +304,10 @@ select, input, button, textarea {
   margin: 0.5em 0 0;
   border: 1px solid #919191;
 }
+
+/* @end */
+
+/* @group Project View */
 
 table#filelist {
   margin: 1em 0;
@@ -274,8 +328,10 @@ table#filelist {
   background-color: #ffc;
 }
 
+#filelist tr {
+}
 #filelist td {
-  padding: 0.125em 0.5em;
+  padding: 0.25em 0.5em;
 }
 
 #filelist p {
@@ -284,15 +340,16 @@ table#filelist {
 
 #filelist .dir {
   font-style: italic;
-  color: #c0c0c0;
-  font-size: 75%;
+  color: #7b9bcc;
+  font-size: 85%; /* 11pt */
   padding-right: 0.5em;
 }
 
 #filelist .name {
   padding-left: 20px;
+  padding-top: 2px;
   background-repeat: no-repeat;
-  background-position: 0 1px;
+  background-position: left center;
 }
 #filelist .src-page { background-image: url(silk/page_white_world.png); }
 #filelist .src-text { background-image: url(silk/page_white_code.png); }
@@ -325,3 +382,5 @@ table#filelist {
 #filelist a span {
   display: none;
 }
+
+/* @end */
