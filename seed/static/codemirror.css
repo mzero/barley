@@ -6,7 +6,7 @@
 }
 
 body {
-  font:13px/1.4 "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;;
+  font:13px/1.4 "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
   *font-size:small; /* for IE */
   *font:x-small; /* for IE in quirks mode */
 }
@@ -16,10 +16,33 @@ body.editbox {
   font-size: 93%; /* 12pt */
   line-height: 124%;
   overflow: auto;
-  color: #424242;
   padding: 0.5em 0;
 }
 
 body.editbox[readonly] {
   background: rgb(229,237,244);
 }
+
+.hs-char,
+.hs-float,
+.hs-integer,
+.hs-string 	{ color: #7f7519;}
+
+.hs-comment { color: #236E25; font-style: italic; }
+.hs-pragma	{ }
+
+.hs-special,
+.hs-varid,
+.hs-varsym	{ }
+
+.hs-conid,
+.hs-consym	{ color: #cc2900;
+  font-weight: bold;
+}
+
+.hs-reservedid,
+.hs-reservedop { color: #7f3500; font-weight: bold; }
+
+.hs-qualifier { color: #5e5e5e;}
+.hs-error	{ background-color: #ffe5e5; }
+

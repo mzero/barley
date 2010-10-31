@@ -15,7 +15,7 @@ buildEditor = function(readOnly) {
     }
     editor = CodeMirror.fromTextArea("txt-src", {
         basefiles: ["/static/codemirror_base_min.js"],
-        parserfile: ["/static/codemirror_parse_dummy_min.js"],
+        parserfile: ["/static/codemirror_parse_haskell.js"],
         stylesheet: "/static/codemirror.css",
         autoMatchParens: true,
         textWrapping: false,

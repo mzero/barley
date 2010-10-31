@@ -255,7 +255,7 @@ body.with-topbar {
 
 #editor .CodeMirror-wrapping,
 #editor textarea.src {
-  background: #ffc;
+  background: #ffffe5;
   border: 1px solid #b1b18e;
 }
 
