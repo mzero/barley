@@ -81,9 +81,9 @@ modFStat si = (h2 << "File Info") +++
 
 modActions :: SrcInfo -> Html
 modActions si = (h2 << "Actions") +++
-    unordList (catMaybes
+    ulist << map (li ! [theclass "op"]) (catMaybes
               [ previewLink si
-              , Just $ italics << "Revert"
+              --, Just $ italics << "Revert"
               , downloadLink si
               , fileLink si
               ])

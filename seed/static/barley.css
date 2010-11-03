@@ -147,6 +147,19 @@ pre, code, kbd, samp, tt, .src {
   font-size: 85%; /* 11pt */
 }
 
+#sidebar ul {
+  margin: 0.5em 0;
+}
+#sidebar li.op {
+  list-style-type: none;
+}
+#sidebar li a {
+  background-repeat: no-repeat;
+  padding: 0 0 0 22px;
+  display: block;
+  height: 16px;
+}
+
 /* @end */
 
 /* @group Topbar */
@@ -350,20 +363,18 @@ table#filelist {
   background-repeat: no-repeat;
   padding: 0 0 0 16px;
 }
-#filelist .op-preview {
-  background-image: url(silk/magnifier.png);
-}
-#filelist .op-edit {
-  background-image: url(silk/pencil.png);
-}
-#filelist .op-download {
-  background-image: url(silk/arrow_down.png);
-}
-#filelist .op-file {
-  background-image: url(silk/link.png);
-}
+
 #filelist a span {
   display: none;
 }
+/* @end */
+
+/* @group Op Icons */
+
+.op-preview { background-image: url(silk/magnifier.png); }
+.op-edit { background-image: url(silk/pencil.png); }
+.op-download { background-image: url(silk/arrow_down.png); }
+.op-file { background-image: url(silk/link.png); }
 
 /* @end */
+

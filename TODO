@@ -102,9 +102,8 @@ Source Editor
     [+m] change look on edit/readonly
     [+m] matching brace coloring is hideous in CodeMirror
     [+m] selection to research field is broken
+    [+m] icons for the action links
     
-    [m] icons for the action links
-    [?m] switch icon set to Fugue icons
         
     [] research fill-from-selection should work even when source is read-only
     [] perhaps not have expensive r/o version thing, but use the parser
@@ -121,6 +120,7 @@ Source Editor
     [] combine research text entry fields into one
     [] optional setting to get side-by-side for the preview and edit panels
     [] 80 column line would sure be nice
+    [?] switch icon set to Fugue icons
     [] remove ZWSP hack in Source.hs when CodeMirror fixes the bug that inserts
         them
     
