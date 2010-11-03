@@ -1,7 +1,7 @@
 var HaskellParser = Editor.Parser = (function() {
   var tokenizeHaskell = (function() {
   
-    // These should all be Unicode extended
+    // These should all be Unicode extended, as per the Haskell 2010 report
     var smallRE = /[a-z_]/;
     var largeRE = /[A-Z]/;
     var digitRE = /[0-9]/;
@@ -9,22 +9,23 @@ var HaskellParser = Editor.Parser = (function() {
     var octitRE = /[0-7]/;
     var idRE = /[a-z_A-Z0-9']/;
     var symbolRE = /[-!#$%&*+.\/<=>?@\\^|~:]/;
+    var whiteCharRE = /[ \t\v\f]/; // newlines are handled in tokenizer
     
-    function normal(source, setState) {
-
-      function nextIfLiteralChar(delimiter) {
-        if (source.endOfLine()) return false;
-        if (source.equals(delimiter)) return false;
-        if (source.equals('\\')) {
-          source.next();
-          source.next();
-        }
-        else {
-          source.next();
-        }
-        return true
+    
+    function nextIfLiteralChar(delimiter) {
+      if (source.endOfLine()) return false;
+      if (source.equals(delimiter)) return false;
+      if (source.equals('\\')) {
+        source.next();
+        source.next();
       }
-      
+      else {
+        source.next();
+      }
+      return true
+    }
+
+    function normal(source, setState) {
       var ch = source.next();
       
       if (/[(),;[\]`{}]/.test(ch)) {
@@ -144,8 +145,6 @@ var HaskellParser = Editor.Parser = (function() {
         return type;
       }
     }
-    
-    whiteCharRE = /[ \t\v\f]/; // newlines are handled in tokenizer
     
     function stringLiteral(source, setState) {
       while (!source.endOfLine()) {

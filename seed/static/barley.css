@@ -242,10 +242,12 @@ body.with-topbar {
 #editor .CodeMirror-wrapping {
   margin: 1em 0;
   overflow: auto;
+  padding-left: 3.72em;
 }
 
 #editor .CodeMirror-line-numbers {
   padding: 0.5em 1em;
+  width: 2em;
   color: #a9a9a9;
 }
 
@@ -262,26 +264,6 @@ body.with-topbar {
 #editor .CodeMirror-wrapping[readonly],
 #editor textarea.src[readonly] {
   background: rgb(229,237,244);
-}
-
-#editor .with-linenos {
-  position: relative;
-}
-
-#editor .with-linenos .src {
-  padding-left: 4em;
-}
-
-#editor .with-linenos .linenos {
-  position: absolute;
-  top: 2px;
-  left: 0;
-  width: 3em;
-  overflow: hidden;
-  text-align: right;
-  color: #b95c8b;
-  padding-left: 0;
-  padding-right: 0;
 }
 
 .with-preview {
