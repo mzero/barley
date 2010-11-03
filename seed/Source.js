@@ -13,6 +13,7 @@ buildEditor = function(readOnly) {
         editor.toTextArea();
         editor = null;
     }
+    var hasPreview = $('#preview').size() != 0;
     editor = CodeMirror.fromTextArea("txt-src", {
         basefiles: ["/static/codemirror_base_min.js"],
         parserfile: ["/static/codemirror_parse_haskell.js"],
@@ -21,8 +22,11 @@ buildEditor = function(readOnly) {
         textWrapping: false,
         lineNumbers: true,
         indentUnit: 4,
-        tabMode: "spaces",
-        readOnly: readOnly
+        tabMode: "shift",
+        enterMode: "keep",
+        readOnly: readOnly,
+        minHeight: 160,
+        height: (readOnly && hasPreview) ? "30em" : "dynamic"
     });
 }
 mkEditable = function() {

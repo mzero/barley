@@ -4,8 +4,11 @@ import DevUtils
 
 import Control.Monad (when)
 import Control.Monad.IO.Class
+import qualified Data.ByteString as B
 import qualified Data.ByteString.Char8 as C
 import Data.Maybe
+import qualified Data.Text as T
+import qualified Data.Text.Encoding as T
 import Snap.Types
 import Text.Html hiding ((</>))
 import qualified Text.Html as Html
@@ -28,7 +31,9 @@ handleSave file = do
     contents <- getParam (C.pack "contents")
     case contents of
         Nothing -> errorBadRequest
-        Just c -> liftIO $ C.writeFile file c
+        Just c -> liftIO $ B.writeFile file $ clean c
+  where
+    clean = T.encodeUtf8 . T.filter (/= '\x200b') . T.decodeUtf8
     
 
 mkSrcPage :: FilePath -> IO Html
