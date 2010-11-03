@@ -23,6 +23,13 @@ body.editbox[readonly] {
   background: rgb(229,237,244);
 }
 
+.paren-match { background-color: #9cc2fd; }
+.paren-error {
+  background-color: #ff4d4d;
+  color: #fff;
+  font-weight: bold;
+}
+
 .hs-char,
 .hs-float,
 .hs-integer,

@@ -26,7 +26,17 @@ buildEditor = function(readOnly) {
         enterMode: "keep",
         readOnly: readOnly,
         minHeight: 160,
-        height: (readOnly && hasPreview) ? "20em" : "dynamic"
+        height: (readOnly && hasPreview) ? "20em" : "dynamic",
+        markParen: function(node, ok) {
+            $(node).addClass(ok ? "paren-match" : "paren-error"); },
+        unmarkParen: function(node) {
+            $(node).removeClass("paren-match").removeClass("paren-error"); },
+        cursorActivity: function(node) {
+            var sel = editor.selection();
+            if (!sel) { sel = node.innerText || node.textContent; }
+            var mat = sel.match(/\S(.*\S)?/);
+            if (mat) { $('.research-query').val(mat[0]); }
+            }
     });
 }
 mkEditable = function() {
@@ -45,17 +55,6 @@ mkReadOnly = function() {
     bDisable('#btn-cancel');
     bDisable('#btn-save');
     $('#editor').removeClass('editable').addClass('readonly');
-};
-
-setResearch = function(e) {
-    if ('selectionStart' in e) {
-        var len = e.selectionEnd - e.selectionStart;
-        var sel = e.value.substr(e.selectionStart, len);
-        var mat = sel.match(/\S(.*\S)?/);
-        if (mat) {
-            $('.research-query').val(mat[0]);
-        }
-    };
 };
 
 $('#btn-edit').click(mkEditable);

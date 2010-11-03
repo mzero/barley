@@ -100,12 +100,13 @@ Source Editor
     [+m] syntax parser for Haskell
         [+m] add class for words from the Prelude
     [+m] change look on edit/readonly
-
-    [m] selection to research field is broken
-    [m] research fill-from-selection should work even when source is read-only
+    [+m] matching brace coloring is hideous in CodeMirror
+    [+m] selection to research field is broken
+    
     [m] icons for the action links
     [?m] switch icon set to Fugue icons
-    
+        
+    [] research fill-from-selection should work even when source is read-only
     [] perhaps not have expensive r/o version thing, but use the parser
         to generate a static version - as in the example on CodeMirror site
     [] fix Haskell parser
