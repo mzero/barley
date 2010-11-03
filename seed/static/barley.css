@@ -226,27 +226,33 @@ body.with-topbar {
 
 /* @group Source View */
 
-#editor {
+#edit-form {
   text-align: right;
   margin: 0.5em 0 1em;
 }
 
-#editor textarea,
-#editor .CodeMirror-line-numbers {
+#editor {
   font-family:monospace;
   font-size: 93%; /* 12pt */
   line-height: 124%;
+  margin: 1em 0;
+  overflow: auto;
+  background: #ffffe5;
+  border: 1px solid #b1b18e;
+}
+
+#editor.editable {
+  padding: 4px;
+  background-image: url(stripe.png);
 }
 
 #editor textarea,
 #editor .CodeMirror-wrapping {
-  margin: 1em 0;
-  overflow: auto;
   padding-left: 3.72em;
 }
 
 #editor .CodeMirror-line-numbers {
-  padding: 0.5em 1em;
+  padding: 1em;
   width: 2em;
   color: #a9a9a9;
 }
@@ -255,16 +261,11 @@ body.with-topbar {
   width: 100%;
 }
 
-#editor .CodeMirror-wrapping,
-#editor textarea.src {
+#editor .CodeMirror-wrapping div,
+#editor .CodeMirror-wrapping iframe {
   background: #ffffe5;
-  border: 1px solid #b1b18e;
 }
 
-#editor .CodeMirror-wrapping[readonly],
-#editor textarea.src[readonly] {
-  background: rgb(229,237,244);
-}
 
 .with-preview {
   background-color: #eee7b9;

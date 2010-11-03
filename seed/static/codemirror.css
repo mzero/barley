@@ -16,7 +16,7 @@ body.editbox {
   font-size: 93%; /* 12pt */
   line-height: 124%;
   overflow: auto;
-  padding: 0.5em 0;
+  padding: 1em 0;
 }
 
 body.editbox[readonly] {

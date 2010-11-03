@@ -26,7 +26,7 @@ buildEditor = function(readOnly) {
         enterMode: "keep",
         readOnly: readOnly,
         minHeight: 160,
-        height: (readOnly && hasPreview) ? "30em" : "dynamic"
+        height: (readOnly && hasPreview) ? "20em" : "dynamic"
     });
 }
 mkEditable = function() {
@@ -35,6 +35,7 @@ mkEditable = function() {
     bDisable('#btn-edit');
     bEnable('#btn-cancel');
     bEnable('#btn-save');
+    $('#editor').removeClass('readonly').addClass('editable');
 };
 
 mkReadOnly = function() {
@@ -43,6 +44,7 @@ mkReadOnly = function() {
     bEnable('#btn-edit');
     bDisable('#btn-cancel');
     bDisable('#btn-save');
+    $('#editor').removeClass('editable').addClass('readonly');
 };
 
 setResearch = function(e) {

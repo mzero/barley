@@ -48,8 +48,9 @@ srcPage :: SrcInfo -> String -> Html
 srcPage si contents = devpage ("Source of " ++ srcPath si)
     [ h1 << srcPath si
     , p << small << srcFullPath si
-    , form ! [Html.method "POST", identifier "editor"] <<
-        [ input ! [thetype "button", value "Edit", identifier "btn-edit"],
+    , form ! [Html.method "POST", identifier "edit-form"] <<
+        [ input ! [thetype "button", value "Edit", identifier "btn-edit"]
+        , thediv ! [identifier "editor"] <<
           textarea ! [theclass "src", name "contents", identifier "txt-src",
               strAttr "readonly" "readonly" ] << contents
         , input ! [thetype "button", value "Cancel", identifier "btn-cancel",
