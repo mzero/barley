@@ -207,13 +207,13 @@ body.with-topbar {
 #topbar ul li ul {
   position: absolute;
   top: 17px;
-  left: -9999em;
   background-color: rgba(0,0,0,0.5);
 }
 
-#topbar ul.left li:hover ul {
-  left: 0;
-}
+#topbar ul.left li ul { left: -9999em; }
+#topbar ul.left li:hover ul { left: 0; }
+#topbar ul.right li ul { right: 9999em; }
+#topbar ul.right li:hover ul { right: 0; }
 
 #topbar ul li a {
   padding: 4px 6px;
@@ -375,6 +375,21 @@ table#filelist {
 .op-edit { background-image: url(silk/pencil.png); }
 .op-download { background-image: url(silk/arrow_down.png); }
 .op-file { background-image: url(silk/link.png); }
+
+/* @end */
+
+#documentation {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 112px;
+  border-style: none;
+  border-top: 2px solid #c0c0c0;
+}
+/* @group Documentation View */
+
+
 
 /* @end */
 

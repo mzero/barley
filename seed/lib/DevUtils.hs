@@ -1,5 +1,6 @@
 module DevUtils (
     devpage,
+    Doc(..), documents,
     
     legalPath,
     
@@ -36,7 +37,7 @@ devpage pageTitle contents modules scriptSrcs =
       ] +++
     body ! [theclass "with-topbar"] << [
       h1 ! [identifier "logo"] << "Barley",
-      thediv ! [identifier "content", theclass "with-sidebar"] <<
+      thediv ! ([identifier "content"] ++ withSidebar modules) <<
         (toHtml contents +++ toHtml (sidebar modules)),
       topbar,
       scripts scriptSrcs
@@ -45,8 +46,13 @@ devpage pageTitle contents modules scriptSrcs =
     fullTitle = if null pageTitle then "Barley" else "Barley - " ++ pageTitle
 
 sidebar :: [Html] -> Html
+sidebar [] = noHtml
 sidebar modules = thediv ! [identifier "sidebar"] <<
     map (thediv ! [theclass "module"]) modules
+
+withSidebar :: [Html] -> [HtmlAttr]
+withSidebar [] = []
+withSidebar _ = [theclass "with-sidebar"]
 
 topbar :: Html
 topbar = thediv ! [identifier "topbar"] << [
@@ -54,9 +60,11 @@ topbar = thediv ! [identifier "topbar"] << [
          [ anchor ! [href "http://haskell.org/", theclass "logo"] << "Haskell" 
          , unordList $ map makelink communityLinks
          ]
-    , ulist ! [theclass "right"] << map (li . makelink) siteLinks
+    , ulist ! [theclass "right"] << map li siteLinks
     ]
   where
+    makeDocLink doc = anchor ! [href $ docUrl doc, target "_blank"]
+        << docName doc
     makelink (title, url) = anchor ! [href url] << title
     communityLinks =
         [ ("Platform", "http://hackage.haskell.org/platform/")
@@ -65,10 +73,11 @@ topbar = thediv ! [identifier "topbar"] << [
         , ("Stack Overflow",
             "http://stackoverflow.com/questions/tagged?tagnames=haskell")
         ]
-    siteLinks =
-        [ ("Home", "/")
-        , ("Project", "/project")
-        , ("Documentation", "/doc")
+        [ makelink ("Home", "/")
+        , makelink ("Project", "/project")
+        , makelink ("Documentation", "/documentation")
+          +++ unordList (map makeDocLink documents)
+        , makelink ("Help", "/help")
         , ("Help", "/help")
         ]
 
@@ -76,6 +85,18 @@ scripts :: [String] -> Html
 scripts = toHtml . map script
   where
     script s = tag "script" ! [ thetype "text/javascript", src s ] << noHtml
+data Doc = Doc { docId :: String, docName :: String, docUrl :: String }
+
+documents :: [Doc]
+documents =
+    [ Doc "ghclibs" "Library" "http://www.haskell.org/ghc/docs/6.12.2/html/libraries/frames.html"
+    , Doc "html"    "Text.Html" "http://hackage.haskell.org/packages/archive/html/1.0.1.2/doc/html/Text-Html.html"
+    , Doc "snap"    "Snap"    "http://snapframework.com/docs/latest/snap-core/index.html"
+    ]
+
+docLocalUrl :: Doc -> String
+docLocalUrl doc =  "/documentation?doc=" ++ docId doc
+
 
 
 --
