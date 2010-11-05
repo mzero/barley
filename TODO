@@ -31,7 +31,7 @@ How to use this list:
 
 --- Tasks ----
 
-[j] make barely start work outside of ghci
+[+m] make barely start work outside of ghci
 [] make common error and warn functions for command line processing
 
 [] updated template.hs that is a basic hello page
@@ -104,7 +104,8 @@ Source Editor
     [+m] selection to research field is broken
     [+m] icons for the action links
     
-        
+    [m] sanitize line endings coming out of editor
+    
     [] research fill-from-selection should work even when source is read-only
     [] perhaps not have expensive r/o version thing, but use the parser
         to generate a static version - as in the example on CodeMirror site
@@ -123,6 +124,12 @@ Source Editor
     [?] switch icon set to Fugue icons
     [] remove ZWSP hack in Source.hs when CodeMirror fixes the bug that inserts
         them
+        
+    [] get into edit without losing selection
+        see error -> scroll around -> select -> type -> oops -> edit button
+        [?] or perhaps, if keystroke after select -> auto edit?
+    [] click on error message -> line selection
+    [] preview/error message on top? like wiki pages?
     
 AJAX Compile
     [] on edit save, submit in background to a new endpoint
