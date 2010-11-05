@@ -63,9 +63,9 @@ topbar = thediv ! [identifier "topbar"] << [
     , ulist ! [theclass "right"] << map li siteLinks
     ]
   where
+    makelink (title, url) = anchor ! [href url] << title
     makeDocLink doc = anchor ! [href $ docUrl doc, target "_blank"]
         << docName doc
-    makelink (title, url) = anchor ! [href url] << title
     communityLinks =
         [ ("Platform", "http://hackage.haskell.org/platform/")
         , ("Hackage", "http://hackage.haskell.org/packages/hackage.html")
@@ -73,18 +73,21 @@ topbar = thediv ! [identifier "topbar"] << [
         , ("Stack Overflow",
             "http://stackoverflow.com/questions/tagged?tagnames=haskell")
         ]
+    siteLinks =
         [ makelink ("Home", "/")
         , makelink ("Project", "/project")
         , makelink ("Documentation", "/documentation")
           +++ unordList (map makeDocLink documents)
         , makelink ("Help", "/help")
-        , ("Help", "/help")
         ]
+
 
 scripts :: [String] -> Html
 scripts = toHtml . map script
   where
     script s = tag "script" ! [ thetype "text/javascript", src s ] << noHtml
+
+
 data Doc = Doc { docId :: String, docName :: String, docUrl :: String }
 
 documents :: [Doc]
