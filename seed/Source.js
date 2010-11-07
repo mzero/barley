@@ -10,10 +10,13 @@ var bDisable = function(i) {
 
 var editable = false;
 
-buildEditor = function(readOnly) {
-    if (editor) {
-        editor.toTextArea();
-        editor = null;
+var mkEditable = function() {
+    if (!editable) {
+        bEnable('.btn-cancel');
+        bEnable('.btn-save');
+        //$('#editor').removeClass('readonly').addClass('editable');
+        $('#editor').animate({padding: 5});
+        editable = true;
     }
 };
 
@@ -27,29 +30,29 @@ var mkReadOnly = function() {
 
 
 var editor = CodeMirror.fromTextArea("txt-src", {
-        basefiles: ["/static/codemirror_base_min.js"],
-        parserfile: ["/static/codemirror_parse_haskell.js"],
-        stylesheet: "/static/codemirror.css",
-        autoMatchParens: true,
-        textWrapping: false,
-        lineNumbers: true,
-        indentUnit: 4,
-        tabMode: "shift",
-        enterMode: "keep",
-        minHeight: 160,
+    basefiles: ["/static/codemirror_base_min.js"],
+    parserfile: ["/static/codemirror_parse_haskell.js"],
+    stylesheet: "/static/codemirror.css",
+    autoMatchParens: true,
+    textWrapping: false,
+    lineNumbers: true,
+    indentUnit: 4,
+    tabMode: "shift",
+    enterMode: "keep",
+    minHeight: 160,
     height: "dynamic",
-        markParen: function(node, ok) {
-            $(node).addClass(ok ? "paren-match" : "paren-error"); },
-        unmarkParen: function(node) {
-            $(node).removeClass("paren-match").removeClass("paren-error"); },
-        cursorActivity: function(node) {
-            var sel = editor.selection();
-            if (!sel) { sel = node.innerText || node.textContent; }
-            var mat = sel.match(/\S(.*\S)?/);
-            if (mat) { $('.research-query').val(mat[0]); }
+    markParen: function(node, ok) {
+        $(node).addClass(ok ? "paren-match" : "paren-error"); },
+    unmarkParen: function(node) {
+        $(node).removeClass("paren-match").removeClass("paren-error"); },
+    cursorActivity: function(node) {
+        var sel = editor.selection();
+        if (!sel) { sel = node.innerText || node.textContent; }
+        var mat = sel.match(/\S(.*\S)?/);
+        if (mat) { $('.research-query').val(mat[0]); }
         },
     onChange: mkEditable
-    });
+});
 
 $('.btn-cancel').click(mkReadOnly);
 mkReadOnly();
