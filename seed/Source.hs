@@ -35,7 +35,7 @@ handleSave file = do
         Nothing -> errorBadRequest
         Just c -> liftIO $ B.writeFile file $ clean c
   where
-    clean = T.encodeUtf8 . T.filter (/= '\x200b') . T.decodeUtf8
+    clean = T.encodeUtf8 . T.filter (/= '\r') . T.decodeUtf8
     
 
 mkSrcPage :: FilePath -> Bool -> IO Html
@@ -53,7 +53,7 @@ srcPage si contents showPreview = devpage ("Source of " ++ srcPath si)
     , if showPreview then preview si else noHtml
     , form ! [Html.method "POST", identifier "edit-form"] <<
         (btns ++ [editor] ++ btns ++ [hidden])
-        ]
+    ]
     [ modFStat si, modActions si, modSearch]
     scriptSrcs
   where
@@ -65,7 +65,7 @@ srcPage si contents showPreview = devpage ("Source of " ++ srcPath si)
                     identifier "txt-src", strAttr "readonly" "readonly" ]
                 << contents
     hidden = input ! [thetype "hidden", name "preview", value "1"]
-
+                  
 preview :: SrcInfo -> Html
 preview = maybe noHtml build . previewPath
   where

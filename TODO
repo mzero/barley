@@ -103,31 +103,33 @@ Source Editor
     [+m] matching brace coloring is hideous in CodeMirror
     [+m] selection to research field is broken
     [+m] icons for the action links
+    [+m] research fill-from-selection should work even when source is read-only
+    [+m] or perhaps, if keystroke after select -> auto edit?
+        [-m] perhaps not have expensive r/o version thing, but use the parser
+            to generate a static version - as in the example on CodeMirror site
+        [-m] get into edit without losing selection
+    [+m] remove ZWSP hack in Source.hs when CodeMirror fixes the bug that
+        inserts them
+    [+m] fix line endings
+            see error -> scroll around -> select -> type -> oops -> edit button
     
     [m] sanitize line endings coming out of editor
+    [] On source editing cancel, if the text was changed, show a button
+        (or link): "Undo Cancel" save and restore the text as needed.
+        [] Not clear if Edit in this state should restore or not.
+    [] expand/close icon on preview header
     
-    [] research fill-from-selection should work even when source is read-only
-    [] perhaps not have expensive r/o version thing, but use the parser
-        to generate a static version - as in the example on CodeMirror site
     [] fix Haskell parser
         [] still doesn't handle strings with gaps correctly....
         [] style pragmas
         [] smarter indenting
     [] choose parser (for hilighter) based on file extension
         -- support js, css, html, xml
-    [] On source editing cancel, if the text was changed, show a button
-        (or link): "Undo Cancel" save and restore the text as needed.
-        [] Not clear if Edit in this state should restore or not.
     [] combine research text entry fields into one
     [] optional setting to get side-by-side for the preview and edit panels
     [] 80 column line would sure be nice
     [?] switch icon set to Fugue icons
-    [] remove ZWSP hack in Source.hs when CodeMirror fixes the bug that inserts
-        them
         
-    [] get into edit without losing selection
-        see error -> scroll around -> select -> type -> oops -> edit button
-        [?] or perhaps, if keystroke after select -> auto edit?
     [] click on error message -> line selection
     [] preview/error message on top? like wiki pages?
     
