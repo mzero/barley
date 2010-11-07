@@ -25,15 +25,6 @@ docpage doc = devpage "Documentation"
     [] -- modules
     [] -- scripts
 
-data Doc = Doc { docId :: String, docName :: String, docUrl :: String }
-
-documents :: [Doc]
-documents =
-    [ Doc "ghclibs" "Library" "http://www.haskell.org/ghc/docs/6.12.2/html/libraries/frames.html"
-    , Doc "html"    "Text.Html" "http://hackage.haskell.org/packages/archive/html/1.0.1.2/doc/html/Text-Html.html"
-    , Doc "snap"    "Snap"    "http://snapframework.com/docs/latest/snap-core/index.html"
-    ]
-
 finddoc :: String -> Maybe Doc
 finddoc x = go documents x
   where
