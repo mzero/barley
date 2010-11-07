@@ -9,8 +9,35 @@ Build-type:          Simple
 Cabal-version:       >=1.2
 
 data-files:
+  seed/Documentation.hs
+  seed/EchoRequest.hs
   seed/Index.hs
-  seed/static/scaffold.css
+  seed/lib/DevUtils.hs
+  seed/Project.hs
+  seed/Source.hs
+  seed/Source.js
+  seed/static/barley-and-beetle.png
+  seed/static/barley-logo.png
+  seed/static/barley.css
+  seed/static/codemirror.css
+  seed/static/codemirror_base_min.js
+  seed/static/codemirror_min.js
+  seed/static/codemirror_parse_dummy_min.js
+  seed/static/codemirror_parse_haskell.js
+  seed/static/hslogo-16.png
+  seed/static/jquery.js
+  seed/static/ribbon.png
+  seed/static/silk/arrow_down.png
+  seed/static/silk/folder.png
+  seed/static/silk/image.png
+  seed/static/silk/link.png
+  seed/static/silk/magnifier.png
+  seed/static/silk/page_white.png
+  seed/static/silk/page_white_code.png
+  seed/static/silk/page_white_code_red.png
+  seed/static/silk/page_white_world.png
+  seed/static/silk/pencil.png
+  seed/static/stripe.png
   seed/Template.hs
 
 Executable barley
