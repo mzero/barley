@@ -18,12 +18,14 @@ nu = () -- DO NOT DELETE THIS
 handler :: Snap ()
 handler = do
     fileparam <- getParam (C.pack "file")
+    showPreview <- (maybe False (not . C.null))
+                    `fmap` getParam (C.pack "preview")
     case maybe Nothing (legalPath . C.unpack) fileparam of
         Nothing -> errorBadRequest
         Just file -> do
             meth <- rqMethod `fmap` getRequest
             when (meth == POST) $ handleSave file
-            html <- liftIO $ mkSrcPage file
+            html <- liftIO $ mkSrcPage file showPreview
             htmlResponse html
 
 handleSave :: FilePath -> Snap()
@@ -36,32 +38,33 @@ handleSave file = do
     clean = T.encodeUtf8 . T.filter (/= '\x200b') . T.decodeUtf8
     
 
-mkSrcPage :: FilePath -> IO Html
-mkSrcPage path = do
+mkSrcPage :: FilePath -> Bool -> IO Html
+mkSrcPage path showPreview = do
     si <- getSrcInfo path
     contents <- if srcExists si
         then readFile (srcPath si)
         else return $ emptyModule (srcPath si)
-    return $ srcPage si contents
+    return $ srcPage si contents showPreview
 
-srcPage :: SrcInfo -> String -> Html
-srcPage si contents = devpage ("Source of " ++ srcPath si)
+srcPage :: SrcInfo -> String -> Bool -> Html
+srcPage si contents showPreview = devpage ("Source of " ++ srcPath si)
     [ h1 << srcPath si
     , p << small << srcFullPath si
+    , if showPreview then preview si else noHtml
     , form ! [Html.method "POST", identifier "edit-form"] <<
-        [ input ! [thetype "button", value "Edit", identifier "btn-edit"]
-        , thediv ! [identifier "editor"] <<
-          textarea ! [theclass "src", name "contents", identifier "txt-src",
-              strAttr "readonly" "readonly" ] << contents
-        , input ! [thetype "button", value "Cancel", identifier "btn-cancel",
-              strAttr "disabled" "disabled"]
-        , input ! [thetype "submit", value "Save", identifier "btn-save",
-              strAttr "disabled" "disabled"]
+        (btns ++ [editor] ++ btns ++ [hidden])
         ]
-    , preview si
-    ]
     [ modFStat si, modActions si, modSearch]
     scriptSrcs
+  where
+    btns = [ input ! [thetype "button", value "Cancel", theclass "btn-cancel"]
+           , input ! [thetype "submit", value "Save", theclass "btn-save"]
+           ]
+    editor = thediv ! [identifier "editor"] <<
+                textarea ! [theclass "src", name "contents",
+                    identifier "txt-src", strAttr "readonly" "readonly" ]
+                << contents
+    hidden = input ! [thetype "hidden", name "preview", value "1"]
 
 preview :: SrcInfo -> Html
 preview = maybe noHtml build . previewPath

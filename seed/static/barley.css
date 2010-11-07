@@ -251,12 +251,12 @@ body.with-topbar {
   margin: 1em 0;
   overflow: auto;
   background: #ffffe5;
+  background-image: url(stripe.png);
   border: 1px solid #b1b18e;
 }
 
 #editor.editable {
   padding: 4px;
-  background-image: url(stripe.png);
 }
 
 #editor textarea,
@@ -378,6 +378,8 @@ table#filelist {
 
 /* @end */
 
+/* @group Documentation View */
+
 #documentation {
   position: fixed;
   width: 100%;
@@ -387,7 +389,6 @@ table#filelist {
   border-style: none;
   border-top: 2px solid #c0c0c0;
 }
-/* @group Documentation View */
 
 
 
