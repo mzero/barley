@@ -108,12 +108,11 @@ Source Editor
         [-m] perhaps not have expensive r/o version thing, but use the parser
             to generate a static version - as in the example on CodeMirror site
         [-m] get into edit without losing selection
+            see error -> scroll around -> select -> type -> oops -> edit button
     [+m] remove ZWSP hack in Source.hs when CodeMirror fixes the bug that
         inserts them
-    [+m] fix line endings
-            see error -> scroll around -> select -> type -> oops -> edit button
-    
-    [m] sanitize line endings coming out of editor
+    [+m] sanitize line endings coming out of editor
+
     [] On source editing cancel, if the text was changed, show a button
         (or link): "Undo Cancel" save and restore the text as needed.
         [] Not clear if Edit in this state should restore or not.
@@ -201,6 +200,10 @@ Compilation
         
 Project View
     [+m] shows all files in project w/access to view/edit/run links
+    [] add file/dir button on dirs
+        [] list of templates (from a templates dir)
+        [] add form to page
+        [] on click, move form, fill in dir field, hide dir field
     [] rename of files in project view
     [] delete of files in project view
     [] move/copy files in project view

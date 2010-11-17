@@ -76,3 +76,29 @@ done the tutorial. This is a list of possible projects:
 * News feed mash up: show reddit, slashdot, tech news headlines on a
   a single page with links
 
+
+An Outline
+----------
+
+Ch 1: Static Pages
+* Step 1: "Hello World"
+    - comments, strings
+    - basic html combinators & usage
+* Step 2: "Shopping List"
+    - lists
+    - homogenous types (  [ "foo", bold << "bar" ]
+    - toHtml
+* Step 3: "Some Style"
+    - first function, map, list comprehension
+    - attributes, name exceptions
+* Step 4: "
+    - tuples, zip, ranges 
+    
+    
+Ch 2: Guessing Game
+* Step 1: Form
+    - if/then/else, comparison
+    - http request & response objects
+* Step 2: Encoding state
+    - string functions, appending
+    - 
