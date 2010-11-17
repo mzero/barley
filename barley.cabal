@@ -1,9 +1,9 @@
 Name:                barley
 Version:             0.1
-License:             BSD3
+License:             OtherLicense
 License-file:        LICENSE
 Author:              Johan Tibell, Mark Lentczner
-Maintainer:          johan.tibell@gmail.com
+Maintainer:          markl@glyphic.com
 Category:            Web
 Build-type:          Simple
 Cabal-version:       >=1.2
@@ -27,18 +27,14 @@ data-files:
   seed/static/hslogo-16.png
   seed/static/jquery.js
   seed/static/ribbon.png
-  seed/static/silk/arrow_down.png
-  seed/static/silk/folder.png
-  seed/static/silk/image.png
-  seed/static/silk/link.png
-  seed/static/silk/magnifier.png
-  seed/static/silk/page_white.png
-  seed/static/silk/page_white_code.png
-  seed/static/silk/page_white_code_red.png
-  seed/static/silk/page_white_world.png
-  seed/static/silk/pencil.png
+  seed/static/silk/*.png
   seed/static/stripe.png
   seed/Template.hs
+
+extra-source-files:
+  LICENSE-CodeMirror
+  README.markdown
+  SYLLABUS.markdown
 
 Executable barley
   Main-is: Main.hs
@@ -58,7 +54,7 @@ Executable barley
     snap-core == 0.2.*,
     snap-server == 0.2.*,
     html < 1.1.2,
-    text < 0.8,
+    text < 0.11,
     transformers
 
   ghc-options: -Wall
