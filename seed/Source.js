@@ -14,8 +14,7 @@ var mkEditable = function() {
     if (!editable) {
         bEnable('.btn-cancel');
         bEnable('.btn-save');
-        //$('#editor').removeClass('readonly').addClass('editable');
-        $('#editor').animate({padding: 5});
+        $('#editor').removeClass('readonly').addClass('editable');
         editable = true;
     }
 };
@@ -23,8 +22,7 @@ var mkEditable = function() {
 var mkReadOnly = function() {
     bDisable('.btn-cancel');
     bDisable('.btn-save');
-    //$('#editor').removeClass('editable').addClass('readonly');
-    $('#editor').animate({padding: 0});
+    $('#editor').removeClass('editable').addClass('readonly');
     editable = false;
 };
 

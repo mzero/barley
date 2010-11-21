@@ -251,12 +251,12 @@ body.with-topbar {
   margin: 1em 0;
   overflow: auto;
   background: #ffffe5;
-  background-image: url(stripe.png);
   border: 1px solid #b1b18e;
+  padding-left: 0.75em;
 }
 
 #editor.editable {
-  padding: 4px;
+  background: #ff0 url(stripe.png);
 }
 
 #editor textarea,
@@ -265,7 +265,7 @@ body.with-topbar {
 }
 
 #editor .CodeMirror-line-numbers {
-  padding: 1em;
+  padding: 1em 1em 1em 0;
   width: 2em;
   color: #a9a9a9;
 }

@@ -29,18 +29,45 @@ How to use this list:
         
 === BARLEY TODO ===
 
+
+--- Required Tasks to get to 0.2 ---
+
+Content
+    [m] replace template.hs with new Chapter 1 step pages
+    [m] Better Index page that actually points at the chapters & steps
+    [m] Documentation page with links to sources
+        [?] embedded iframe of user's local doc set
+    [m] Help page with pointers on what to do, where to go
+    [m] since jQuery, and images are copied into project tree, there should
+        be a copy of the license & attributions copied in there as well
+
+Source Editor
+    [+m] better editing indicator: adding padding resizes and looks bad
+    [] expand/close icon on preview header
+    
+Compilation
+    [] better module loading... 
+        [] model code used by Happstack plugins
+        [] remove nu hack
+        [] compilation system tracks mod and compilation times to avoid reloading
+        [] clear compilation state user control per file and/or whole
+    [] be certain that we can unload w/o breaking
+        (thinking about dangling thunks)
+    [] be certain that loading is safe in light of type mismatches
+    [] catch error and exceptions during template running
+    [] replace source on error rendering with link to source editor
+    [] enable -Wall, or at least -W things that most users want, like
+        non-exhaustive patterns (just lost HOURS to this one!)
+
+Project View
+    [] add file/dir button on dirs
+        [] list of templates (from a templates dir)
+        [] add form to page
+        [] on click, move form, fill in dir field, hide dir field
+
 --- Tasks ----
 
-[+m] make barely start work outside of ghci
 [] make common error and warn functions for command line processing
-
-[] updated template.hs that is a basic hello page
-    [] what to do
-    [] suggested re-edit in haskell comments
-    [] reload button
-[] create add page step to index.html
-[] create addpage.hs page with form w/name and description
-[] generate new page from addpage.hs form
 [] error page give instructions for what to do
 [] Text.Html is forcing us to use prettyHtml instead of renderHtml
     [] either wrap the body contents in a div, and make page return an [Html]
@@ -57,67 +84,11 @@ How to use this list:
     -- but then things like .css files w/o... and URLs to said files have lower
     -- case? i.e.:  /source?file=Source.hs   !!!
     
-[+m] make sure file path is rational before serving:
-    - no ".." elements, no ".*" elements
-[+m] need a better term than "run" for the act of invoking code to return a page
-    equivalent of "run" in IDEs, but what is it here?
-    opens the page in a new browser window
-    I choose "View Page" and "View the generated page"
-[+m] add jQuery to system
-    [+m] ensure serving as correct type
 
 Source Editor
-    [+m] request handler option for templates
-    [+m] read file and display contents
-    [+m] link to open user page in new window
-        [-] user page windows are named with the path so they reuse by page
-        [-] pop window to the top (in Chrome it opens in a tab and 2nd time
-            stays behind
-        [+m] open up in _blank target
-    [+m] open file via file: link
-    [+m] editable form
-    [+m] save file from form
-    [+m] js to convert text to edit field
-       - turn edit area yellow and editable on edit
-    [+m] rendering preview (via iframe)
-    [+m] add hoogle and hayoo search fields to a new search side bar module
-        [+m] use jQuery to fill search fields with the source view selection
-    [+m] make text area be the right size
-        - perhaps use the elasitc jQuery plugin
-    [+m] validate that file is rational for both reading and writing
-        - doesn't contain .. path elements, for example
-        [-m] protect against Source.hs viewing itself (infinite iframes...)
-            -- no need, it works...
-    [+m] need a way to make the preview optional, and know for which
-        pages it should be on or not
-        -- previews if ext is .html or (.hs and not in ./Library)
-        [+m] preview disabled for things under lib/
-    [+m] line numbers
-    [+m] integrate CodeMirror as the source editor
-    [+m] eliminate annoying "shift" when CodeMirror loads the text
-    [+m] "better" size the code editing box
-        [+m] editing field should make it bigger
-    [+m] syntax parser for Haskell
-        [+m] add class for words from the Prelude
-    [+m] change look on edit/readonly
-    [+m] matching brace coloring is hideous in CodeMirror
-    [+m] selection to research field is broken
-    [+m] icons for the action links
-    [+m] research fill-from-selection should work even when source is read-only
-    [+m] or perhaps, if keystroke after select -> auto edit?
-        [-m] perhaps not have expensive r/o version thing, but use the parser
-            to generate a static version - as in the example on CodeMirror site
-        [-m] get into edit without losing selection
-            see error -> scroll around -> select -> type -> oops -> edit button
-    [+m] remove ZWSP hack in Source.hs when CodeMirror fixes the bug that
-        inserts them
-    [+m] sanitize line endings coming out of editor
-
     [] On source editing cancel, if the text was changed, show a button
         (or link): "Undo Cancel" save and restore the text as needed.
         [] Not clear if Edit in this state should restore or not.
-    [] expand/close icon on preview header
-    
     [] fix Haskell parser
         [] still doesn't handle strings with gaps correctly....
         [] style pragmas
@@ -147,63 +118,24 @@ AJAX Compile
         ? have users write something like:   page = head << ... +++ autoupdate
 
 Content
-    [+m] Make ribbon.jpg longer
-        -- or figure out a way to put the Barley logotype in a separate image.
-    [-m] Add the circle navigation buttons for: Home, Project List, Help
-    [+m] add Home, Project, Docs, Help links to top bar
-    [+m] move community links to a sub-menu of Haskell
-    [+m] write index.hs that gives the user a hello and what to do next
-    [+m] factor common code between Index.hs and Source.hs into lib/DevUtils.hs
-    [+m] scaffold.css should probably be named something better like barley.css
-
-    [m] Better Index page that actually points at the chapters & steps
-    [m] Documentation page with links to sources
-        [?] embedded iframe of user's local doc set
-    [m] Help page with pointers on what to do, where to go
-    [m] since jQuery, and images are copied into project tree, there should
-        be a copy of the license & attributions copied in there as well
-
     [] move source.hs & project.hs into a dev directory
         -- after compilation can handle hierarchical modules
     [] FAQ system with sections, questions, jQuery expanding answers
         generated from a text file or dir of text files 
 
 Compilation
-    [*j] unload modules after evaluating 'page'
-    [] make nu hack robust: check for "\nnu =" before reload
-    [] handle reloading with something better than the nu hack... 
-        [] model code used by Happstack plugins
-    [+m] put .hi and .o files in some .build tree
-    [+m] ensure loading modules that import user modules works
-        [+m] make dependent modules as needed
-        [+m] look for dependent modules rooted in both "." and "lib"
-            for both compilation and loading
+    [?*j] unload modules after evaluating 'page'
     [] handle hierarchically named modules
         -- currently referenced modules are build correctly
         -- but the top level module is placed/looked for in wrong .build dir
         -- if the top level module is in a sub dir: say, Tools/Source.hs
     [] editing an included, but not viewed module should trigger recompile
         for modules that use
-    [] compilation system tracks mod and compilation times to avoid reloading
-        [] clear compilation state user control per file and/or whole
-    [] be certain that we can unload w/o breaking
-        (thinking about dangling thunks)
-    [] be certain that loading is safe in light of type mismatches
-    [] catch error and exceptions during template running
     [] how to handle when the user wants to use some other package?
-    [] prefix line number in error page display
-        -- at least until we have line numbers in the source view
     [?] Source.hs includes stuff from Barley/Utils.hs as it has no way to import
         that - should it? can it?
-    [] enable -Wall, or at least -W things that most users want, like
-        non-exhaustive patterns (just lost HOURS to this one!)
         
 Project View
-    [+m] shows all files in project w/access to view/edit/run links
-    [] add file/dir button on dirs
-        [] list of templates (from a templates dir)
-        [] add form to page
-        [] on click, move form, fill in dir field, hide dir field
     [] rename of files in project view
     [] delete of files in project view
     [] move/copy files in project view
@@ -279,7 +211,7 @@ Running barley at the command line:
     "run" checks that the project directory is okay - that is, was once "init"'d
         if fails if it wasn't
 
-=== TODO DONE FOR 0.1 RELEASE ===
+=== TODO DONE FOR 0.2 RELEASE ===
 [+m] create a playground dir and exclude it's contents (but not it) from the repo
 [+m] notice that the directory started in is empty and call init-project
 [+m] if init is called from start, then it shouldn't complain about the non-empty dir
@@ -300,7 +232,82 @@ Running barley at the command line:
 [+m] add a README file
 [+m] side bars
 [+m] broke reloading somehow...
+[+m] make barely start work outside of ghci
+[+m] make sure file path is rational before serving:
+    - no ".." elements, no ".*" elements
+[+m] need a better term than "run" for the act of invoking code to return a page
+    equivalent of "run" in IDEs, but what is it here?
+    opens the page in a new browser window
+    I choose "View Page" and "View the generated page"
+[+m] add jQuery to system
+    [+m] ensure serving as correct type
 
+Source Editor
+    [+m] request handler option for templates
+    [+m] read file and display contents
+    [+m] link to open user page in new window
+        [-] user page windows are named with the path so they reuse by page
+        [-] pop window to the top (in Chrome it opens in a tab and 2nd time
+            stays behind
+        [+m] open up in _blank target
+    [+m] open file via file: link
+    [+m] editable form
+    [+m] save file from form
+    [+m] js to convert text to edit field
+       - turn edit area yellow and editable on edit
+    [+m] rendering preview (via iframe)
+    [+m] add hoogle and hayoo search fields to a new search side bar module
+        [+m] use jQuery to fill search fields with the source view selection
+    [+m] make text area be the right size
+        - perhaps use the elasitc jQuery plugin
+    [+m] validate that file is rational for both reading and writing
+        - doesn't contain .. path elements, for example
+        [-m] protect against Source.hs viewing itself (infinite iframes...)
+            -- no need, it works...
+    [+m] need a way to make the preview optional, and know for which
+        pages it should be on or not
+        -- previews if ext is .html or (.hs and not in ./Library)
+        [+m] preview disabled for things under lib/
+    [+m] line numbers
+    [+m] integrate CodeMirror as the source editor
+    [+m] eliminate annoying "shift" when CodeMirror loads the text
+    [+m] "better" size the code editing box
+        [+m] editing field should make it bigger
+    [+m] syntax parser for Haskell
+        [+m] add class for words from the Prelude
+    [+m] change look on edit/readonly
+    [+m] matching brace coloring is hideous in CodeMirror
+    [+m] selection to research field is broken
+    [+m] icons for the action links
+    [+m] research fill-from-selection should work even when source is read-only
+    [+m] or perhaps, if keystroke after select -> auto edit?
+        [-m] perhaps not have expensive r/o version thing, but use the parser
+            to generate a static version - as in the example on CodeMirror site
+        [-m] get into edit without losing selection
+            see error -> scroll around -> select -> type -> oops -> edit button
+    [+m] remove ZWSP hack in Source.hs when CodeMirror fixes the bug that
+        inserts them
+    [+m] sanitize line endings coming out of editor
+
+Content
+    [+m] Make ribbon.jpg longer
+        -- or figure out a way to put the Barley logotype in a separate image.
+    [-m] Add the circle navigation buttons for: Home, Project List, Help
+    [+m] add Home, Project, Docs, Help links to top bar
+    [+m] move community links to a sub-menu of Haskell
+    [+m] write index.hs that gives the user a hello and what to do next
+    [+m] factor common code between Index.hs and Source.hs into lib/DevUtils.hs
+    [+m] scaffold.css should probably be named something better like barley.css
+
+Compilation
+    [+m] put .hi and .o files in some .build tree
+    [+m] ensure loading modules that import user modules works
+        [+m] make dependent modules as needed
+        [+m] look for dependent modules rooted in both "." and "lib"
+            for both compilation and loading
+
+Project View
+    [+m] shows all files in project w/access to view/edit/run links
 
 === FUTURE TODO ===
 History
