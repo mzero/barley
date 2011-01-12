@@ -75,6 +75,12 @@ done the tutorial. This is a list of possible projects:
 * Unit conversion, simple calculator page.
 * News feed mash up: show reddit, slashdot, tech news headlines on a
   a single page with links
+* Polls: admin can create polls, users take 'em
+* Blog
+* Wiki
+* Inventory (recipies, wine, videos, todos, etc...): Item entry, item detail, listing,
+query, categories, bools(?)
+
 
 
 An Outline
