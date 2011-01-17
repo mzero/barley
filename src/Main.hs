@@ -68,18 +68,24 @@ run pd = do
     putStrLn $ "Running on http://localhost:" ++ show port ++ "/"
     httpServe (C.pack address) port (C.pack hostname) (Just "access.log")
         (Just "error.log") genericHandler
-    
--- | Compile a template and return the generate HTML as a String.
-runTemplate :: FilePath -> IO (Snap ())
-runTemplate filename = do
-    v <- compileAndLoadFirst filename templateEntryPoints
-    either errorResult return $ v
+
+
+type CompiledTemplate = Either String (Snap ())
+-- | Compile a template to either an error string, or a Snap action
+compileTemplate :: FilePath -> IO CompiledTemplate
+compileTemplate filename = compileAndLoadFirst filename templateEntryPoints
   where
-    errorResult errs = errorHtml errs filename >>= return . htmlResult
     templateEntryPoints =
         [ entryPoint "handler" id
         , entryPoint "page" htmlResult
         ]
+  
+-- | Run a compiled template as a Snap action.
+runTemplate :: FilePath -> CompiledTemplate -> Snap ()
+runTemplate filename compilation = do
+    either errorResult id $ compilation
+  where
+    errorResult errs = liftIO (errorHtml errs filename) >>= htmlResult
 
 htmlResult :: Html -> Snap ()
 htmlResult html = do
@@ -88,11 +94,19 @@ htmlResult html = do
         -- warning: renderHTML wraps an additional HTML element around the
         -- content (for some ungodly reason)
 
+stringResult :: String -> Snap ()
+stringResult s = do
+    modifyResponse $ setContentType (C.pack "text/plain; charset=UTF-8")
+    writeBS $ (T.encodeUtf8 . T.pack) s
 
 serveTemplate :: FilePath -> Snap ()
 serveTemplate filename = do
-    handler <- liftIO $ runTemplate filename
-    handler
+    compilation <- liftIO $ compileTemplate filename
+    compileOnly <- getParam (C.pack "__compile_only")
+    case C.unpack `fmap` compileOnly of
+        Just c | c == "1"  -> stringResult $ either id (const "OK") compilation
+               | otherwise -> errorBadRequest
+        Nothing            -> runTemplate filename compilation
 
 serveStatic :: FilePath -> Snap ()
 serveStatic filename = do
