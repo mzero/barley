@@ -41,6 +41,7 @@ Executable barley
   hs-source-dirs: src
 
   other-modules:
+    Barley.AltLoad
     Barley.Loader
     Barley.Project
     
@@ -50,6 +51,8 @@ Executable barley
     containers < 0.4,
     directory < 1.1,
     filepath < 1.2,
+    ghc >= 6.10,
+    ghc-prim,
     plugins >= 1.5.1.4,
     snap-core == 0.2.*,
     snap-server == 0.2.*,

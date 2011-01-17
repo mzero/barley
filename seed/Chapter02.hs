@@ -1,6 +1,5 @@
 module Chapter02 where
 import Text.Html
-nu = () -- DO NOT DELETE THIS
 -- The lines above are just boilerplate (for now).
 
 page = thehtml <<

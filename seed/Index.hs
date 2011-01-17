@@ -17,8 +17,6 @@ module Index where
 import DevUtils
 import Text.Html
 
-nu = () -- DO NOT DELETE THIS
-
 page = devpage "Start"
         [ h1 << "Welcome aboard!"
         , p << "Barley is an environment and tutorial for exploring Haskell. \

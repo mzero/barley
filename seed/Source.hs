@@ -27,8 +27,6 @@ import Snap.Types
 import Text.Html hiding ((</>))
 import qualified Text.Html as Html
 
-nu = () -- DO NOT DELETE THIS
-
 handler :: Snap ()
 handler = do
     fileparam <- getParam (C.pack "file")

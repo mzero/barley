@@ -17,9 +17,6 @@ import Text.Html
 -- that code in this file can use them. Text.Html defines functions that let us
 -- build up HTML pages.
 
-nu = () -- DO NOT DELETE THIS
--- This is cruft 'cause Barley isn't even at 1.0 release. Ignore it, but leave it.
-
 --
 -- *** LOOK HERE ***
 --

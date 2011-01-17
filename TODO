@@ -46,12 +46,12 @@ Source Editor
     [] expand/close icon on preview header
     
 Compilation
-    [] better module loading... 
-        [] model code used by Happstack plugins
-        [] remove nu hack
-        [] compilation system tracks mod and compilation times to avoid reloading
-        [] clear compilation state user control per file and/or whole
-    [] be certain that we can unload w/o breaking
+    [+m] better module loading... 
+        [-m] model code used by Happstack plugins
+        [+m] remove nu hack
+        [+m] compilation system tracks mod and compilation times to avoid reloading
+        [-m] clear compilation state user control per file and/or whole
+    [-m] be certain that we can unload w/o breaking
         (thinking about dangling thunks)
     [] be certain that loading is safe in light of type mismatches
     [] catch error and exceptions during template running
@@ -64,6 +64,10 @@ Project View
         [] list of templates (from a templates dir)
         [] add form to page
         [] on click, move form, fill in dir field, hide dir field
+
+Misc
+    [] review and fix dependency versions in barley.cabal
+
 
 --- Tasks ----
 
@@ -124,7 +128,10 @@ Content
         generated from a text file or dir of text files 
 
 Compilation
-    [?*j] unload modules after evaluating 'page'
+    [-j] unload modules after evaluating 'page'
+        -- handled now in new compilation system
+    [] remove AltLoad.hs once plugins package includes our patch
+        [] remove ghc and ghc-prim dependencies in barley.cabal
     [] handle hierarchically named modules
         -- currently referenced modules are build correctly
         -- but the top level module is placed/looked for in wrong .build dir
@@ -136,6 +143,7 @@ Compilation
         that - should it? can it?
         
 Project View
+    [] collapse/expand of directories & all
     [] rename of files in project view
     [] delete of files in project view
     [] move/copy files in project view
@@ -145,7 +153,6 @@ Pristine system
     [] add a siHasPristine filed to SourceInfo
     [] add show pristine & restore button that copies from pristine
     [] diff view that diffs from .pristine 
-
 
 
 --- User Stories ---

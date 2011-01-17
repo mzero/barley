@@ -23,8 +23,6 @@ import System.Directory
 import System.FilePath
 import Text.Html hiding ((</>))
 
-nu = () -- DO NOT DELETE THIS
-
 handler :: Snap ()
 handler = liftIO mkProjPage >>= htmlResponse
     

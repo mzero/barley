@@ -20,8 +20,15 @@ module Barley.Loader (
     )
     where
 
+import Barley.AltLoad -- instead of System.Plugins.Load
+import Control.Monad (when)
+import Data.IORef
+import qualified Data.Map as M
 import System.Directory (createDirectoryIfMissing)
-import System.Plugins
+import System.IO.Unsafe (unsafePerformIO)
+import System.Plugins.Make
+import System.Plugins.Utils (newer)
+
 
 
 -- | An representation of a possible entry point in a file that, when
@@ -35,40 +42,77 @@ newtype EntryPoint a = EntryPoint { loadEntryPoint :: Module -> IO (Maybe a) }
 entryPoint :: String -> (a -> b) -> EntryPoint b
 entryPoint symbol xform = EntryPoint (loadWith symbol xform)
 
+
+-- | A mapping between source files and the module objects that are loaded
+-- While System.Plugins should keep this information, it doesn't, so we have to.
+type ModuleMap = M.Map FilePath Module
+
+theModMap :: IORef ModuleMap
+theModMap = unsafePerformIO $ newIORef M.empty
+{-# NOINLINE theModMap #-}
+
+
+-- | Given a file, try to make sure it is built and up-to-date
+-- Can't use recompileAll here because it "hunts" for the source files (rather
+-- than having Module remember them), and we store the objects in a different
+-- directory than the sources. Hence, our test doesn't recursively look at
+-- dependent modules. Fie!
+compileModule :: FilePath -> IO (Either String Module)
+compileModule srcFile = do
+    mm <- readIORef theModMap
+    let existingModule = M.lookup srcFile mm
+    
+    needBuild <- case existingModule of
+        Just m -> srcFile `newer` path m
+        Nothing -> return True        
+    makeStatus <- case (needBuild, existingModule) of
+        (False, Just m) -> return (MakeSuccess NotReq $ path m)
+        _ -> noteMakeAll >> makeAll srcFile makeArgs
+
+    case (makeStatus, existingModule) of
+        (MakeSuccess NotReq _, _     ) -> return ()
+        (_                   , Just m) -> noteUnloadAll >> unloadAll m
+        (_                   , _     ) -> return ()
+    
+    case (makeStatus, existingModule) of
+        (MakeFailure errs, _) -> do
+            noteFailure errs
+            writeIORef theModMap (M.delete srcFile mm)
+            return $ Left $ unlines errs
+        (MakeSuccess NotReq _, Just m) -> do
+            noteNothing
+            return (Right m)
+        (MakeSuccess _ objFile, _) -> do
+            noteLoading
+            m <- loadObjectFile objFile [buildDir] []
+            writeIORef theModMap (M.insert srcFile m mm)
+            return (Right m)
+  where
+    buildDir = ".build"
+    makeArgs =      
+        [ "-ilib" -- users can put non-served source here 
+        , "-outputdir", buildDir -- sets odir, hidir, and stubdir in one go
+        , "-odir", buildDir -- plugins only looks for odir, not outputdir
+        ]
+        
+    debug = False
+    noteMakeAll      = when debug $ putStrLn ("makeAll of " ++ srcFile)
+    noteUnloadAll    = when debug $ putStrLn "unloading..."
+    noteFailure errs = when debug $ putStrLn ("failed: " ++ concat errs)
+    noteNothing      = when debug $ putStrLn "nothin' to do"
+    noteLoading      = when debug $ putStrLn "loading..."
+    
+
 -- | Given a file, compile and load the file, then load the value from the
 -- first entry point that succeeds (Right). If either the compilation fails,
 -- or the the loading fails, then an error string is returned (Left).
 compileAndLoadFirst :: FilePath -> [EntryPoint a] -> IO (Either String a)
 compileAndLoadFirst srcFile eps = do
     createDirectoryIfMissing False ".build" -- plugins needs it to pre-exist
-    status <- makeAll srcFile
-        [ "-ilib" -- users can put non-served source here 
-        , "-outputdir", ".build" -- sets odir, hidir, and stubdir in one go
-        , "-odir", ".build" -- plugins only looks for odir, not outputdir
-        ]
-    case status of
-        MakeSuccess _ objFile -> loadFirst objFile eps
-        MakeFailure errs -> return $ Left $ unlines errs
-
--- This code would like to use the low level interface in System.Plugins.Load,
--- so that the module can be loaded once, and then each entry point probed for.
--- BUT, the low level interface doesn't actually expose enough machinery to do
--- so. See, for example, how the implementation of load uses several functions
--- that are not exported and are rather too complicated to replicate.
-
--- The current hack is to insist that every loaded module have a symbol nu.
--- This code uses the high level interface to load that module, which succeeds
--- and then uses the low level interface to probe the other entry points.
-
-loadFirst :: FilePath -> [EntryPoint a] -> IO (Either String a)
-loadFirst objFile eps = do
-    v <- load_ objFile [".build"] "nu"
-    case v of
-        LoadFailure _ -> return (Left "yer dead now: no nu")
-        LoadSuccess m _ -> do
-            w <- tryEntryPoints m eps
-            w `seq` unloadAll m
-            return w
+    cs <- compileModule srcFile
+    case cs of
+        Right m -> tryEntryPoints m eps
+        Left errs -> return $ Left errs
 
 tryEntryPoints :: Module -> [EntryPoint a] -> IO (Either String a)
 tryEntryPoints m (ep:eps) =
