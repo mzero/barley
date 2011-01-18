@@ -62,7 +62,9 @@ srcPage :: SrcInfo -> String -> Bool -> Html
 srcPage si contents showPreview = devpage ("Source of " ++ srcPath si)
     [ h1 << srcPath si
     , p << small << srcFullPath si
-    , if showPreview then preview si else noHtml
+--  , if showPreview then preview si else noHtml
+    , preview si
+    , errors
     , form ! [Html.method "POST", identifier "edit-form"] <<
         (btns ++ [editor] ++ btns ++ [hidden])
     ]
@@ -81,12 +83,21 @@ srcPage si contents showPreview = devpage ("Source of " ++ srcPath si)
 preview :: SrcInfo -> Html
 preview = maybe noHtml build . previewPath
   where
-    build p = 
-        thediv ! [ theclass "with-preview" ] <<
+    build path = 
+        thediv ! [ theclass "panel with-preview", thestyle "display: none;" ] <<
             [ h1 << "Rendering Preview"
-            , tag "iframe" ! [src p, identifier "preview"] << noHtml
+            , tag "iframe"
+                ! [identifier "preview", theclass "panel-content"]
+                << noHtml
+            , p ! [identifier "preview-url", thestyle "display: none;" ] << path
             ]
 
+errors :: Html
+errors = thediv ! [theclass "panel with-errors", thestyle "display: none;"] <<
+            [ h1 << "Compilation Errors"
+            , pre ! [ identifier "errors", theclass "panel-content"] << noHtml
+            ]
+            
 modFStat :: SrcInfo -> Html
 modFStat si = (h2 << "File Info") +++
     if srcExists si

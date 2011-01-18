@@ -1,4 +1,4 @@
-(function () {
+$(document).ready(function () {
 
 var bEnable = function(i) {
     $(i).removeAttr('disabled').animate({opacity: 1.0}, 'fast');
@@ -55,6 +55,27 @@ var editor = CodeMirror.fromTextArea("txt-src", {
 $('.btn-cancel').click(mkReadOnly);
 mkReadOnly();
 
-$('.with-preview h1').click(function () { $('#preview').slideToggle('fast'); });
+$('.panel h1').click(function () { $('.panel-content').slideToggle('fast'); });
 
-})()
+var previewUrl = $('#preview-url').text();
+
+var compileResult = function(data, status, xhr) {
+    if (data == "OK") {
+        $('.with-preview iframe').attr('src', previewUrl);
+        $('.with-preview').show();
+    }
+    else {
+        $('#errors').text(data);
+        $('.with-errors').show();
+    }
+}
+
+if (previewUrl) {
+    $.ajax({
+        url: previewUrl + "?__compile_only=1",
+        success: compileResult,
+        dataType: "text"
+        });
+}
+
+})
