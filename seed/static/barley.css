@@ -266,8 +266,27 @@ body.with-topbar {
 
 #editor .CodeMirror-line-numbers {
   padding: 1em 1em 1em 0;
-  width: 2em;
+  width: 3em;
   color: #a9a9a9;
+}
+
+#editor .CodeMirror-line-numbers div.error-line {
+  color: #ff4d4d;
+  font-weight: bold;
+  background: url(silk/exclamation.png) no-repeat -1px -1px;
+  position: relative;
+}
+
+.error-details {
+  display: none;
+  position: fixed;
+  text-align: left;
+  background-color: #ffe5e5;
+  margin: 0;
+  padding: 4px;
+  color: #7f3500;
+  font-size: 92.3%;
+  border: 1px solid #b1b18e;
 }
 
 #editor textarea.src {

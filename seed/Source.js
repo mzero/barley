@@ -59,14 +59,55 @@ $('.panel h1').click(function () { $('.panel-content').slideToggle('fast'); });
 
 var previewUrl = $('#preview-url').text();
 
+var setErrorDetailAdjust = function(ln, lnp) {
+    ln.hover(function () {
+            var offset = ln.offset();
+            lnp.css({
+                'position': "absolute",
+                'top': offset.top + ln.height(),
+                'left': offset.left + ln.width() * 1.3
+                });
+            lnp.show('fast');
+            },
+        function () {
+            lnp.hide('fast');
+        });
+}
 var compileResult = function(data, status, xhr) {
     if (data == "OK") {
+        $('.with-preview .panel-content').hide();
         $('.with-preview iframe').attr('src', previewUrl);
-        $('.with-preview').show();
+        $('.with-preview').show('fast');
+        setTimeout(function() {
+            $('.with-preview .panel-content').show('slow');
+            }, 500);
     }
     else {
+        setTimeout(function () {
+            var lns = $('.CodeMirror-line-numbers div');
+            var ln, lnp;
+            
+            var r = /\.hs:(\d+):(\d+):$/;
+            var dataLines = data.split("\n")
+            for (var i in dataLines) {
+                var e = dataLines[i].match(r);
+                if (e) {
+                    ln = lns.eq(e[1]-1);
+                    ln.addClass('error-line');
+                    $('body').append('<pre class="error-details"></pre>');
+                    lnp = $('body').children().last();
+                    setErrorDetailAdjust(ln, lnp);
+                }
+                else if (lnp) {
+                    var l = dataLines[i];
+                    if (l.slice(0,4) == '    ') { l = l.slice(4); }
+                    lnp.text(lnp.text() + l + "\n");
+                }
+            }
+        }, 1000);
         $('#errors').text(data);
-        $('.with-errors').show();
+        $('.with-errors .panel-content').hide();
+        $('.with-errors').show('fast');
     }
 }
 
