@@ -44,6 +44,12 @@ Content
 Source Editor
     [+m] better editing indicator: adding padding resizes and looks bad
     [] expand/close icon on preview header
+    [] line number alignment on Chrome and FF
+    [] handling multiple error messages on a given line
+    [] push top save/cancel buttons to top right of title
+    [] keep rendering preview closed first time (revive preview arg)
+    [] add tutorial next,prev links, w/titles to footer
+    [] add tutorial index (expandy) to sidebar
     
 Compilation
     [+m] better module loading... 
@@ -67,7 +73,11 @@ Project View
 
 Misc
     [] review and fix dependency versions in barley.cabal
-
+    [x] efficiently handling static content
+        [x] add Last-Modified headers to static content
+        [x] add Expires: <data> & Cache-Control: max-age=<secs>  headers
+        [x] process If-Modified-Since, If-Unmodified-Since
+    [] add Cache-Control: no-cache for dynamic content
 
 --- Tasks ----
 
@@ -108,13 +118,14 @@ Source Editor
     [] preview/error message on top? like wiki pages?
     
 AJAX Compile
+    [+m] compile only via __compile_only flag on template request
+        - returns either OK or error messages
+    [+m] source editor on load, fetches __compile_only results, and
+        displays either preview or errors based on result
+    [+m] source editor can display compile results
+    [+m] put error messages in-line with editor
     [] on edit save, submit in background to a new endpoint
         [] then refresh preview iframe or show errors on result
-    [] compile end point calls into Barley compile
-        - returns either OK or ERROR on first line
-        - returns warnings or error lines after status line 
-        - doesn't overwrite existing file if compilation errors (?)
-    [] source editor can display compile results
     [] source view, on ERROR stays on edit mode
     [] source view, on OK returns to view mode, and opens page in new window
     [] preview pages have a AJAX call back to see if they need to auto-refresh
@@ -154,6 +165,9 @@ Pristine system
     [] add show pristine & restore button that copies from pristine
     [] diff view that diffs from .pristine 
 
+Server
+    [?] add ETag
+        [?] process If-Match, If-None-Match
 
 --- User Stories ---
 
@@ -329,7 +343,10 @@ writeText writes out in UTF-8 but doesn't make that guaruntee in the docs
 finishWith is awkward
 even I'm confused about when to use finishWith vs. pass
     -- seems like two different ways of doing `mplus`
-    
+parseHttpTime has no option for failure - should return a Maybe
+formatHttpTime & parseHttpTime use CTime? and need IO?
+should there be utilities for handling expires times?
+
 === NOTES FOR HTML ===
 renderHtml is BROKEN - it puts things inside an extra HTML element!?!?!?
 unordList etc. would be nice if they'd take HTML a => [a] rather than [Html]

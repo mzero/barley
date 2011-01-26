@@ -23,12 +23,17 @@ module Barley.Utils (
     finishWithError,
     errorBadRequest, errorForbidden, errorNotFound, errorMethodNotAllowed,
     
+    processModificationTime,
     ) where
 
+import Control.Monad (unless, when)
 import Control.Monad.IO.Class
 import qualified Data.ByteString.Char8 as C
+import Data.CIByteString (toCI)
 import Snap.Types
 import System.FilePath (joinPath, splitDirectories)
+import System.Posix.Time (epochTime)
+import System.Posix.Types (EpochTime)
 
 -- | Sanitize a file path for serving.
 -- If the path contains any illegal path components, then Nothing is returned.
@@ -78,3 +83,41 @@ errorBadRequest = finishWithError 400 "Bad Request"
 errorForbidden = finishWithError 403 "Forbidden"
 errorNotFound = finishWithError 404 "Not Found"
 errorMethodNotAllowed = finishWithError 405 "Method Not Allowed"
+
+
+-- | Process requests for resources that have a known modification time and
+-- optional maximum age. Note: This may finish processing if the request
+-- includes validators that can be satisfied.
+
+processModificationTime :: EpochTime -> Maybe Int -> Snap ()
+processModificationTime modTime maxAge = do
+    req <- getRequest
+    maybeM_ validateIfModifiedSince $ (getHeader (toCI $ C.pack "If-Modified-Since")) req
+    maybeM_ validateIfUnmodifiedSince $ (getHeader (toCI $ C.pack "If-Unmodified-Since")) req
+
+    modTimeS <- liftIO $ formatHttpTime modTime
+    modifyResponse $ setHeader (toCI $ C.pack "Last-Modified") modTimeS
+
+    maybeM_ setCacheControlMaxAge maxAge
+    maybeM_ setExpires maxAge
+  where
+    validateIfModifiedSince ims = do
+        imsTime <- liftIO $ parseHttpTime ims
+        unless (modTime > imsTime) $
+            finishWithError 304 "Not Modified"
+    validateIfUnmodifiedSince ius = do
+        iusTime <- liftIO $ parseHttpTime ius
+        when (modTime > iusTime) $
+            finishWithError 412 "Precondition Failed"
+    setCacheControlMaxAge ma =
+        modifyResponse $ setHeader (toCI $ C.pack "Cache-Control")
+            (C.pack $ "max-age=" ++ show ma)
+    setExpires ma = do
+        now <- liftIO $ epochTime
+        expTimeS <- liftIO $ formatHttpTime (now + fromIntegral ma)
+        modifyResponse $ setHeader (toCI $ C.pack "Expires") expTimeS
+
+maybeM_ :: (Monad m) => (a -> m ()) -> Maybe a -> m ()
+maybeM_ = maybe (return ())  
+    
+    

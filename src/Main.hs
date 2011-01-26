@@ -31,6 +31,7 @@ import System.Directory (doesDirectoryExist, doesFileExist,
 import System.Environment
 import System.Exit
 import System.FilePath ((<.>), (</>), takeExtension)
+import System.Posix.Files (getFileStatus, modificationTime)
 import Text.Html hiding ((</>), address, content, start)
 
 main :: IO ()
@@ -108,29 +109,41 @@ serveTemplate filename = do
                | otherwise -> errorBadRequest
         Nothing            -> runTemplate filename compilation
 
+data TypeInfo = TI { tiMimeType :: String, tiMaxAge :: Maybe Int }
+
+extToTypeInfo :: M.Map String TypeInfo
+extToTypeInfo = M.fromList
+    [ (".css",  srcType "text/css")
+    , (".gif",  imgType "image/gif")
+    , (".html", srcType "text/html")
+    , (".jpeg", imgType "image/jpeg")
+    , (".jpg",  imgType "image/jpeg")
+    , (".js",   srcType "application/javascript")
+    , (".json", srcType "application/json")
+    , (".pdf",  imgType "application/pdf")
+    , (".png",  imgType "image/png")
+    , (".svg",  imgType "image/svg+xml")
+    , (".txt",  srcType "text/plain")
+    , (".xhtml",srcType "application/xhtml+xml")
+    , (".xml",  srcType "application/xml")
+    ]
+  where
+    srcType s = TI s (Just 30)   -- revalidate things we might edit every 30 seconds
+    imgType s = TI s (Just 3600) -- images are stable for at least an hour
+
+defTypeInfo :: TypeInfo
+defTypeInfo = TI "application/octet-stream" Nothing
+
 serveStatic :: FilePath -> Snap ()
 serveStatic filename = do
-    modifyResponse $ setContentType (C.pack mimeType)
+    fstat <- liftIO $ getFileStatus filename
+    processModificationTime (modificationTime fstat) (tiMaxAge typeInfo)
+    modifyResponse $ setContentType (C.pack $ tiMimeType typeInfo)
     sendFile filename
   where
-    mimeType = M.findWithDefault defMimeType extension extToMimeType
+    typeInfo = M.findWithDefault defTypeInfo extension extToTypeInfo
     extension = takeExtension filename
-    defMimeType = "application/octet-stream" 
-    extToMimeType = M.fromList
-        [ (".css",  "text/css")
-        , (".gif",  "image/gif")
-        , (".html", "text/html")
-        , (".jpeg", "image/jpeg")
-        , (".jpg",  "image/jpeg")
-        , (".js",   "application/javascript")
-        , (".json", "application/json")
-        , (".pdf",  "application/pdf")
-        , (".png",  "image/png")
-        , (".svg",  "image/svg+xml")
-        , (".txt",  "text/plain")
-        , (".xhtml","application/xhtml+xml")
-        , (".xml",  "application/xml")
-        ]
+
         
 -- | Given a URL, render the corresponding template.
 genericHandler :: Snap ()
