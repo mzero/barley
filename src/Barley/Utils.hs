@@ -103,11 +103,13 @@ processModificationTime modTime maxAge = do
   where
     validateIfModifiedSince ims = do
         imsTime <- liftIO $ parseHttpTime ims
-        unless (modTime > imsTime) $
+        unless (modTime > imsTime) $ do
+            modifyResponse clearContentLength
             finishWithError 304 "Not Modified"
     validateIfUnmodifiedSince ius = do
         iusTime <- liftIO $ parseHttpTime ius
-        when (modTime > iusTime) $
+        when (modTime > iusTime) $ do
+            modifyResponse clearContentLength
             finishWithError 412 "Precondition Failed"
     setCacheControlMaxAge ma =
         modifyResponse $ setHeader (toCI $ C.pack "Cache-Control")

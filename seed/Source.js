@@ -1,5 +1,12 @@
 $(document).ready(function () {
 
+var marker = $('#run-source-js-once');
+if (marker.length > 0) {
+    marker.text(marker.text() + " Bug! ");
+    return;
+}
+$('<div id="run-source-js-once" style="display: none;">Done.</div>').appendTo($('body'));
+
 var bEnable = function(i) {
     $(i).removeAttr('disabled').animate({opacity: 1.0}, 'fast');
 };

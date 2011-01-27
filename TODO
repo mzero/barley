@@ -97,7 +97,12 @@ Misc
     -- we have Haskell code named with initial uppers to match module names
     -- but then things like .css files w/o... and URLs to said files have lower
     -- case? i.e.:  /source?file=Source.hs   !!!
-    
+
+[] track down double script execution bug
+    -- somehow adding an Last-Modified header on scripts causes Webkit to load
+    -- scripts multiple times. see processModificationTime in Utils.hs...
+    -- try commenting out parts of that function to inhibit the bug
+    [] remove run-source-js-once hack in Source.js when we do
 
 Source Editor
     [] On source editing cancel, if the text was changed, show a button
