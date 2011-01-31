@@ -43,10 +43,16 @@ Content
 
 Source Editor
     [+m] better editing indicator: adding padding resizes and looks bad
-    [] expand/close icon on preview header
+    [?] expand/close icon on preview header
+    [] expand/close icon on error header
+    [] run/edit rocker switch logic
+        [x] basic logic
+        [x] rocker image
+        [] run when edited logic (alert w/Save/Go Back)
+        [] pop-out preview into own window (and leave there)
     [] line number alignment on Chrome and FF
     [] handling multiple error messages on a given line
-    [] push top save/cancel buttons to top right of title
+    [x] push top save/cancel buttons to top right of title
     [] keep rendering preview closed first time (revive preview arg)
     [] add tutorial next,prev links, w/titles to footer
     [] add tutorial index (expandy) to sidebar

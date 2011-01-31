@@ -249,11 +249,35 @@ body.with-topbar {
 
 #rocker {
   position: absolute;
-  width: 10em;
+  width: 104px;
   text-align: right;
   top: 0;
   right: 0;
 }
+
+#rocker a {
+  display: inline-block;
+  width: 52;
+  text-align: center;
+  padding-top: 34px;
+  text-decoration: none;
+}
+
+#rocker-run-image,
+#rocker-edit-image {
+  background-image: url(switches.png);
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 104px;
+  height: 36px;
+  z-index: -1;
+}
+
+#rocker-edit-image { background-position: 0 -36px; } 
+#rocker-run-image { background-position: 0 0px; } 
+
 
 .button-set button,
 .button-set input[type=button] {
@@ -266,15 +290,6 @@ body.with-topbar {
   margin: 0.5em 0 1em;
 }
 
-#editor .button-set {
-  position: absolute;
-  right: 0;
-  top: 2em;
-}
-
-#editor #editor-box + .button-set {
-  position: inherit;
-}
 
 #editor-box {
   font-family:monospace;

@@ -64,23 +64,23 @@ $('.btn-cancel').click(mkReadOnly);
 mkReadOnly();
 
 
-var rockerRun = $('#rocker-run');
-var rockerEdit = $('#rocker-edit');
 var preview = $('#preview');
 var editor = $('#editor');
+var editImage = $('#rocker-edit-image');
+var runImage = $('#rocker-run-image');
 
-var showHide = function(pShow, pHide, rEnable, rDisable) {
+var showHide = function(pShow, pHide, iIn, iOut) {
     pShow.slideDown('fast');
     pHide.slideUp('fast');
-    bEnable(rEnable);
-    bDisable(rDisable);
+    iIn.fadeIn('fast');
+    iOut.fadeOut('fast');
 }
 
-var mkRun = function () { showHide(preview, editor, rockerEdit, rockerRun); }
-var mkEdit = function() { showHide(editor, preview, rockerRun, rockerEdit); }
+var mkRun = function () { showHide(preview, editor, runImage, editImage); }
+var mkEdit = function() { showHide(editor, preview, editImage, runImage); }
 
-rockerRun.click(mkRun);
-rockerEdit.click(mkEdit);
+$('#rocker-run').click(mkRun);
+$('#rocker-edit').click(mkEdit);
 
 
 $('.panel h1').click(function () { $('.panel-content').slideToggle('fast'); });

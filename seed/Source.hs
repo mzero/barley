@@ -73,15 +73,16 @@ srcPage si contents showPreview = devpage ("Source of " ++ srcPath si)
         , editor contents
         ]
     rocker = thediv ! [identifier "rocker", theclass "button-set"] <<
-                [ tag "button" ! [identifier "rocker-edit"] << "Edit"
-                , tag "button" ! [identifier "rocker-run"] << "Run"
+                [ thediv ! [identifier "rocker-edit-image"] << noHtml
+                , thediv ! [identifier "rocker-run-image", displayHidden] << noHtml
+                , anchor ! [identifier "rocker-edit", href "#"] << "Edit"
+                , anchor ! [identifier "rocker-run", href "#"] << "Run"
                 ]
 
 editor :: String -> Html    
 editor contents = thediv ! [identifier "editor", displayHidden] <<
     [ errors
-    , form ! [Html.method "POST"] <<
-        [btns, editorBox, btns, hidden]
+    , form ! [Html.method "POST"] << [editorBox, btns, hidden]
     ]
   where
     btns = thediv ! [theclass "button-set"] <<
