@@ -60,21 +60,35 @@ mkSrcPage path showPreview = do
 
 srcPage :: SrcInfo -> String -> Bool -> Html
 srcPage si contents showPreview = devpage ("Source of " ++ srcPath si)
-    [ h1 << srcPath si
-    , p << small << srcFullPath si
---  , if showPreview then preview si else noHtml
-    , preview si
-    , errors
-    , form ! [Html.method "POST", identifier "edit-form"] <<
-        (btns ++ [editor] ++ btns ++ [hidden])
-    ]
+    content
     [ modFStat si, modActions si, modSearch]
     scriptSrcs
   where
-    btns = [ input ! [thetype "button", value "Cancel", theclass "btn-cancel"]
-           , input ! [thetype "submit", value "Save", theclass "btn-save"]
-           ]
-    editor = thediv ! [identifier "editor"] <<
+    content = thediv ! [identifier "source-page"] <<
+        [ h1 << srcPath si
+        , p << small << srcFullPath si
+        , rocker
+    --  , if showPreview then preview si else noHtml
+        , preview si
+        , editor contents
+        ]
+    rocker = thediv ! [identifier "rocker", theclass "button-set"] <<
+                [ tag "button" ! [identifier "rocker-edit"] << "Edit"
+                , tag "button" ! [identifier "rocker-run"] << "Run"
+                ]
+
+editor :: String -> Html    
+editor contents = thediv ! [identifier "editor", displayHidden] <<
+    [ errors
+    , form ! [Html.method "POST"] <<
+        [btns, editorBox, btns, hidden]
+    ]
+  where
+    btns = thediv ! [theclass "button-set"] <<
+            [ input ! [thetype "button", value "Cancel", theclass "btn-cancel"]
+            , input ! [thetype "submit", value "Save", theclass "btn-save"]
+            ]
+    editorBox = thediv ! [identifier "editor-box"] <<
                 textarea ! [theclass "src", name "contents",
                     identifier "txt-src", strAttr "readonly" "readonly" ]
                 << contents
@@ -84,18 +98,20 @@ preview :: SrcInfo -> Html
 preview = maybe noHtml build . previewPath
   where
     build path = 
-        thediv ! [ theclass "panel with-preview", thestyle "display: none;" ] <<
+        thediv ! [ identifier "preview"
+                 , theclass "panel with-preview"
+                 , displayHidden ] <<
             [ h1 << "Rendering Preview"
-            , tag "iframe"
-                ! [identifier "preview", theclass "panel-content"]
-                << noHtml
-            , p ! [identifier "preview-url", thestyle "display: none;" ] << path
+            , tag "iframe" ! [ theclass "panel-content" ] << noHtml
+            , p ! [ identifier "preview-url", displayHidden ] << path
             ]
 
 errors :: Html
-errors = thediv ! [theclass "panel with-errors", thestyle "display: none;"] <<
+errors = thediv ! [ identifier "errors"
+                  , theclass "panel with-errors"
+                  , displayHidden] <<
             [ h1 << "Compilation Errors"
-            , pre ! [ identifier "errors", theclass "panel-content"] << noHtml
+            , pre ! [ theclass "panel-content", displayHidden ] << noHtml
             ]
             
 modFStat :: SrcInfo -> Html
@@ -147,3 +163,5 @@ scriptSrcs =
     , "Source.js"
     ]
 
+displayHidden :: HtmlAttr
+displayHidden = thestyle "display: none;"
