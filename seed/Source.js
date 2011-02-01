@@ -47,10 +47,7 @@ var editor = CodeMirror.fromTextArea("txt-src", {
     enterMode: "keep",
     minHeight: 160,
     height: "dynamic",
-    markParen: function(node, ok) {
-        $(node).addClass(ok ? "paren-match" : "paren-error"); },
-    unmarkParen: function(node) {
-        $(node).removeClass("paren-match").removeClass("paren-error"); },
+    markParen: ["paren-match", "paren-error"],
     cursorActivity: function(node) {
         var sel = editor.selection();
         if (!sel) { sel = node.innerText || node.textContent; }
