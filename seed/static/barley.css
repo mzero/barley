@@ -327,7 +327,7 @@ body.with-topbar {
 
 .error-details {
   display: none;
-  position: fixed;
+  position: absolute;
   text-align: left;
   background-color: #ffe5e5;
   margin: 0;

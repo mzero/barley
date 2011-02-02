@@ -89,12 +89,10 @@ var previewUrl = $('#preview-url').text();
 
 var setErrorDetailAdjust = function(ln, lnp) {
     ln.hover(function () {
-            var offset = ln.offset();
-            lnp.css({
-                'position': "absolute",
-                'top': offset.top + ln.height(),
-                'left': offset.left + ln.width() * 1.3
-                });
+            var w = ln.offset();
+            w.top  += ln.height();
+            w.left += ln.width() * 1.3;
+            lnp.css(w);
             lnp.show('fast');
             },
         function () {
@@ -125,8 +123,8 @@ var compileResult = function(data, status, xhr) {
                 if (e) {
                     ln = lns.eq(e[1]-1);
                     ln.addClass('error-line');
-                    $('body').append('<pre class="error-details"></pre>');
-                    lnp = $('body').children().last();
+                    lnp = $('<pre class="error-details"></pre>')
+                    lnp.appendTo($('body'));
                     setErrorDetailAdjust(ln, lnp);
                 }
                 else if (lnp) {
