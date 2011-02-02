@@ -68,8 +68,7 @@ srcPage si contents showPreview = devpage ("Source of " ++ srcPath si)
         [ h1 << srcPath si
         , p << small << srcFullPath si
         , rocker
-    --  , if showPreview then preview si else noHtml
-        , preview si
+        , preview showPreview si
         , editor contents
         ]
     rocker = thediv ! [identifier "rocker", theclass "button-set"] <<
@@ -95,8 +94,8 @@ editor contents = thediv ! [identifier "editor", displayHidden] <<
                 << contents
     hidden = input ! [thetype "hidden", name "preview", value "1"]
                   
-preview :: SrcInfo -> Html
-preview = maybe noHtml build . previewPath
+preview :: Bool -> SrcInfo -> Html
+preview showPreview = maybe noHtml build . previewPath
   where
     build path = 
         thediv ! [ identifier "preview"
@@ -105,8 +104,13 @@ preview = maybe noHtml build . previewPath
             [ h1 << "Rendering Preview"
             , tag "iframe" ! [ theclass "panel-content" ] << noHtml
             , p ! [ identifier "preview-url", displayHidden ] << path
+            , showMarker
             ]
-
+    showMarker =
+        if showPreview
+        then thediv ! [ identifier "preview-show", displayHidden ] << noHtml
+        else noHtml
+        
 errors :: Html
 errors = thediv ! [ identifier "errors"
                   , theclass "panel with-errors"

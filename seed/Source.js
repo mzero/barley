@@ -76,7 +76,10 @@ var showHide = function(pShow, pHide, iIn, iOut) {
 var mkRun = function () { showHide(preview, editor, runImage, editImage); }
 var mkEdit = function() { showHide(editor, preview, editImage, runImage); }
 
-$('#rocker-run').click(mkRun);
+$('#rocker-run').click(function() {
+        mkRun();
+        if (editable) $('#editor form').submit();
+    });
 $('#rocker-edit').click(mkEdit);
 
 
@@ -100,12 +103,15 @@ var setErrorDetailAdjust = function(ln, lnp) {
 }
 var compileResult = function(data, status, xhr) {
     if (data == "OK") {
-        $('#preview .panel-content').hide();
-        $('#preview iframe').attr('src', previewUrl);
-        setTimeout(function() {
-            $('#preview .panel-content').show('fast');
-            }, 500);
-        mkRun();
+        if ($('#preview').length > 0) {
+            $('#preview .panel-content').hide();
+            $('#preview iframe').attr('src', previewUrl);
+            setTimeout(function() {
+                $('#preview .panel-content').show('fast');
+                }, 500);            
+            if ($('#preview-show').length > 0)  mkRun();
+            else                                mkEdit();
+        }
     }
     else {
         setTimeout(function () {
