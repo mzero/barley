@@ -15,6 +15,7 @@
 module Source where
 
 import DevUtils
+import Tutorial
 
 import Control.Monad (when)
 import Control.Monad.IO.Class
@@ -61,7 +62,7 @@ mkSrcPage path showPreview = do
 srcPage :: SrcInfo -> String -> Bool -> Html
 srcPage si contents showPreview = devpage ("Source of " ++ srcPath si)
     content
-    [ modFStat si, modActions si, modSearch]
+    [ modFStat si, modActions si, modTutorial si, modSearch]
     scriptSrcs
   where
     content = thediv ! [identifier "source-page"] <<
@@ -135,6 +136,12 @@ modActions si = (h2 << "Actions") +++
               , fileLink si
               ])
 
+modTutorial :: SrcInfo -> Html
+modTutorial si = maybe noHtml (tutorialModule mkLink) $ previewPath si
+  where
+    mkLink = (++ ".hs") . ("source?file=" ++)
+    -- TODO: just adding .hs seems like a hack
+    
 modSearch :: Html
 modSearch = (h2 << "Research") +++
     [ form ! [action "http://holumbus.fh-wedel.de/hayoo/hayoo.html"
