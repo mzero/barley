@@ -62,7 +62,7 @@ mkSrcPage path showPreview = do
 srcPage :: SrcInfo -> String -> Bool -> Html
 srcPage si contents showPreview = devpage ("Source of " ++ srcPath si)
     content
-    [ modFStat si, modActions si, modTutorial si, modSearch]
+    (modules si)
     scriptSrcs
   where
     content = thediv ! [identifier "source-page"] <<
@@ -94,7 +94,7 @@ editor contents = thediv ! [identifier "editor", displayHidden] <<
                     identifier "txt-src", strAttr "readonly" "readonly" ]
                 << contents
     hidden = input ! [thetype "hidden", name "preview", value "1"]
-                  
+    
 preview :: Bool -> SrcInfo -> Html
 preview showPreview = maybe noHtml build . previewPath
   where
@@ -119,7 +119,14 @@ errors = thediv ! [ identifier "errors"
             [ h1 << "Compilation Errors"
             , pre ! [ theclass "panel-content", displayHidden ] << noHtml
             ]
-            
+
+modules :: SrcInfo -> [Html]
+modules si = catMaybes
+    [ Just $ modFStat si
+    , Just $ modActions si
+    , modTutorial si
+    , Just modSearch]
+     
 modFStat :: SrcInfo -> Html
 modFStat si = (h2 << "File Info") +++
     if srcExists si
@@ -136,8 +143,8 @@ modActions si = (h2 << "Actions") +++
               , fileLink si
               ])
 
-modTutorial :: SrcInfo -> Html
-modTutorial si = maybe noHtml (tutorialModule mkLink) $ previewPath si
+modTutorial :: SrcInfo -> Maybe Html
+modTutorial si = previewPath si >>= tutorialModule mkLink 
   where
     mkLink = (++ ".hs") . ("source?file=" ++)
     -- TODO: just adding .hs seems like a hack

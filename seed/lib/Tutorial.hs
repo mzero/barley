@@ -52,12 +52,14 @@ tutorialPrev = join . fmap fst . lookupIn pagePrevNext
 tutorialNext :: String -> Maybe String
 tutorialNext = join . fmap snd  . lookupIn pagePrevNext
 
-tutorialModule :: (String -> String) -> String -> Html
-tutorialModule mkLink t = (h2 << "Tutorial") +++
-    [ p << (toHtml "Prev: " +++ linkTo (tutorialPrev t))
-    , p << (toHtml "Next: " +++ linkTo (tutorialNext t))
-    ]
+tutorialModule :: (String -> String) -> String -> Maybe Html
+tutorialModule mkLink t =
+    if isTutorialPage t then Just modHtml else Nothing
   where
+    modHtml = (h2 << "Tutorial") +++
+        [ p << (toHtml "Prev: " +++ linkTo (tutorialPrev t))
+        , p << (toHtml "Next: " +++ linkTo (tutorialNext t))
+        ]
     linkTo = maybe (toHtml "--none--") asLink
     asLink u = anchor ! [href $ mkLink u] << u
     
