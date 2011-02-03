@@ -53,9 +53,10 @@ Source Editor
         - removed them
     [+m] keep rendering preview closed first time (revive preview arg)
     [m] line number alignment on Chrome and FF
-    [m] handling multiple error messages on a given line
-    [m] add tutorial next,prev links, w/titles to footer
-    [m] add tutorial index (expandy) to sidebar
+    [+m] handling multiple error messages on a given line
+    [+m] add tutorial next,prev links
+    [] add tutorial index (expandy) to sidebar
+    [] add some other more prominent tutorial next link
     [?] expand/close icon on preview header
     [] expand/close icon on error header
     [] pop-out preview into own window (and leave there)

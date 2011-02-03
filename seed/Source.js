@@ -114,18 +114,25 @@ var compileResult = function(data, status, xhr) {
     else {
         setTimeout(function () {
             var lns = $('.CodeMirror-line-numbers div');
-            var ln, lnp;
+            var ln, lnp, lnps = [];
             
             var r = /\.hs:(\d+):(\d+):$/;
             var dataLines = data.split("\n")
             for (var i in dataLines) {
                 var e = dataLines[i].match(r);
                 if (e) {
-                    ln = lns.eq(e[1]-1);
-                    ln.addClass('error-line');
-                    lnp = $('<pre class="error-details"></pre>')
-                    lnp.appendTo($('body'));
-                    setErrorDetailAdjust(ln, lnp);
+                    var n = e[1];
+                    if (lnps[n]) {
+                        lnp = lnps[n]
+                    }
+                    else {
+                        ln = lns.eq(n-1);
+                        ln.addClass('error-line');
+                        lnp = $('<pre class="error-details"></pre>')
+                        lnp.appendTo($('body'));
+                        setErrorDetailAdjust(ln, lnp);
+                        lnps[n] = lnp;
+                    }
                 }
                 else if (lnp) {
                     var l = dataLines[i];
