@@ -156,5 +156,8 @@ if (previewUrl) {
         dataType: "text"
         });
 }
+else {
+    mkEdit();
+}
 
 })
