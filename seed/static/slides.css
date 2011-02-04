@@ -1,0 +1,101 @@
+/* @override http://localhost:8080/static/slides.css */
+
+/* @group Basics */
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  margin: 0.5em 0;
+}
+
+ul, ol, dl {
+  margin: 0.5em 3em;
+}
+
+pre {
+  margin: 1em 0;
+  overflow: auto;
+}
+
+.src {
+  padding: 0.5em 1em;
+  background: rgb(229,237,244);
+}
+
+/* @end */
+
+/* @group Fonts & Sizes */
+
+/* Basic technique & IE workarounds from YUI 3
+   For reasons, see:
+      http://yui.yahooapis.com/3.1.1/build/cssfonts/fonts.css
+ */
+
+body {
+  font:16px/1.375 "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;;
+  *font-size:small; /* for IE */
+  *font:x-small; /* for IE in quirks mode */
+  color: #424242;
+  background: #ddddcf;
+}
+
+h1 {
+  color: #cc2900;
+}
+h1, h2, h3 {
+  font-family: Skia, "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+
+h1 { font-size: 150%;   /* 24pt */ } 
+h2 { font-size: 112.5%; /* 18pt */ }
+h3 { font-size: 100%;   /* 16pt */ }
+
+p small {
+  font-size: 81.25%; /* 13pt */
+}
+
+pre, code, kbd, samp, tt, .src {
+  font-family:monospace;
+  *font-size:108%;
+  line-height: 124%;
+}
+
+/* @end */
+
+.slide {
+  background: #fff;
+  width: 31em;
+  border: 1px solid #818181;
+  height: 17em;
+  margin: 2em;
+  padding: 0.5em;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.title-slide {
+  text-align: center;
+}
+
+.title-slide h1 {
+  font-size: 200%;  /* 32pt */
+  margin-top: 3em;
+  margin-bottom: 0.5em;
+}
+
+#controls {
+  margin: 2em;
+  text-align: right;
+  width: 32em;
+  position: absolute;
+  top: 19em;
+  left: 0;
+}
+
+#prev-slide {
+  float: left;
+} 
