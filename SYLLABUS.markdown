@@ -108,3 +108,162 @@ Ch 2: Guessing Game
 * Step 2: Encoding state
     - string functions, appending
     - 
+
+Other Syllabi
+-------------
+LYAH's "Starting Out"
+    numbers, negative numbers
+    numeric expressions
+    boolean expressions
+    == and /=
+    succ, min, max
+    
+    defining a simple function
+    if then else
+    let (in ghci)
+    [1,2,3] notation
+    ++
+    "abc" is a list
+    :
+    !!
+    nested lists
+    comparisons on lists
+    head, tail, last init
+    length
+    null
+    reverse
+    take drop
+    
+    maximum
+    sum
+    product
+    elem
+    `elem` notation
+    [1..20] notation, and with chars, and with steps
+    
+    cycle, repeat, replicate
+    
+    list comprehension syntax
+    
+    2-tuples
+    fst snd
+    zip
+    
+    
+    
+RWH's "Starting Out"
+    numbers, negative numbers
+    numeric expressions
+    boolean expressions
+    ==, /= comparisons
+    
+    let (in ghci)
+    
+    [1,2,3] notation
+    []
+    [1..] notation, with steps
+    ++ :
+    strings, chars, lists
+    
+    script: main, interact, show, lines
+    
+    
+RWH's "Types and Functions"
+    Char, Bool, Int, Integer, Double
+    function application
+    odd, compare, sqrt
+    head, tail, 
+    2-tuples
+    take, drop
+    fst, snd
+    lines
+    
+    declaration vs. assignment
+    
+    
+
+bos' intro
+-1-
+    * functional is normal: computation / unix pipes
+    * brain twisting goodness
+    * basic expressions
+    * simply program (compile, main)
+    * function application
+    * module edit/load cycle
+    * wordCount program
+    * sort program
+    * lists
+    * numberLines program
+    * recursive function
+    * HW: fgrep program (via isInfixOf)
+-2-
+    * list constructors
+    * guards over if-then-else
+    * pattern match (via myLength)
+    * myLength, myHead, myTail
+    * pattern match failure
+    * strings are lists
+    * more pattern matching
+    * HW: nth, lastButOne, isPalindrome
+-3-
+    * types
+    * basic types: Int, Char, Boolean, Double, Integer
+    * type signatures ::
+    * ...are optional
+    * function types
+    * functions with multiple args
+    * tuples
+    * fst3, snd3, thd3
+    * list types, String
+    * type synonyms
+    * drop is polymorphic
+    * type variables in signatures
+    * the type of filter
+    * type inference and bizarre outcomes
+    * reading types
+    * inferring from types
+    * HW: myZipWith, ucFirst
+-4-
+    * data (via Quaternion)
+    * constructors
+    * using your type in a function
+    * pattern match on constructor
+    * _
+    * :info, :type
+    * compare w/C++, Python
+    * equality of user type
+    * operator as function, function as operator
+    * typeclass --- Eq
+    * instance of Eq for quaternion
+    * class constraint on elem
+    * enum-like data
+    * Show class
+    * deriving, Eq, ord, Bounded, Enum, Show
+    * HW: :info those classes
+    * HW: angle classification, convexHull
+-5-
+    * Num and Ord typeclasses, applied to Quaternion
+    * typeclass laws... implied
+    * failure and Maybe
+    * safeDiv, safeHead
+    * mapMaybe (where was map?)
+    * binary trees
+    * map, mapMaybe, mapTree --> Functor!
+    * HW: tree insert, tree contains
+-6-
+    * short circuit operators
+    * strict vs. non-strict
+    * non-strict... as lazy... as call-by-need... w/memoization
+    * finding the commonality in map and bunzip -> foldr
+    * func. composition, lambda
+    * foldl vs. foldr and stack overflow
+    * seq and foldl'
+    * HW: writing lots of things with folds
+-7-
+    * count words over files listed as args
+    * do notation
+    * imports
+    * 
+
+
+    

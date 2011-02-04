@@ -55,6 +55,9 @@ Source Editor
     [m] line number alignment on Chrome and FF
     [+m] handling multiple error messages on a given line
     [+m] add tutorial next,prev links
+    [] either sprout a scroll bar, or grow when adding lines to the source text
+    [] viewing lib files doesn't show editor
+    
     [] add tutorial index (expandy) to sidebar
     [] add some other more prominent tutorial next link
     [?] expand/close icon on preview header
@@ -69,6 +72,9 @@ Compilation
         [-m] clear compilation state user control per file and/or whole
     [-m] be certain that we can unload w/o breaking
         (thinking about dangling thunks)
+    [] editing an included, but not viewed module should trigger recompile
+        for modules that use
+
     [] be certain that loading is safe in light of type mismatches
     [] catch error and exceptions during template running
     [] replace source on error rendering with link to source editor
@@ -162,8 +168,6 @@ Compilation
         -- currently referenced modules are build correctly
         -- but the top level module is placed/looked for in wrong .build dir
         -- if the top level module is in a sub dir: say, Tools/Source.hs
-    [] editing an included, but not viewed module should trigger recompile
-        for modules that use
     [] how to handle when the user wants to use some other package?
     [?] Source.hs includes stuff from Barley/Utils.hs as it has no way to import
         that - should it? can it?
