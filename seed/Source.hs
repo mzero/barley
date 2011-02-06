@@ -141,6 +141,9 @@ modActions si = (h2 << "Actions") +++
               --, Just $ italics << "Revert"
               , downloadLink si
               , fileLink si
+              , Just (anchor ! [ identifier "recompile",
+                                    theclass "op-recompile", href "#" ]
+                            << "Force Recompile")
               ])
 
 modTutorial :: SrcInfo -> Maybe Html

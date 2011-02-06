@@ -81,6 +81,10 @@ $('#rocker-run').click(function() {
         if (editable) $('#editor form').submit();
     });
 $('#rocker-edit').click(mkEdit);
+$('#recompile').click(function() {
+        $('#editor form').submit();
+        return false;
+    });
 
 
 $('.panel h1').click(function () { $('.panel-content').slideToggle('fast'); });

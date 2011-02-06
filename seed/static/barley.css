@@ -454,6 +454,7 @@ table#filelist {
 .op-edit { background-image: url(silk/pencil.png); }
 .op-download { background-image: url(silk/arrow_down.png); }
 .op-file { background-image: url(silk/link.png); }
+.op-recompile { background-image: url(silk/lightning.png); }
 
 /* @end */
 
