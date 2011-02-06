@@ -14,7 +14,7 @@ slideDeck title slides =
                    thetype "text/css"] << noHtml
         ]
     +++
-    body << (slides ++ [buttons] ++ scripts)
+    body << (slideArea : buttons : scripts)
   where
     buttons = thediv ! [ identifier "controls" ] <<
         [ anchor ! [ identifier "prev-slide", href "#" ] << "prev"
@@ -22,6 +22,7 @@ slideDeck title slides =
         ]
     scripts = map mkScript [ "/static/jquery.js", "/static/Slides.js" ]
     mkScript s = tag "script" ! [ thetype "text/javascript", src s ] << noHtml
+    slideArea = thediv ! [ identifier "slides" ] << slides
 
 titleSlide :: String -> [String] -> Html
 titleSlide heading subHeadings =

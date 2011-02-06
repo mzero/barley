@@ -1,17 +1,18 @@
 var slides = $('.slide');
 
-for (i in slides) {
-    if (i > 0) slides.eq(i).hide();
-}
-
 var currSlide = 0;
 var numSlides = slides.length;
 
-var fullWidth = slides.eq(0).css('width');
+var fullWidth = slides.eq(0).outerWidth() + 32; // space between slides
 
-var inState       = { opacity: 'show', left: 0, width: fullWidth }
-var outRightState = { opactiy: 'hide', left: fullWidth,  width: 0 }
-var outLeftState  = { opactiy: 'hide', left: 0,  width: 0 }
+var inState       = { left: 0 }
+var outRightState = { left: fullWidth }
+var outLeftState  = { left: -fullWidth }
+var speed = 'fast';
+
+for (i in slides) {
+    if (i > 0) slides.eq(i).css({left: fullWidth});
+}
 
 var out
 var gotoSlide = function (nextSlide) {
@@ -24,13 +25,13 @@ var gotoSlide = function (nextSlide) {
     
     if (nextSlide > currSlide) {
         ns.css(outRightState);
-        cs.animate(outLeftState, 'fast');
+        cs.animate(outLeftState, speed);
     }
     else {
         ns.css(outLeftState);
-        cs.animate(outRightState, 'fast');
+        cs.animate(outRightState, speed);
     }
-    ns.animate(inState, 'fast');
+    ns.animate(inState, speed);
     
     currSlide = nextSlide;
 }
