@@ -346,6 +346,14 @@ body.with-topbar {
   background: #ffffe5;
 }
 
+#editor-box .CodeMirror-wrapping .editor-column-marker {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  left: 4em;
+  background-color: transparent;
+  border-left: 1px dashed #e0e0b4;
+}
 .panel {
   background-color: #eee7b9;
   width: 99%;

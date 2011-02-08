@@ -34,29 +34,6 @@ var mkReadOnly = function() {
     editable = false;
 };
 
-
-var editor = CodeMirror.fromTextArea("txt-src", {
-    basefiles: ["/static/codemirror_base_min.js"],
-    parserfile: ["/static/codemirror_parse_haskell.js"],
-    stylesheet: "/static/codemirror.css",
-    autoMatchParens: true,
-    textWrapping: false,
-    lineNumbers: true,
-    indentUnit: 4,
-    tabMode: "shift",
-    enterMode: "keep",
-    minHeight: 160,
-    height: "dynamic",
-    markParen: ["paren-match", "paren-error"],
-    cursorActivity: function(node) {
-        var sel = editor.selection();
-        if (!sel) { sel = node.innerText || node.textContent; }
-        var mat = sel.match(/\S(.*\S)?/);
-        if (mat) { $('.research-query').val(mat[0]); }
-        },
-    onChange: mkEditable
-});
-
 $('.btn-cancel').click(mkReadOnly);
 mkReadOnly();
 
@@ -76,18 +53,60 @@ var showHide = function(pShow, pHide, iIn, iOut) {
 var mkRun = function () { showHide(preview, editor, runImage, editImage); }
 var mkEdit = function() { showHide(editor, preview, editImage, runImage); }
 
-$('#rocker-run').click(function() {
+var run = function() {
         mkRun();
         if (editable) $('#editor form').submit();
-    });
-$('#rocker-edit').click(mkEdit);
-$('#recompile').click(function() {
+    }
+var recompile = function() {
         $('#editor form').submit();
         return false;
-    });
+    }
 
+$('#rocker-run').click(run);
+$('#rocker-edit').click(mkEdit);
+$('#recompile').click(recompile);
 
 $('.panel h1').click(function () { $('.panel-content').slideToggle('fast'); });
+
+
+
+var cmEditor = CodeMirror.fromTextArea("txt-src", {
+    basefiles: ["/static/codemirror_base_min.js"],
+    parserfile: ["/static/codemirror_parse_haskell.js"],
+    stylesheet: "/static/codemirror.css",
+    autoMatchParens: true,
+    textWrapping: false,
+    lineNumbers: true,
+    indentUnit: 4,
+    tabMode: "shift",
+    enterMode: "keep",
+    minHeight: 160,
+    height: "dynamic",
+    markParen: ["paren-match", "paren-error"],
+    onCursorActivity: function(node) {
+        var sel = cmEditor.selection();
+        if (!sel) { sel = node.innerText || node.textContent; }
+        var mat = sel.match(/\S(.*\S)?/);
+        if (mat) { $('.research-query').val(mat[0]); }
+        },
+    onChange: mkEditable,
+    saveFunction: run,
+    onLoad: function() {
+            var m = $('<div class="editor-column-marker"></div>')
+            m.appendTo($('.CodeMirror-wrapping'));
+            var x = "0123456789";
+            x = x + x + x + x + x + x + x + x;
+            m.text(x);
+            var w = m.innerWidth() + $('.CodeMirror-line-numbers').outerWidth();
+            m.text('');
+            m.css('width', '10em');
+            var v = m.width();
+            m.css({ left: (w/v*10)+"em", width: '' });
+        }
+});
+
+
+
 
 var previewUrl = $('#preview-url').text();
 
