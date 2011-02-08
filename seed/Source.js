@@ -38,6 +38,24 @@ $('.btn-cancel').click(mkReadOnly);
 mkReadOnly();
 
 
+var buildColumnMarker = function () {
+  $('<div class="editor-column-marker"></div>')
+    .appendTo($('.CodeMirror-wrapping'));
+};
+
+var adjustColumnMarker = function () {
+  var m = $('.editor-column-marker');
+  var x = "0123456789";
+  x = x + x + x + x + x + x + x + x;
+  m.text(x);
+  var w = m.innerWidth() + $('.CodeMirror-line-numbers').outerWidth();
+  m.text('');
+  m.css('width', '10em');
+  var v = m.width();
+  m.css({ left: (w/v*10)+"em", width: '' });
+}
+
+
 var preview = $('#preview');
 var editor = $('#editor');
 var editImage = $('#rocker-edit-image');
@@ -51,7 +69,8 @@ var showHide = function(pShow, pHide, iIn, iOut) {
 }
 
 var mkRun = function () { showHide(preview, editor, runImage, editImage); }
-var mkEdit = function() { showHide(editor, preview, editImage, runImage); }
+var mkEdit = function() { showHide(editor, preview, editImage, runImage);
+                          setTimeout(adjustColumnMarker, 500); }
 
 var run = function() {
         mkRun();
@@ -91,18 +110,7 @@ var cmEditor = CodeMirror.fromTextArea("txt-src", {
         },
     onChange: mkEditable,
     saveFunction: run,
-    onLoad: function() {
-            var m = $('<div class="editor-column-marker"></div>')
-            m.appendTo($('.CodeMirror-wrapping'));
-            var x = "0123456789";
-            x = x + x + x + x + x + x + x + x;
-            m.text(x);
-            var w = m.innerWidth() + $('.CodeMirror-line-numbers').outerWidth();
-            m.text('');
-            m.css('width', '10em');
-            var v = m.width();
-            m.css({ left: (w/v*10)+"em", width: '' });
-        }
+    onLoad: function() { buildColumnMarker(); }
 });
 
 
