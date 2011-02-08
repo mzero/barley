@@ -3,31 +3,54 @@ module Step1 where
 import Slides
 
 page = slideDeck "Chapter 1: Intro"
-    [ titleSlide "Intro to Haskell"
-        [ "Chapter 1"
-        , "The Barley Project"
+    [ titleSlide "Chapter 1"
+        [ "What's all this about Haskell?"
+        , "Getting your feet wet."
         ]
-    , pointSlide "Welcome!"
-        "This is going to be:"
-        [ "Fun!"
-        , "Hands on"
+    , pointSlide "Haskell"
+        "Haskell seems scary 'cause:"
+        [ "Oh noes! Where's my state?"
+        , "Hey, I don't want my program to be lazy!"
+        , "Yo, PHP doesn't need no templates or combintors..."
+        , "Uhm, I thought dynamic languages were better?"
+        , "MONADS!"
         ]
-    , pointSlide "What's up with Functional?"
-        "What does a program do?"
-        [ "It consumes old data."
-        , "It computes over the old data."
-        , "It produces new data."
+    , pointSlide "Haskell"
+        "But these are cool tools:"
+        [ "Functional."
+        , "Lazy"
+        , "Higher order Functions"
+        , "Static Types"
+        , "...shhhh: monads."
         ]
-    , pointSlide "A familiar program"
-        "Consider the Unix sort command:"
-        [ "Consumes (possibly unsorted) lines of text."
-        , "Sorts the lines."
-        , "Produces sorted lines of text."
+    , pointSlide "Haskell"
+        "This is what got us hooked:"
+        [ "It is a new way to thinking about programming"
+        , "It twists the brain in delightful way."
+        , "It is very expressive, yet concise and clear"
+        , "It is beautiful."
         ]
-    , pointSlide "What's functional programming?"
-        "Functional programming is a style of programming that emphasizes funtions \
-        \and function application."
-        [ ]
+    , codeSlide "Some familiar things"
+        "Consider these unix shell commands:"
+        [ "cat foo | sort"
+        , ""
+        , "cat foo | rev | head"
+        ]
+    , pointSlide "These are functional"
+        "What they do:"
+        [ "Take input"
+        , "Process the input."
+        , "Produce produce output."
+        , "Produce output as soon as they're able."
+        , "Don't modify any state."
+        , "In short, they are functional, pure, and lazy." 
+        ]
+     , pointSlide "Onward!"
+        "Now you're going to dive into actual coding."
+        [ "Be brave..."
+        , "Don't let the error messages throw you."
+        , "Just try it."
+        ]
     ]
 
         

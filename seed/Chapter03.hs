@@ -6,8 +6,8 @@ page = thehtml <<
     [ header << (thetitle << "Step 3")
     , body <<
         [ h1 << "Groceries"
-		, paragraph << "Stuff to get at the store:"
-		, ulist << fruit
+        , paragraph << "Stuff to get at the store:"
+        , ulist << fruit
         ]
     ]
 
@@ -38,4 +38,6 @@ aListOfNumbers = [6, 42, -1, 1000000]
 -- You can define sections of your own, and add them the same way, such as:
 
 footnote = paragraph << (small << "You are getting sleepy.")
+
+fruit = map (li <<) $ words "apple banana kiki"
 

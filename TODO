@@ -53,10 +53,13 @@ Source Editor
         - removed them
     [+m] keep rendering preview closed first time (revive preview arg)
     [m] line number alignment on Chrome and FF
+        - line height of body text is sometimes different
     [+m] handling multiple error messages on a given line
     [+m] add tutorial next,prev links
-    [] either sprout a scroll bar, or grow when adding lines to the source text
-    [] viewing lib files doesn't show editor
+    [+] force recompilation action
+    [+] viewing lib files doesn't show editor
+    [+] either sprout a scroll bar, or grow when adding lines to the source text
+    [+] 80 column bar (hokey, but sort of works)
     
     [] add tutorial index (expandy) to sidebar
     [] add some other more prominent tutorial next link
@@ -132,7 +135,7 @@ Source Editor
         -- support js, css, html, xml
     [] combine research text entry fields into one
     [] optional setting to get side-by-side for the preview and edit panels
-    [] 80 column line would sure be nice
+    [] more accurate 80 column line would sure be nice
     [?] switch icon set to Fugue icons
         
     [] click on error message -> line selection

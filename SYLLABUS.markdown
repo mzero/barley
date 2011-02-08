@@ -266,4 +266,29 @@ bos' intro
     * 
 
 
+
+Chapter Goals
+1: a numbered list
+    -- syntax
+    -- if-then-else
+    -- basic functions: head, tail, ++, show
+    -- recursion
+    -- type annotations
+    -- function application
+    -- operators
+
+2: a todo list
+    -- HTML
+    -- version w/if-then-else and recursion
+    -- version w/guards
+    -- version w/pattern matching
+    -- version w/higher order functions (map)
+    -- where clause
+    -- develop the numbered list in concert with the todo list
+
+3: todo list w/priority
+    -- 2-tuple
+    -- 3-tuple -> 
+    -- data types
+    -- 
     
