@@ -1,7 +1,8 @@
 module Slides (
     slideDeck,
     titleSlide,
-    pointSlide
+    pointSlide,
+    codeSlide,
     ) where
 
 import Text.Html
@@ -35,4 +36,36 @@ pointSlide heading leadIn points =
         [ h1 << heading
         , if null leadIn then noHtml else p << leadIn
         , ulist << map (li <<) points
+        ]
+
+codeSlide :: String -> String -> [String] -> Html
+codeSlide heading leadIn codeLines =
+    thediv ! [ theclass "slide code-slide" ] <<
+        [ h1 << heading
+        , if null leadIn then noHtml else p << leadIn
+        , pre << unlines codeLines
+        ]
+
+class SlideItem a where
+    render :: a -> Html
+    renderList :: [a] -> Html
+
+instance (SlideItem a) => SlideItem [a] where
+    render = renderList
+    renderList as = ulist << map ((li <<).render) as
+    
+instance SlideItem Char where 
+    render = toHtml . (:[])
+    renderList = toHtml
+
+instance SlideItem Html where
+    render = id
+    renderList hs = ulist << map (li <<) hs
+
+slide :: (SlideItem a) => String -> String -> a -> Html
+slide heading leadIn content = 
+    thediv ! [ theclass "slide" ] <<
+        [ if null heading then noHtml else h1 << heading
+        , if null leadIn then noHtml else p << leadIn
+        , render content
         ]
