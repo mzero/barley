@@ -6,21 +6,9 @@
 }
 
 body {
-  font:13px/1.4 "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
-  *font-size:small; /* for IE */
-  *font:x-small; /* for IE in quirks mode */
-}
-
-body.editbox {
-  font-family:monospace;
-  font-size: 93%; /* 12pt */
-  line-height: 124%;
+  font:12px/14px monospace;
   overflow: auto;
   padding: 1em 0;
-}
-
-body.editbox[readonly] {
-  background: rgb(229,237,244);
 }
 
 .paren-match { background-color: #9cc2fd; }
