@@ -16,7 +16,8 @@ module Tutorial(
     isTutorialPage,
     tutorialPrev,
     tutorialNext,
-    tutorialModule
+    tutorialModule,
+    tutorialOutlineModule,
     ) where
 
 import Control.Monad (join)
@@ -25,9 +26,16 @@ import Text.Html
 -- | The list of URL paths that are in the tutorial, in order.
 pageList :: [String]
 pageList =
-    [ "Chapter01"
-    , "Chapter02"
-    , "Chapter03"
+    [ "Chapter1/Step1"
+    , "Chapter1/Step2"
+    , "Chapter1/Step3"
+    , "Chapter1/Step4"
+    , "Chapter1/Step5"
+    , "Chapter1/Step6"
+    , "Chapter1/Step7"
+    , "Chapter2/Step21"
+    , "Chapter2/Step_2_2"
+    , "Chapter2/Step_2_3"
     ]
 
 -- | A assoc list that maps URLs in the tutorial to the previous and next URLs
@@ -63,3 +71,7 @@ tutorialModule mkLink t =
     linkTo = maybe (toHtml "--none--") asLink
     asLink u = anchor ! [href $ mkLink u] << u
     
+tutorialOutlineModule :: Html
+tutorialOutlineModule = (h2 << "Tutorial") +++ unordList (map asLink pageList)
+  where
+    asLink u = anchor ! [href $ "source?file=" ++ u ++ ".hs"] << u

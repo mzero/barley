@@ -150,10 +150,20 @@ pre, code, kbd, samp, tt, .src {
 #sidebar ul {
   margin: 0.5em 0;
 }
+
+#sidebar li {
+  padding: 0 0 2px;
+  margin: 0 0 0 1.5em;
+}
+
+#sidebar li a {
+  text-decoration: none;
+}
+
 #sidebar li.op {
   list-style-type: none;
 }
-#sidebar li a {
+#sidebar li.op a {
   background-repeat: no-repeat;
   padding: 0 0 0 22px;
   display: block;

@@ -83,7 +83,9 @@ Compilation
     [] replace source on error rendering with link to source editor
     [] enable -Wall, or at least -W things that most users want, like
         non-exhaustive patterns (just lost HOURS to this one!)
-
+    [] index.hs doesn't seem to compile as other pages do...
+        -- edit Index.hs and save: doesn't update, and doesn't compile dependencies.
+        
 Project View
     [] add file/dir button on dirs
         [] list of templates (from a templates dir)
