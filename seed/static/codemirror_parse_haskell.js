@@ -124,7 +124,7 @@ var HaskellParser = Editor.Parser = (function() {
       return "hs-error";
     }
     
-    function in_ncomment(type, nest) {
+    function ncomment(type, nest) {
       if (nest == 0) {
         return normal;
       }
