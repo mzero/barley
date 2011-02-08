@@ -79,6 +79,7 @@ compileTemplate filename = compileAndLoadFirst filename templateEntryPoints
     templateEntryPoints =
         [ entryPoint "handler" id
         , entryPoint "page" htmlResult
+        , entryPoint "output" stringResult
         ]
   
 -- | Run a compiled template as a Snap action.
