@@ -46,20 +46,20 @@ Executable barley
     Barley.Project
     
   Build-depends:
-    base < 4.3,
-    bytestring < 1.0,
-    containers < 0.4,
-    directory < 1.1,
-    filepath < 1.2,
-    ghc >= 6.10,
-    ghc-prim,
-    plugins >= 1.5.1.4,
-    snap-core == 0.2.*,
-    snap-server == 0.2.*,
-    html < 1.1.2,
-    text < 0.11,
-    unix,
-    transformers
+    base == 4.*,
+    bytestring == 0.9.*,
+    containers == 0.3.*,
+    directory == 1.0.*,
+    filepath == 1.1.*,
+    ghc >= 6.10 && < 6.13,
+    ghc-prim == 0.2.*,
+    plugins >= 1.5.1.4 && < 1.6,
+    snap-core == 0.4.*,
+    snap-server == 0.4.*,
+    html == 1.0.*,
+    text >= 0.7 && < 0.12,
+    unix == 2.4.*,
+    transformers == 0.2.*
 
   ghc-options: -Wall
   if impl(ghc >= 6.8)

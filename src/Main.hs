@@ -65,10 +65,13 @@ run pd = do
     enter pd
     let address = "*"
         port = 8080
-        hostname = "myserver"
+        config = foldr ($) emptyConfig
+            [ addListen (ListenHttp (C.pack address) port)
+            , setAccessLog (Just "access.log")
+            , setErrorLog (Just "error.log")
+            ]
     putStrLn $ "Running on http://localhost:" ++ show port ++ "/"
-    httpServe (C.pack address) port (C.pack hostname) (Just "access.log")
-        (Just "error.log") genericHandler
+    httpServe config genericHandler
 
 
 type CompiledTemplate = Either String (Snap ())
