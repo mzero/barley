@@ -100,6 +100,7 @@ import System.IO                ( hFlush, stdout )
 #endif
 import System.IO                ( hClose )
 
+ifaceModuleName :: ModIface -> String
 ifaceModuleName = moduleNameString . moduleName . mi_module
 
 readBinIface' :: FilePath -> IO ModIface
@@ -256,6 +257,7 @@ pdynload_ object incpaths pkgconfs args ty sym = do
 -- Also, pdynload() should accept extra in-scope modules.
 -- Maybe other stuff we want to hack in here.
 --
+unify :: FilePath -> [[Char]] -> [String] -> String -> String -> IO [String]
 unify obj incs args ty sym = do
         (tmpf,hdl)   <- mkTemp
         (tmpf1,hdl1) <- mkTemp  -- and send .hi file here.
@@ -283,6 +285,7 @@ unify obj incs args ty sym = do
             hierize' ('\\':cs) = '.' : hierize' cs
             hierize' (c:cs)   = c    : hierize' cs
 
+mkTest :: String -> String -> String -> String -> String -> String
 mkTest modnm plugin api ty sym = 
        "module "++ modnm ++" where" ++
        "\nimport qualified " ++ plugin  ++
@@ -617,7 +620,7 @@ loadPackage p = do
         putStr (' ':show libs) >> hFlush stdout
         putStr (' ':show dlls) >> hFlush stdout
 #endif
-	mapM_ loadShared dlls
+        mapM_ loadShared dlls
 
 
 
