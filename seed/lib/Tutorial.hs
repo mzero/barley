@@ -23,55 +23,64 @@ module Tutorial(
 import Control.Monad (join)
 import Text.Html
 
+data StepType = Slides | Code
+data Step = Step { stepUrl :: String, stepType :: StepType }
+
+stepLink :: Step -> Html
+stepLink (Step u t) = anchor ! [href $ "source?file=" ++ u ++ ".hs" ++ p t] << u
+  where
+    p Code = ""
+    p Slides = "&preview=1"
+
 -- | The list of URL paths that are in the tutorial, in order.
-pageList :: [String]
-pageList =
-    [ "Chapter1/Step_1_1"
-    , "Chapter1/Step_1_2"
-    , "Chapter1/Step_1_3"
-    , "Chapter1/Step_1_4"
-    , "Chapter1/Step_1_5"
-    , "Chapter1/Step_1_6"
-    , "Chapter1/Step_1_7"
-    , "Chapter2/Step_2_1"
-    , "Chapter2/Step_2_2"
-    , "Chapter2/Step_2_3"
+steps :: [Step]
+steps =
+    [ Step "Chapter1/Step_1_1" Slides
+    , Step "Chapter1/Step_1_2" Code
+    , Step "Chapter1/Step_1_3" Slides
+    , Step "Chapter1/Step_1_4" Code
+    , Step "Chapter1/Step_1_5" Slides
+    , Step "Chapter1/Step_1_6" Code
+    , Step "Chapter1/Step_1_7" Code
+    , Step "Chapter2/Step_2_1" Slides
+    , Step "Chapter2/Step_2_2" Code
+    , Step "Chapter2/Step_2_3" Code
     ]
+
+stepUrls :: [String]
+stepUrls = map stepUrl steps
 
 -- | A assoc list that maps URLs in the tutorial to the previous and next URLs
 -- in the list
-pagePrevNext :: [(String, (Maybe String, Maybe String))]
-pagePrevNext = zip pageList $ zip prevList nextList
+pagePrevNext :: [(String, (Maybe Step, Maybe Step))]
+pagePrevNext = zip stepUrls $ zip prevList nextList
   where
-    prevList = Nothing : justPageList
-    nextList = tail justPageList ++ [Nothing]
-    justPageList = map Just pageList
+    prevList = Nothing : justSteps
+    nextList = tail justSteps ++ [Nothing]
+    justSteps = map Just steps
 
 lookupIn :: (Eq k) => [(k, v)] -> k -> Maybe v
 lookupIn = flip lookup
 
 
 isTutorialPage :: String -> Bool
-isTutorialPage t = t `elem` pageList
+isTutorialPage t = t `elem` stepUrls
 
-tutorialPrev :: String -> Maybe String
+tutorialPrev :: String -> Maybe Step
 tutorialPrev = join . fmap fst . lookupIn pagePrevNext
 
-tutorialNext :: String -> Maybe String
+tutorialNext :: String -> Maybe Step
 tutorialNext = join . fmap snd  . lookupIn pagePrevNext
 
-tutorialModule :: (String -> String) -> String -> Maybe Html
-tutorialModule mkLink t =
+tutorialModule :: String -> Maybe Html
+tutorialModule t =
     if isTutorialPage t then Just modHtml else Nothing
   where
     modHtml = (h2 << "Tutorial") +++
         [ p << (toHtml "Prev: " +++ linkTo (tutorialPrev t))
         , p << (toHtml "Next: " +++ linkTo (tutorialNext t))
         ]
-    linkTo = maybe (toHtml "--none--") asLink
-    asLink u = anchor ! [href $ mkLink u] << u
+    linkTo = maybe (toHtml "--none--") stepLink
     
 tutorialOutlineModule :: Html
-tutorialOutlineModule = (h2 << "Tutorial") +++ unordList (map asLink pageList)
-  where
-    asLink u = anchor ! [href $ "source?file=" ++ u ++ ".hs"] << u
+tutorialOutlineModule = (h2 << "Tutorial") +++ unordList (map stepLink steps)

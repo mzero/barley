@@ -147,10 +147,7 @@ modActions si = (h2 << "Actions") +++
               ])
 
 modTutorial :: SrcInfo -> Maybe Html
-modTutorial si = previewPath si >>= tutorialModule mkLink 
-  where
-    mkLink = (++ ".hs") . ("source?file=" ++)
-    -- TODO: just adding .hs seems like a hack
+modTutorial si = previewPath si >>= tutorialModule 
     
 modSearch :: Html
 modSearch = (h2 << "Research") +++
