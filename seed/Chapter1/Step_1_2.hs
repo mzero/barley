@@ -6,7 +6,7 @@
 -- and a space to the end of the line is a comment. In these tutorials you should
 -- READ THE COMMENTS, because that is where we guide you through.
 
-module Step2 where
+module Step_1_2 where
 -- The line above just declares the name of this module, which keeps all the
 -- names of things defined here separate from things named in other files which
 -- are their own modules. This module is named Step2.

@@ -1,4 +1,4 @@
-module Step1 where
+module Step_1_1 where
 
 import Slides
 

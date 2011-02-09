@@ -1,4 +1,4 @@
-module Step6 where
+module Step_1_6 where
 
 import Data.List
 

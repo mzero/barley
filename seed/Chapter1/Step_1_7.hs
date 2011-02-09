@@ -1,4 +1,4 @@
-module Step7 where
+module Step_1_7 where
 
 -- Time to write your our first function
 

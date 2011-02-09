@@ -82,7 +82,7 @@ step4 = ("Do the Tutorial",
           \the page that will let you switch back and forth between editing the code \
           \and viewing the page that that code renders."
   , p << ("Start here: " 
-          +++ anchor ! [href "source?file=Chapter1/Step1.hs"] << "Chapter 1, Step 1")
+          +++ anchor ! [href "source?file=Chapter1/Step_1_1.hs&preview=1"] << "Chapter 1, Step 1")
   ])
   
 modMessage :: Html

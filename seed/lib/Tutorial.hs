@@ -26,14 +26,14 @@ import Text.Html
 -- | The list of URL paths that are in the tutorial, in order.
 pageList :: [String]
 pageList =
-    [ "Chapter1/Step1"
-    , "Chapter1/Step2"
-    , "Chapter1/Step3"
-    , "Chapter1/Step4"
-    , "Chapter1/Step5"
-    , "Chapter1/Step6"
-    , "Chapter1/Step7"
-    , "Chapter2/Step21"
+    [ "Chapter1/Step_1_1"
+    , "Chapter1/Step_1_2"
+    , "Chapter1/Step_1_3"
+    , "Chapter1/Step_1_4"
+    , "Chapter1/Step_1_5"
+    , "Chapter1/Step_1_6"
+    , "Chapter1/Step_1_7"
+    , "Chapter2/Step_2_1"
     , "Chapter2/Step_2_2"
     , "Chapter2/Step_2_3"
     ]
