@@ -30,11 +30,38 @@ page = slideDeck "Chapter 2: Lists"
         , "(cons 42 nil)                 -- a list of one value"
         , "(cons 1 (cons 2 (cons 3 []))) -- a list of three values"
         ]
+    , codeSlide "Watch out: Haskell's : ≠ Lisp's cons"
+        "In Lisp, cons puts any two things together. Not so in Haskell. In \
+        \Haskell : always takes an element on the left and a (possibly empty) \
+        \list on the right:"
+        [ "(cons 42 109)  -- legal in Lisp"
+        , "42 : 109       -- NOT legal in Haskell"
+        ]
+    , codeSlide "Watch out: Haskell's Lists must be homogeneous"
+        "In many languages list elements can be different types. Not so in \
+        \Haskell. In Haskell all elements of the list must be the same type."
+        [ "[2, \"bob\"]          -- legal in Python, Javascript, etc.."
+        , "[2, \"bob\"]          -- NOT legal in Haskell"
+        , "[[1,2,3], [10,20,30]] -- of course lists of lists are fine!"
+        ]
     , codeSlide "Syntatic Sugar"
         "In Haskell, the way we've been writing lists is just syntatic sugar \
         \for their construction with the : operator and []:"
         [ "[42]      == 42 : []"
         , "[1, 2, 3] ==  1 : 2 : 3 : []"
+        ]
+    , codeSlide "Watch out: Using the right form"
+        "It is easy get tripped up with the sugar. Make sure you see how these \
+        \pairs of expressions are the same work:"
+        [ "[1]   ==  1  : []"
+        , "[[1]] == [1] : []"
+        , "[1]   == [1] ++ []"
+        , "[1, 2]   ==  1  : [2]  ==  1 : 2 : []"
+        , ""
+        , "1 ++ []  -- illegal, needs a list on both sides to concatenate"
+        , "[1] : 2  -- illegal, needs a list on the right"
+        , "[] : []  -- legal, but what is it?"
+        , "-- remember: list on the left of a : implies list of lists..."
         ]
     , codeSlide "Inspecting Lists"
        "When working with lists, so far we've used functions and guards. \
@@ -75,6 +102,14 @@ page = slideDeck "Chapter 2: Lists"
        "Using pattern matching is generally more concise and clear (once you \
        \get used to it)."
        [ "Be brave!"
-       , "Write with patterns from now on if you can."
+       , "We'll write with patterns from now on where we can."
+       ]
+    , codeSlide "One more thing..."
+       "String is just a list of Char, or technically [Char]. Which means all \
+       \the list functions and list patterns work on Strings. Woot!  These are \
+       \all the same:"
+       [ "\"abc\""
+       , "['a', 'b', 'c']"
+       , "'a' : 'b' : 'c' : []"
        ]
     ]

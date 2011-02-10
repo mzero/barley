@@ -8,11 +8,11 @@
 }
 
 p {
-  margin: 0.5em 0;
+  margin: 1em 0;
 }
 
 ul, ol, dl {
-  margin: 0.5em 3em;
+  margin: 1em 3em;
 }
 
 pre {
@@ -66,8 +66,8 @@ pre, code, kbd, samp, tt, .src {
 /* @end */
 
 #slides {
-  width: 32em;
-  height: 18em;
+  width: 36em;
+  height: 27em;
   margin: 2em;
   position: relative;
   overflow: hidden;
@@ -77,8 +77,8 @@ pre, code, kbd, samp, tt, .src {
 .slide {
   background: #fff;
   border: 1px solid #818181;
-  width: 31em;
-  height: 17em;
+  width: 35em;
+  height: 26em;
   padding: 0.5em;
   position: absolute;
   top: 0;
@@ -98,9 +98,9 @@ pre, code, kbd, samp, tt, .src {
 #controls {
   margin: 2em;
   text-align: right;
-  width: 32em;
+  width: 36em;
   position: absolute;
-  top: 19em;
+  top: 28em;
   left: 0;
 }
 
