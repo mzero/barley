@@ -34,7 +34,7 @@ stepUrl s = "Chapter" ++ cn ++ "/Step_" ++ cn ++ "_" ++ sh
    sh = show $ stepSt s
 
 stepHref :: Step -> String
-stepHref s = "source?file=" ++ stepUrl s ++ ".hs" ++ p (stepType s)
+stepHref s = "Source?file=" ++ stepUrl s ++ ".hs" ++ p (stepType s)
   where
     p Code = ""
     p Slides = "&preview=1"

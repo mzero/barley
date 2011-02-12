@@ -163,7 +163,7 @@ genericHandler = do
             serveTemplateIfExists $ fullpath <.> "hs"
   where
     serveIndex :: FilePath -> Snap ()
-    serveIndex fullpath = serveTemplateIfExists $ fullpath </> "index.hs"
+    serveIndex fullpath = serveTemplateIfExists $ fullpath </> "Index.hs"
     serveTemplateIfExists :: FilePath -> Snap ()
     serveTemplateIfExists tmplpath = do
         routeWhenIO (doesFileExist tmplpath) $ serveTemplate tmplpath

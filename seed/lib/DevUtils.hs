@@ -211,7 +211,7 @@ editLink si = build `fmap` ee (srcClass si)
   where
     build n = anchor ! [href src, theclass "op-edit", title ("Edit the " ++ n)]
                 << thespan << "Edit"
-    src = "source?file=" ++ srcPath si
+    src = "Source?file=" ++ srcPath si
     ee SCPage = Just "page"
     ee SCScript = Just "script"
     ee SCText = Just "text"

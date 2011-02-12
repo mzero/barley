@@ -66,7 +66,7 @@ step3 = ("A Sample Page",
       , toHtml "Be sure to read all the comments in the code you are about to see. \
                \This is where the instructions will be."
       , toHtml "Be brave."
-      , toHtml "Now go to " +++ anchor ! [href "source?file=FirstPage.hs"] << "FirstPage.hs"
+      , toHtml "Now go to " +++ anchor ! [href "Source?file=FirstPage.hs"] << "FirstPage.hs"
       , toHtml "Come back here when you're done."
       ]
   , p << "Congratulations! You're writing Haskell!"
@@ -82,7 +82,7 @@ step4 = ("Do the Tutorial",
           \the page that will let you switch back and forth between editing the code \
           \and viewing the page that that code renders."
   , p << ("Start here: " 
-          +++ anchor ! [href "source?file=Chapter1/Step_1_1.hs&preview=1"] << "Chapter 1, Step 1")
+          +++ anchor ! [href "Source?file=Chapter1/Step_1_1.hs&preview=1"] << "Chapter 1, Step 1")
   ])
   
 modMessage :: Html
