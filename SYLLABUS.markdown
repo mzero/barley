@@ -285,10 +285,11 @@ Chapter Goals
     -- version w/higher order functions (map)
     -- where clause
     -- develop the numbered list in concert with the todo list
+    -- write map
 
 3: todo list w/priority
     -- 2-tuple
-    -- 3-tuple -> 
     -- data types
-    -- 
+    -- Maybe
+    
     

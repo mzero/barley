@@ -64,6 +64,11 @@ steps =
     , Step 2 3 Code
     , Step 2 4 Slides
     , Step 2 5 Code
+    , Step 2 6 Code
+    , Step 3 1 Slides
+    , Step 3 2 Code
+    , Step 3 3 Slides
+    , Step 3 4 Code
     ]
 
 stepUrls :: [String]

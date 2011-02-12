@@ -29,6 +29,10 @@ How to use this list:
         
 === BARLEY TODO ===
 
+--- Required Tasks to get to Workshop ---
+
+[] Next/Prev on slides needs to either be dimmed at end...
+    or take you to next/prev step of the tutorial
 
 --- Required Tasks to get to 0.2 ---
 
@@ -370,6 +374,8 @@ even I'm confused about when to use finishWith vs. pass
 parseHttpTime has no option for failure - should return a Maybe
 formatHttpTime & parseHttpTime use CTime? and need IO?
 should there be utilities for handling expires times?
+when returning errors w/o content, no way to have not Content-Length
+
 
 === NOTES FOR HTML ===
 renderHtml is BROKEN - it puts things inside an extra HTML element!?!?!?
