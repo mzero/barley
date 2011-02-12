@@ -112,8 +112,8 @@ Executable barley
     snap-server == 0.4.*,
     html == 1.0.*,
     text >= 0.7 && < 0.12,
-    unix == 2.4.*,
-    transformers == 0.2.*
+    transformers == 0.2.*,
+    unix-compat
 
   ghc-options: -Wall
   if impl(ghc >= 6.8)

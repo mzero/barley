@@ -32,8 +32,8 @@ import qualified Data.ByteString.Char8 as C
 import Data.CIByteString (toCI)
 import Snap.Types
 import System.FilePath (joinPath, splitDirectories)
-import System.Posix.Time (epochTime)
-import System.Posix.Types (EpochTime)
+import System.PosixCompat.Time (epochTime)
+import System.PosixCompat.Types (EpochTime)
 
 -- | Sanitize a file path for serving.
 -- If the path contains any illegal path components, then Nothing is returned.
