@@ -1,5 +1,5 @@
 Name:                barley
-Version:             0.3.0.1
+Version:             0.3.0.2
 License:             OtherLicense
 License-file:        LICENSE
 Author:              Johan Tibell, Mark Lentczner
@@ -115,6 +115,6 @@ Executable barley
     transformers == 0.2.*,
     unix-compat
 
-  ghc-options: -Wall
+  ghc-options: -Wall -threaded
   if impl(ghc >= 6.8)
     ghc-options: -fwarn-tabs
