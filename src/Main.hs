@@ -31,7 +31,7 @@ import System.Directory (doesDirectoryExist, doesFileExist,
 import System.Environment
 import System.Exit
 import System.FilePath ((<.>), (</>), takeExtension)
-import System.Posix.Files (getFileStatus, modificationTime)
+import System.PosixCompat.Files (getFileStatus, modificationTime)
 import Text.Html hiding ((</>), address, content, start)
 
 main :: IO ()
