@@ -10,7 +10,7 @@ page = thehtml <<
         ]
     ]
 
--- Rewrite all of this to use a type synonym.
+-- Rewrite all of this to use a type synonym for the tuple.
 
 toDoItems :: [(Bool, String)] -- a list of tuples: each a Bool and String
 toDoItems =
