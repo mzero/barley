@@ -61,11 +61,15 @@ var editor = $('#editor');
 var editImage = $('#rocker-edit-image');
 var runImage = $('#rocker-run-image');
 
+var toggle = function(iIn, iOut) {
+    iIn.fadeIn('fast');
+    iOut.fadeOut('fast');
+}
+
 var showHide = function(pShow, pHide, iIn, iOut) {
     pShow.slideDown('fast');
     pHide.slideUp('fast');
-    iIn.fadeIn('fast');
-    iOut.fadeOut('fast');
+    toggle(iIn, iOut);
 }
 
 var mkRun = function () { showHide(preview, editor, runImage, editImage); }
@@ -73,8 +77,9 @@ var mkEdit = function() { showHide(editor, preview, editImage, runImage);
                           setTimeout(adjustColumnMarker, 500); }
 
 var run = function() {
-        mkRun();
+        toggle(runImage, editImage);
         if (editable) $('#editor form').submit();
+        else          mkRun();
     }
 var recompile = function() {
         $('#editor form').submit();
