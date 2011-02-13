@@ -28,7 +28,7 @@ page = slideDeck "Chapter 2: Lists"
         "In various Lisp dialects, this would look like:"
         [ "nil                           -- the empty list"
         , "(cons 42 nil)                 -- a list of one value"
-        , "(cons 1 (cons 2 (cons 3 []))) -- a list of three values"
+        , "(cons 1 (cons 2 (cons 3 nil))) -- a list of three values"
         ]
     , codeSlide "Watch out: Haskell's : ≠ Lisp's cons"
         "In Lisp, cons puts any two things together. Not so in Haskell. In \
