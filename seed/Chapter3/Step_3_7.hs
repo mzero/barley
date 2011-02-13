@@ -5,7 +5,7 @@ import Text.Html
 page = thehtml <<
     [ header << (thetitle << "Output")
     , body <<
-        [ h1 << "A to do list:"
+        [ h1 << "A to-do list:"
         , thediv << toDoHtml
         , reminderHtml
         , h1 << "# people invited:"
@@ -17,7 +17,7 @@ data ToDo = ToDo String | Done String
 
 toDoItems :: [ToDo]
 toDoItems =
-    [ Done "Pick up avacados"
+    [ Done "Pick up avocados"
     , Done "Make snacks"
     , ToDo "Clean house"
     , ToDo "Have party"
@@ -63,7 +63,7 @@ toDoHtml = ulist << renderToDo toDoItems
 
 -- NEXT
 -- Add an optional partner or spouse to the invite data type.
--- Add a list of invitiees (and optional partners!) to the page.
+-- Add a list of invitees (and optional partners!) to the page.
 
 data Invite = Invite String Int
 
