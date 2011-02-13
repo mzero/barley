@@ -21,6 +21,10 @@ Description:
     database backend storage.  Along the way it exposes the programmer
     to the basic idioms needed to do simple programming tasks.
 
+source-repository head
+    type:     git
+    location: https://github.com/mtnviewmark/barley.git
+
 data-files:
 	seed/Chapter01.hs
 	seed/Chapter02.hs
