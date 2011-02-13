@@ -31,7 +31,7 @@ output4 = "\t" ++ show ( length (lines input))
 
 -- NEXT
 
--- Most haskell code doesn't have so many parenthesis. Instead, it uses the $ operator like so:
+-- Most haskell code doesn't have so many parentheses. Instead, it uses the $ operator like so:
 
 output1' = unlines $ sort $ lines input
 output2' = unlines $ take 2 $ map reverse $ lines input
