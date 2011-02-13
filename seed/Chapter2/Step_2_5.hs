@@ -7,7 +7,7 @@ page = thehtml <<
     , body <<
         [ h1 << "A poem from last time:"
         , pre << poemText
-        , h1 << "A to do list:"
+        , h1 << "A to-do list:"
         , thediv << toDoHtml
         ]
     ]
@@ -28,7 +28,7 @@ lineNumbers n []     = []
 lineNumbers n (x:xs) = oneNumber n x : lineNumbers (n+1) xs
 -- Notice that instead of a single equation (with the function name) =, there
 -- are now two. Each repeats the arguments, but with patterns. Like guards, the
--- first equaltion where all the patterns match will be used.
+-- first equation where all the patterns match will be used.
 
 -- Notice something else: The last expression changed:
 oldWay n (x:xs) = [oneNumber n x] ++ lineNumbers (n+1) xs
@@ -46,7 +46,7 @@ poemText = unlines $ lineNumbers 1 $ lines poem
 -- Try converting it to using patterns:
 
 toDoItems :: [String] -- a list of strings
-toDoItems = ["Pick up avacados", "Make snacks", "Clean house", "Have party"]
+toDoItems = ["Pick up avocados", "Make snacks", "Clean house", "Have party"]
 
 renderToDo :: [String] -> [Html]
 renderToDo ts
