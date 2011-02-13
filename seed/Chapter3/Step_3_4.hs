@@ -5,7 +5,7 @@ import Text.Html
 page = thehtml <<
     [ header << (thetitle << "Output")
     , body <<
-        [ h1 << "A to do list:"
+        [ h1 << "A to-do list:"
         , thediv << toDoHtml
         ]
     ]
@@ -14,7 +14,7 @@ page = thehtml <<
 
 toDoItems :: [(Bool, String)] -- a list of tuples: each a Bool and String
 toDoItems =
-    [ (True,  "Pick up avacados")
+    [ (True,  "Pick up avocados")
     , (True,  "Make snacks")
     , (False, "Clean house")
     , (False, "Have party")
