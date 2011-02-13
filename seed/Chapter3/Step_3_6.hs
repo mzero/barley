@@ -5,7 +5,7 @@ import Text.Html
 page = thehtml <<
     [ header << (thetitle << "Output")
     , body <<
-        [ h1 << "A to do list:"
+        [ h1 << "A to-do list:"
         , thediv << toDoHtml
         , h1 << "# people invited:"
         , p << show (headcount invited)
@@ -18,7 +18,7 @@ data ToDo = ToDo String | Done String
 
 toDoItems :: [ToDo]
 toDoItems =
-    [ Done "Pick up avacados"
+    [ Done "Pick up avocados"
     , Done "Make snacks"
     , ToDo "Clean house"
     , ToDo "Have party"
