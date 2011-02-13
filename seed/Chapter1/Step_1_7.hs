@@ -9,7 +9,7 @@ input = "`Twas brillig, and the slithy toves\n"
     ++ "And the mome raths outgrabe.\n"
 
 output :: String
-output = output2
+output = output1
 
 oneNumber :: Int -> String -> String
 oneNumber n s = show n ++ ": " ++ s
