@@ -306,7 +306,7 @@ body.with-topbar {
   font-size: 93%; /* 12pt */
   line-height: 124%;
   margin: 1em 0;
-  overflow: auto;
+  overflow: hidden;
   background: #ffffe5;
   border: 1px solid #b1b18e;
   padding-left: 0.75em;
@@ -316,19 +316,7 @@ body.with-topbar {
   background: #ff0 url(stripe.png);
 }
 
-#editor-box textarea,
-#editor-box .CodeMirror-wrapping {
-  padding-left: 3.72em;
-}
-
-#editor-box .CodeMirror-line-numbers {
-  text-align: right;
-  padding: 1em 1em 1em 0;
-  width: 3em;
-  color: #a9a9a9;
-}
-
-#editor-box .CodeMirror-line-numbers div.error-line {
+#editor-box .error-line {
   color: #ff4d4d;
   font-weight: bold;
   background: url(silk/exclamation.png) no-repeat -1px -1px;
@@ -347,16 +335,7 @@ body.with-topbar {
   border: 1px solid #b1b18e;
 }
 
-#editor-box textarea.src {
-  width: 100%;
-}
-
-#editor-box .CodeMirror-wrapping div,
-#editor-box .CodeMirror-wrapping iframe {
-  background: #ffffe5;
-}
-
-#editor-box .CodeMirror-wrapping .editor-column-marker {
+#editor-box .editor-column-marker {
   position: absolute;
   top: 0;
   height: 100%;
@@ -364,6 +343,7 @@ body.with-topbar {
   background-color: transparent;
   border-left: 1px dashed #e0e0b4;
 }
+
 .panel {
   background-color: #eee7b9;
   width: 99%;

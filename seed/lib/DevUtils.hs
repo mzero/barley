@@ -47,6 +47,8 @@ devpage pageTitle contents modules scriptSrcs =
     header << [
       thelink ! [href "/static/barley.css", rel "stylesheet",
                    thetype "text/css"] << noHtml,
+      thelink ! [href "/static/codemirror.css", rel "stylesheet",
+                   thetype "text/css"] << noHtml,
       thetitle << fullTitle
       ] +++
     body ! [theclass "with-topbar"] << [

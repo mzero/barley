@@ -1,22 +1,60 @@
-/* @override http://localhost:8080/static/codemirror.css */
-
-* {
-  margin: 0;
-  padding: 0;
+.CodeMirror {
+  position: relative;
+  line-height: 1em;
+  font-family: monospace;
+  x-background: #fff !important;
+  background: #ffffe5;
 }
 
-body {
-  font:12px/14px monospace;
-  overflow: auto;
-  padding: 1em 0;
+.CodeMirror-gutter {
+  position: absolute; left: 0; top: 0;
+  background-color: #f7f7f7;
+  border-right: 1px solid #eee;
+  color: #aaa;
+  text-align: right;
+  min-width: 3em;
+  padding: .5em .25em .5em .5em;
+}
+.CodeMirror-lines {
+  padding: .5em;
 }
 
-.paren-match { background-color: #9cc2fd; }
-.paren-error {
+.CodeMirror-lines > div {
+  position: relative;
+}
+.CodeMirror pre {
+  margin: 0; padding: 0;
+  font-family: inherit;
+  overflow: hidden;
+}
+
+.CodeMirror-cursor {
+  z-index: 10;
+  position: absolute;
+  visibility: hidden;
+  border-left: 1px solid black !important;
+}
+.CodeMirror-focused .CodeMirror-cursor {
+  visibility: visible;
+}
+
+span.CodeMirror-selected {
+  background: #ccc !important;
+  color: HighlightText !important;
+}
+.CodeMirror-focused span.CodeMirror-selected {
+  background: Highlight !important;
+}
+
+
+.CodeMirror-matchingbracket { background-color: #9cc2fd; }
+.CodeMirror-nonmatchingbracket {
   background-color: #ff4d4d;
   color: #fff;
   font-weight: bold;
 }
+
+
 
 .hs-char,
 .hs-float,
@@ -36,7 +74,7 @@ body {
 .hs-consym	{ color: #cc2900; }
 
 .hs-reservedid,
-.hs-reservedop { color: #7f3500; font-weight: bold; }
+.hs-reservedop { color: #7f3500; }
 
 .hs-qualifier { color: #5e5e5e;}
 .hs-error	{ background-color: #ffe5e5; }
@@ -44,4 +82,6 @@ body {
 .hs-prelude-varid,
 .hs-prelude-varsym,
 .hs-prelude-conid { color: #250087; }
+
+
 

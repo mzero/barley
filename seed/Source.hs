@@ -178,7 +178,8 @@ emptyModule filename =
 scriptSrcs :: [String]
 scriptSrcs =
     [ "/static/jquery.js"
-    , "/static/codemirror_min.js"
+    , "/static/codemirror.js"
+    , "/static/codemirror_parse_haskell.js"
     , "Source.js"
     ]
 

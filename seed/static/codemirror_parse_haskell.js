@@ -1,190 +1,167 @@
-var HaskellParser = Editor.Parser = (function() {
-  var tokenizeHaskell = (function() {
+CodeMirror.defineMode("hs", function(cmCfg, modeCfg) {
+
+  function switchState(source, setState, f) {
+    setState(f);
+    return f(source, setState);
+  }
   
-    // These should all be Unicode extended, as per the Haskell 2010 report
-    var smallRE = /[a-z_]/;
-    var largeRE = /[A-Z]/;
-    var digitRE = /[0-9]/;
-    var hexitRE = /[0-9A-Fa-f]/;
-    var octitRE = /[0-7]/;
-    var idRE = /[a-z_A-Z0-9']/;
-    var symbolRE = /[-!#$%&*+.\/<=>?@\\^|~:]/;
-    var whiteCharRE = /[ \t\v\f]/; // newlines are handled in tokenizer
+  // These should all be Unicode extended, as per the Haskell 2010 report
+  var smallRE = /[a-z_]/;
+  var largeRE = /[A-Z]/;
+  var digitRE = /[0-9]/;
+  var hexitRE = /[0-9A-Fa-f]/;
+  var octitRE = /[0-7]/;
+  var idRE = /[a-z_A-Z0-9']/;
+  var symbolRE = /[-!#$%&*+.\/<=>?@\\^|~:]/;
+  var specialRE = /[(),;[\]`{}]/;
+  var whiteCharRE = /[ \t\v\f]/; // newlines are handled in tokenizer
     
+  function normal(source, setState) {
+    if (source.eatWhile(whiteCharRE) > 0) {
+      return null;
+    }
+      
+    var ch = source.next();
+    if (specialRE.test(ch)) {
+      if (ch == '{' && source.eat('-')) {
+        var t = "hs-comment";
+        if (source.eat('#')) {
+          t = "hs-pragma";
+        }
+        return switchState(source, setState, ncomment(t, 1));
+      }
+      return "hs-special";
+    }
     
-    function nextIfLiteralChar(delimiter) {
-      if (source.endOfLine()) return false;
-      if (source.equals(delimiter)) return false;
-      if (source.equals('\\')) {
-        source.next();
-        source.next();
+    if (ch == '\'') {
+      if (source.eat('\\')) {
+        source.next();  // should handle other escapes here
       }
       else {
         source.next();
       }
-      return true
-    }
-
-    function normal(source, setState) {
-      var ch = source.next();
-      
-      if (/[(),;[\]`{}]/.test(ch)) {
-        if (ch == '{' && source.equals('-')) {
-          source.next();
-          var t = "hs-comment";
-          if (source.equals('#')) {
-            source.next();
-            t = "hs-pragma";
-          }
-          setState(ncomment(t, 1));
-          return null;
-        }
-        return "hs-special";
+      if (source.eat('\'')) {
+        return "hs-char";
       }
-      
-      if (ch == '\'') {
-        if (source.next == '\\') {
-          source.next();  // should do more here
-          if (source.equals('\'')) {
-            source.next();
-            return "hs-char";
-          }
-        }
-        return "hs-error";
-      }
-      
-      if (ch == '"') {
-        setState(stringLiteral);
-        return null;
-      }
-      
-      if (largeRE.test(ch)) {
-        source.nextWhileMatches(idRE);
-        if (source.equals('.')) {
-          source.next();
-          return "hs-qualifier";
-        }
-        return "hs-conid";
-      }
-      
-      if (smallRE.test(ch)) {
-        source.nextWhileMatches(idRE);
-        return "hs-varid";
-      }
-      
-      if (digitRE.test(ch)) {
-        if (ch == '0') {
-          if (source.matches(/[xX]/)) {
-            source.next();
-            source.nextWhileMatches(hexitRE); // should require at least 1
-            return "hs-integer";
-          }
-          if (source.matches(/[oO]/)) {
-            source.next();
-            source.nextWhileMatches(octitRE); // should require at least 1
-            return "hs-integer";
-          }
-        }
-        source.nextWhileMatches(digitRE);
-        var t = "hs-integer";
-        if (source.equals('.')) {
-          t = "hs-float";
-          source.next();
-          source.nextWhileMatches(digitRE); // should require at least 1
-        }
-        if (source.matches(/[eE]/)) {
-          t = "hs-float";
-          source.next();
-          if (source.matches(/[-+]/)) {
-            source.next();
-          }
-          source.nextWhileMatches(digitRE); // should require at least 1
-        }
-        return t;
-      }
-      
-      if (symbolRE.test(ch)) {
-        if (ch == '-' && source.matches(/-/)) {
-          source.nextWhileMatches(/-/);
-          if (!source.matches(symbolRE)) {
-            while (!source.endOfLine()) {
-              source.next();
-            }
-            return "hs-comment";
-          }
-        }
-        var t = "hs-varsym";
-        if (ch == ':') {
-          t = "hs-consym";
-        }
-        source.nextWhileMatches(symbolRE);
-        return t;    
-      }
-      
       return "hs-error";
     }
     
-    function ncomment(type, nest) {
-      if (nest == 0) {
-        return normal;
-      }
-      return function(source, setState) {
-        while (source.more() && !source.endOfLine()) {
-          ch = source.next();
-          if (ch == '{' && source.equals('-')) {
-            source.next();
-            setState(ncomment(type, nest+1));
-            return null;
-          }
-          else if (ch == '-' && source.equals('}')) {
-            source.next();
-            setState(ncomment(type, nest-1));
-            return (nest == 1) ? type : null;
-          }
-        }
-        return type;
-      }
+    if (ch == '"') {
+      return switchState(source, setState, stringLiteral);
     }
+      
+    if (largeRE.test(ch)) {
+      source.eatWhile(idRE);
+      if (source.eat('.')) {
+        return "hs-qualifier";
+      }
+      return "hs-conid";
+    }
+      
+    if (smallRE.test(ch)) {
+      source.eatWhile(idRE);
+      return "hs-varid";
+    }
+      
+    if (digitRE.test(ch)) {
+      if (ch == '0') {
+        if (source.eat(/[xX]/)) {
+          source.eatWhile(hexitRE); // should require at least 1
+          return "hs-integer";
+        }
+        if (source.eat(/[oO]/)) {
+          source.eatWhile(octitRE); // should require at least 1
+          return "hs-integer";
+        }
+      }
+      source.eatWhile(digitRE);
+      var t = "hs-integer";
+      if (source.eat('.')) {
+        t = "hs-float";
+        source.eatWhile(digitRE); // should require at least 1
+      }
+      if (source.eat(/[eE]/)) {
+        t = "hs-float";
+        source.eat(/[-+]/);
+        source.eatWhile(digitRE); // should require at least 1
+      }
+      return t;
+    }
+      
+    if (symbolRE.test(ch)) {
+      if (ch == '-' && source.eat(/-/)) {
+        source.eatWhile(/-/);
+        if (!source.eat(symbolRE)) {
+          while (!source.eol()) {
+            source.next();
+          }
+          return "hs-comment";
+        }
+      }
+      var t = "hs-varsym";
+      if (ch == ':') {
+        t = "hs-consym";
+      }
+      source.eatWhile(symbolRE);
+      return t;    
+    }
+      
+    return "hs-error";
+  }
     
-    function stringLiteral(source, setState) {
-      while (!source.endOfLine()) {
-        var ch = source.next();
-        if (ch == '"') {
-          setState(normal);
+  function ncomment(type, nest) {
+    if (nest == 0) {
+      return normal;
+    }
+    return function(source, setState) {
+      while (!source.eol()) {
+        ch = source.next();
+        if (ch == '{' && source.eat('-')) {
+          return switchState(source, setState, ncomment(type, nest+1));
+        }
+        else if (ch == '-' && source.eat('}')) {
+          if (nest == 1) {
+            return type;
+          }
+          setState(source, setState, ncomment(type, nest-1));
+        }
+      }
+      return type;
+    }
+  }
+    
+  function stringLiteral(source, setState) {
+    while (!source.eol()) {
+      var ch = source.next();
+      if (ch == '"') {
+        setState(normal);
+        return "hs-string";
+      }
+      if (ch == '\\') {
+        if (source.eol() || source.eat(whiteCharRE)) {
+          setState(stringGap);
           return "hs-string";
         }
-        if (ch == '\\') {
-          if (source.endOfLine() || source.matches(whiteCharRE)) {
-            setState(stringGap);
-            return "hs-string";
-          }
-          if (source.equals('&')) {
-            source.next();
-          }
-          else {
-            source.next(); // could do more complicated matching here
-          }
+        if (source.eat('&')) {
+        }
+        else {
+          source.next(); // should handle other escapes here
         }
       }
-      setState(normal);
-      return "hs-error";
     }
-    
-    function stringGap(source, setState) {
-      if (source.equals('\\')) {
-        source.next();
-        setState(stringLiteral);
-        return null; //"hs-gap";
-      }
-      source.next();
-      setState(normal);
-      return "hs-error";
+    setState(normal);
+    return "hs-error";
+  }
+  
+  function stringGap(source, setState) {
+    if (source.eat('\\')) {
+      return switchState(source, setState, stringLiteral);
     }
-    
-    return function(source, state) {
-      return tokenizer(source, state || normal);
-    };
-  })(); 
+    source.next();
+    setState(normal);
+    return "hs-error";
+  }
+  
   
   var wellKnownWords = (function() {
     var wkw = {};
@@ -195,6 +172,11 @@ var HaskellParser = Editor.Parser = (function() {
       }
     }
     
+    setType(null)(
+      // for now, CM2 needs these to not be styled in order for matching
+      // bracket high-lighting to work
+      "(", ")", "[", "]", "{", "}");
+      
     setType("hs-reservedid")(
       "case", "class", "data", "default", "deriving", "do", "else", "foreign",
       "if", "import", "in", "infix", "infixl", "infixr", "instance", "let",
@@ -245,35 +227,18 @@ var HaskellParser = Editor.Parser = (function() {
       
     return wkw;
   })()
+    
   
-  function parseHaskell(source) {
-    function indentTo(n) {return function() {return n;}}
-    var tokens = tokenizeHaskell(source);
-    var space = 0;
+  
+  return {
+    startState: function ()  { return { f: normal }; },
+    copyState:  function (s) { return { f: s.f }; },
+    
+    token: function(stream, state) {
+      var t = state.f(stream, function(s) { state.f = s; });
+      var w = stream.current();
+      return (w in wellKnownWords) ? wellKnownWords[w] : t;
+    }
+  };
 
-    var iter = {
-      next: function() {
-        var tok = tokens.next();
-        if (tok.type == "whitespace") {
-          if (tok.value == "\n") tok.indentation = indentTo(space);
-          else space = tok.value.length;
-        }
-        else if (tok.content in wellKnownWords) {
-          tok.style = wellKnownWords[tok.content];
-        }
-        return tok;
-      },
-      copy: function() {
-        var _space = space;
-        var _tokensState = tokens.state;
-        return function(_source) {
-          space = _space;
-          tokens = tokenizeHaskell(_source, _tokensState);
-          return iter;
-        };
-      }
-    };
-    return iter;
-  }
-  return {make: parseHaskell};
-})();
+});
