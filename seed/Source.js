@@ -107,11 +107,12 @@ $('.panel h1').click(function () { $('.panel-content').slideToggle('fast'); });
 var cmEditor = CodeMirror.fromTextArea($("#txt-src")[0], {
     indentUnit: 4,
     enterMode: "keep",
+    blockDocumentScroll: false,
     lineNumbers: true,
     matchBrackets: true,
     mode: 'hs',
     
-    onChange: mkEditable,
+    //onChange: mkEditable,
     onCursorActivity: function() {
         var sel = cmEditor.getSelection();
         if (!sel) return;
@@ -119,6 +120,8 @@ var cmEditor = CodeMirror.fromTextArea($("#txt-src")[0], {
         if (mat) { $('.research-query').val(mat[0]); }
     },
 });
+
+cmEditor.setOption('onChange', mkEditable);
 
 $('<div class="editor-column-marker"></div>')
     .appendTo($('.CodeMirror-lines > div:first'));

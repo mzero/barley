@@ -8,12 +8,12 @@
 .CodeMirror-gutter {
   position: absolute; left: 0; top: 0;
   background-color: #f7f7f7;
+  color: #aaa;
+  border-right: 1px solid #eee;
   min-width: 3em;
   height: 100%;
 }
 .CodeMirror-gutter-text {
-  border-right: 1px solid #eee;
-  color: #aaa;
   text-align: right;
   padding: .5em .25em .5em .5em;
 }
