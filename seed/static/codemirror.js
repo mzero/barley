@@ -250,11 +250,6 @@ var CodeMirror = (function() {
         if (includePre) html.push("</pre>");
         return html.join("");
       }
-      if (!this.marked && sfrom === 0 && sto === null) {
-        span(this.text + " ", "CodeMirror-selected");
-        return finish();
-      }
-
       var st = this.styles, allText = this.text, marked = this.marked;
       if (sfrom === sto) sfrom = null;
 
@@ -264,58 +259,44 @@ var CodeMirror = (function() {
         for (var i = 0, e = st.length; i < e; i+=2) span(st[i], st[i+1]);
       else {
         var pos = 0, i = 0, text = "", style, sg = 0;
-        function copyUntil(end) {
+        function copyUntil(end, extraStyle) {
           for (;;) {
             var upto = pos + text.length;
-            span(upto > end ? text.slice(0, end - pos) : text, style);
+            var apliedStyle = style;
+            if (extraStyle) apliedStyle = style ? style + extraStyle : extraStyle;
+            span(upto > end ? text.slice(0, end - pos) : text, apliedStyle);
             if (upto >= end) {text = text.slice(end - pos); pos = end; break;}
             pos = upto;
             text = st[i++]; style = st[i++];
           }
         }
-        function chunkUntil(end, cStyle) {
-          var acc = [];
-          for (;;) {
-            var upto = pos + text.length;
-            if (upto >= end) {
-              var size = end - pos;
-              acc.push(text.slice(0, size));
-              span(acc.join(""), cStyle);
-              text = text.slice(size);
-              pos += size;
-              break;
-            }
-            acc.push(text);
-            pos = upto;
-            text = st[i++]; style = st[i++];
-          }
-        }
-        var markpos = 0, mark;
+        var markpos = -1, mark = null;
         function nextMark() {
-          if (!marked) return null;
-          for (; markpos < marked.length; markpos++) {
-            mark = marked[markpos];
-            var end = mark.to == null ? allText.length : mark.to;
-            if (end > pos) return Math.max(mark.from, pos);
+          if (marked) {
+            markpos += 1;
+            mark = (markpos < marked.length) ? marked[markpos] : null;
           }
         }
-
+        nextMark();        
         while (pos < allText.length) {
-          var nextmark = nextMark();
-          if (sfrom != null && sfrom >= pos && (nextmark == null || sfrom <= nextmark)) {
-            copyUntil(sfrom);
-            if (sto == null) {
-              span(allText.slice(pos) + " ", "CodeMirror-selected");
-              break;
+          var upto = allText.length;
+          var extraStyle = "";
+          if (sfrom != null) {
+            if (sfrom > pos) upto = sfrom;
+            else if (sto == null || sto > pos) {
+                extraStyle = " CodeMirror-selected";
+                if (sto != null) upto = Math.min(upto, sto);
             }
-            chunkUntil(sto, "CodeMirror-selected");
           }
-          else if (nextmark != null) {
-            copyUntil(nextmark);
-            var end = mark.to == null ? allText.length : mark.to;
-            chunkUntil(sfrom == null || sfrom < pos ? end : Math.min(sfrom, end), mark.style);
+          while (mark && mark.to != null && mark.to <= pos) nextMark();
+          if (mark) {
+            if (mark.from > pos) upto = Math.min(upto, mark.from);
+            else {
+                extraStyle += " " + mark.style;
+                if (mark.to != null) upto = Math.min(upto, mark.to);
+            }
           }
-          else copyUntil(allText.length);
+          copyUntil(upto, extraStyle);
         }
       }
       return finish();
@@ -1097,6 +1078,19 @@ var CodeMirror = (function() {
       line.gutterMarker = null;
       updateGutter();
     }
+    function lineInfo(line) {
+      if (typeof line == "number") {
+        var n = line;
+        line = lines[line];
+        if (!line) return null;
+      }
+      else {
+        var n = indexOf(lines, line);
+        if (n == -1) return null;
+      }
+      var marker = line.gutterMarker;
+      return {line: n, text: line.text, markerText: marker && marker.text, markerClass: marker && marker.style};
+    }
 
     function charX(line, pos) {
       var text = lines[line].text;
@@ -1126,7 +1120,7 @@ var CodeMirror = (function() {
       return {x: charX(pos.line, pos.ch), y: pos.line * lh, yBot: (pos.line + 1) * lh};
     }
     function cursorCoords(start) {
-      var local = localCoords(start ? sel.from : sel.to), off = eltOffset(space);
+      var local = localCoords(start ? sel.from : sel.to), off = eltOffset(lineWrap);
       return {x: off.left + local.x, y: off.top + local.y, yBot: off.top + local.yBot};
     }
 
@@ -1192,9 +1186,9 @@ var CodeMirror = (function() {
       var match = (pos >= 0 && matching[line.text.charAt(pos)]) || matching[line.text.charAt(++pos)];
       if (!match) return;
       var ch = match.charAt(0), forward = match.charAt(1) == ">", d = forward ? 1 : -1, st = line.styles;
-      for (var off = forward ? pos + 1 : pos, i = 0, e = st.length; i < st; i+=2)
+      for (var off = pos + 1, i = 0, e = st.length; i < e; i+=2)
         if ((off -= st[i].length) <= 0) {var style = st[i+1]; break;}
-
+        
       var stack = [line.text.charAt(pos)], re = /[(){}[\]]/;
       function scan(line, from, to) {
         if (!line.text) return;
@@ -1445,6 +1439,7 @@ var CodeMirror = (function() {
       markText: operation(function(a, b, c){return operation(markText(a, b, c));}),
       setMarker: addGutterMarker,
       clearMarker: removeGutterMarker,
+      lineInfo: lineInfo,
       addWidget: function(pos, node, scroll) {
         var pos = localCoords(clipPos(pos));
         node.style.top = pos.yBot + "px"; node.style.left = pos.x + "px";

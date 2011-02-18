@@ -172,11 +172,6 @@ CodeMirror.defineMode("hs", function(cmCfg, modeCfg) {
       }
     }
     
-    setType(null)(
-      // for now, CM2 needs these to not be styled in order for matching
-      // bracket high-lighting to work
-      "(", ")", "[", "]", "{", "}");
-      
     setType("hs-reservedid")(
       "case", "class", "data", "default", "deriving", "do", "else", "foreign",
       "if", "import", "in", "infix", "infixl", "infixr", "instance", "let",

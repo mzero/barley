@@ -40,7 +40,6 @@
 
 span.CodeMirror-selected {
   background: #ccc !important;
-  color: HighlightText !important;
 }
 .CodeMirror-focused span.CodeMirror-selected {
   background: Highlight !important;
