@@ -1,5 +1,4 @@
 .CodeMirror {
-  position: relative;
   line-height: 1em;
   font-family: monospace;
   x-background: #fff !important;
@@ -9,19 +8,19 @@
 .CodeMirror-gutter {
   position: absolute; left: 0; top: 0;
   background-color: #f7f7f7;
+  min-width: 3em;
+  height: 100%;
+}
+.CodeMirror-gutter-text {
   border-right: 1px solid #eee;
   color: #aaa;
   text-align: right;
-  min-width: 3em;
   padding: .5em .25em .5em .5em;
 }
 .CodeMirror-lines {
   padding: .5em;
 }
 
-.CodeMirror-lines > div {
-  position: relative;
-}
 .CodeMirror pre {
   margin: 0; padding: 0;
   font-family: inherit;
