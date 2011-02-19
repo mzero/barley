@@ -51,35 +51,3 @@ span.CodeMirror-selected {
   color: #fff;
   font-weight: bold;
 }
-
-
-
-.hs-char,
-.hs-float,
-.hs-integer,
-.hs-string 	{ color: #7f7519;}
-
-.hs-comment { color: #236E25; font-style: italic; }
-.hs-pragma	{ }
-
-.hs-prelude-varid,
-.hs-prelude-varsym,
-.hs-special,
-.hs-varid,
-.hs-varsym	{ }
-
-.hs-conid,
-.hs-consym	{ color: #cc2900; }
-
-.hs-reservedid,
-.hs-reservedop { color: #7f3500; }
-
-.hs-qualifier { color: #5e5e5e;}
-.hs-error	{ background-color: #ffe5e5; }
-
-.hs-prelude-varid,
-.hs-prelude-varsym,
-.hs-prelude-conid { color: #250087; }
-
-
-

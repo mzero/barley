@@ -49,6 +49,8 @@ devpage pageTitle contents modules scriptSrcs =
                    thetype "text/css"] << noHtml,
       thelink ! [href "/static/codemirror.css", rel "stylesheet",
                    thetype "text/css"] << noHtml,
+      thelink ! [href "/static/mode/haskell.css", rel "stylesheet",
+                   thetype "text/css"] << noHtml,
       thetitle << fullTitle
       ] +++
     body ! [theclass "with-topbar"] << [

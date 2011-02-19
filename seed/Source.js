@@ -110,7 +110,7 @@ var cmEditor = CodeMirror.fromTextArea($("#txt-src")[0], {
     blockDocumentScroll: false,
     lineNumbers: true,
     matchBrackets: true,
-    mode: 'hs',
+    mode: 'haskell',
     
     //onChange: mkEditable,
     onCursorActivity: function() {

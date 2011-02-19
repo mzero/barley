@@ -179,7 +179,7 @@ scriptSrcs :: [String]
 scriptSrcs =
     [ "/static/jquery.js"
     , "/static/codemirror.js"
-    , "/static/codemirror_parse_haskell.js"
+    , "/static/mode/haskell.js"
     , "Source.js"
     ]
 

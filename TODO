@@ -71,6 +71,16 @@ Source Editor
     [] expand/close icon on error header
     [] pop-out preview into own window (and leave there)
     
+CodeMirror2
+    [] gutter color doesn't extend to left edge when not-edited
+    [] flaky initial display of rest of paragraph (call refresh?)
+    [x] re-organize haskell mode files (.js and .css)
+    [?] enable other modes
+    [] bug w/onChange being called on creation
+    [] bug: doesn't matchBracket when typing the closer
+    [] bug: double-clicking
+    [] modes should be compressed into one .js and one .css file
+
 Compilation
     [+m] better module loading... 
         [-m] model code used by Happstack plugins
@@ -103,7 +113,9 @@ Misc
         [+] add Expires: <data> & Cache-Control: max-age=<secs>  headers
         [+] process If-Modified-Since, If-Unmodified-Since
     [] add Cache-Control: no-cache for dynamic content
-
+    [] lib/DevPage.hs shoudn't have to include all the .css files in all pages
+        - find a way to have the page spec extra css
+    
 --- Tasks ----
 
 [] make common error and warn functions for command line processing
