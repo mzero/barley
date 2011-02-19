@@ -33,8 +33,16 @@ How to use this list:
 
 [] Next/Prev on slides needs to either be dimmed at end...
     or take you to next/prev step of the tutorial
+[] Getting it to work on Windows
+    [] plugins fails on Windows
 
---- Required Tasks to get to 0.2 ---
+[] plugins
+    [] strict typing -- be sure the imports are the right 
+    [] remembering by entry  point
+    [] better API in plugins?
+
+
+--- Required Tasks to get to 0.5 ---
 
 Content
     [m] replace template.hs with new Chapter 1 step pages
@@ -103,6 +111,7 @@ Misc
         [+] add Expires: <data> & Cache-Control: max-age=<secs>  headers
         [+] process If-Modified-Since, If-Unmodified-Since
     [] add Cache-Control: no-cache for dynamic content
+    [?] handling case of URL paths vs. case of file system paths
 
 --- Tasks ----
 
@@ -380,5 +389,14 @@ when returning errors w/o content, no way to have not Content-Length
 === NOTES FOR HTML ===
 renderHtml is BROKEN - it puts things inside an extra HTML element!?!?!?
 unordList etc. would be nice if they'd take HTML a => [a] rather than [Html]
+
+
+
+=== NOTES ON PLUGINS ===
+three bugs in our use of plugins
+- not type safe
+- doesn't handle dependent modules
+- doesn't handle hierarchal modules
+
 
 
