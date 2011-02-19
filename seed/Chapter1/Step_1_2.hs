@@ -41,7 +41,7 @@ output2 = "Other stuff: "
     -- ++ "Yo!"
     -- ++ show 42
     -- ++ show [ 23, 13, 4, 700, 8 ]
-    -- ++ show (sort [ 23, 13, 4, 700, 8 ])
+    -- ++ show (reverse [ 23, 13, 4, 700, 8 ])
 
 -- You can just remove the leading dashes. In Haskell, expressions can be continued
 -- on the next line so long as they are indented from the starting line.

@@ -5,7 +5,7 @@ import Text.Html
 page = thehtml <<
     [ header << (thetitle << "Output")
     , body <<
-        [ h1 << "A to do list:"
+        [ h1 << "A to-do list:"
         , thediv << toDoHtml
         , h1 << "Some action:"
         , thediv << comicAction
@@ -17,7 +17,7 @@ page = thehtml <<
 -- Getting simpler, isn't it?
 
 toDoItems :: [String] -- a list of strings
-toDoItems = ["Pick up avacados", "Make snacks", "Clean house", "Have party"]
+toDoItems = ["Pick up avocados", "Make snacks", "Clean house", "Have party"]
 
 renderToDo :: [String] -> [Html]
 renderToDo []     = []

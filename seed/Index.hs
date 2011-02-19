@@ -43,7 +43,7 @@ step1 = ("Install and run Barley",
 
 step2 :: Step
 step2 = ("Navigating Barley",
-  [ p << "This web site is a small development envinronment for Haskell. \
+  [ p << "This web site is a small development environment for Haskell. \
          \Here are the main navigation elements:"
   , p << (bold << "Top bar:" +++ "The black top bar at the very top of \
          \the page has links to commonly used pages. At the top right, \

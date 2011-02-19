@@ -5,7 +5,7 @@ import Slides
 page = slideDeck "Chapter 2"
     [ titleSlide "Chapter 2"
         [ "HTML Output"
-        , "Four ways to write a to do list."
+        , "Four ways to write a to-do list."
         ]
     , codeSlide "Text.Html"
         "From now own, we'll be generating HTML output. \
@@ -28,7 +28,7 @@ page = slideDeck "Chapter 2"
         , "noHtml  -- an empty Html content"
         ]
     , pointSlide "Onward"
-        "Now let's build a To Do list..."
+        "Now let's build a To-Do list..."
         [ "Be brave"
         , "Read the comments"
         , "Go on to the next tutorial step."
