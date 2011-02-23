@@ -17,7 +17,7 @@ CodeMirror.defineMode("haskell", function(cmCfg, modeCfg) {
   var whiteCharRE = /[ \t\v\f]/; // newlines are handled in tokenizer
     
   function normal(source, setState) {
-    if (source.eatWhile(whiteCharRE) > 0) {
+    if (source.eatWhile(whiteCharRE)) {
       return null;
     }
       
@@ -92,9 +92,7 @@ CodeMirror.defineMode("haskell", function(cmCfg, modeCfg) {
       if (ch == '-' && source.eat(/-/)) {
         source.eatWhile(/-/);
         if (!source.eat(symbolRE)) {
-          while (!source.eol()) {
-            source.next();
-          }
+          source.skipToEnd();
           return "hs-comment";
         }
       }

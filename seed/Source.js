@@ -107,7 +107,6 @@ $('.panel h1').click(function () { $('.panel-content').slideToggle('fast'); });
 var cmEditor = CodeMirror.fromTextArea($("#txt-src")[0], {
     indentUnit: 4,
     enterMode: "keep",
-    blockDocumentScroll: false,
     lineNumbers: true,
     matchBrackets: true,
     mode: 'haskell',
