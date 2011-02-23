@@ -112,18 +112,21 @@ CodeMirror.defineMode("haskell", function(cmCfg, modeCfg) {
       return normal;
     }
     return function(source, setState) {
+      var currNest = nest;
       while (!source.eol()) {
         ch = source.next();
         if (ch == '{' && source.eat('-')) {
-          return switchState(source, setState, ncomment(type, nest+1));
+          ++currNest;
         }
         else if (ch == '-' && source.eat('}')) {
-          if (nest == 1) {
+          --currNest;
+          if (currNest == 0) {
+            setState(normal);
             return type;
           }
-          setState(source, setState, ncomment(type, nest-1));
         }
       }
+      setState(ncomment(type, currNest));
       return type;
     }
   }
@@ -219,7 +222,7 @@ CodeMirror.defineMode("haskell", function(cmCfg, modeCfg) {
       "zip3", "zipWith", "zipWith3");
       
     return wkw;
-  })()
+  })();
     
   
   
@@ -235,3 +238,5 @@ CodeMirror.defineMode("haskell", function(cmCfg, modeCfg) {
   };
 
 });
+
+CodeMirror.defineMIME("text/x-haskell", "haskell");

@@ -1,26 +1,25 @@
-.hs-char,
-.hs-float,
-.hs-integer,
-.hs-string 	{ color: #7f7519;}
+span.hs-char,
+span.hs-float,
+span.hs-integer,
+span.hs-string 	{color: #762;}
 
-.hs-comment { color: #236E25; font-style: italic; }
-.hs-pragma	{ }
+span.hs-comment {color: #262;font-style: italic;}
+span.hs-pragma {color: #555;font-style: italic;}
 
-.hs-prelude-varid,
-.hs-prelude-varsym,
-.hs-special,
-.hs-varid,
-.hs-varsym	{ }
+span.hs-special,
+span.hs-varid,
+span.hs-varsym {color: #000;}
 
-.hs-conid,
-.hs-consym	{ color: #cc2900; }
+span.hs-conid,
+span.hs-consym {color: #b11;}
 
-.hs-reservedid,
-.hs-reservedop { color: #7f3500; }
+span.hs-qualifier {color: #555;}
 
-.hs-qualifier { color: #5e5e5e;}
-.hs-error	{ background-color: #ffe5e5; }
+span.hs-reservedid,
+span.hs-reservedop {color: #730;}
 
-.hs-prelude-varid,
-.hs-prelude-varsym,
-.hs-prelude-conid { color: #250087; }
+span.hs-prelude-varid,
+span.hs-prelude-varsym {color: #30a;}
+span.hs-prelude-conid {color: #b11;}
+
+span.hs-error {background-color: #fdd;}
