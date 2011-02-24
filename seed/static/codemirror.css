@@ -1,24 +1,66 @@
+/* @override http://localhost:8080/static/codemirror.css */
+
+#editor-box {
+  font-family:monospace;
+  font-size: 93%; /* 12pt */
+  line-height: 124%;
+  margin: 1em 0;
+  overflow: hidden;
+  background: #ededda;
+  border: 1px solid #b1b18e;
+}
+
 .CodeMirror {
   line-height: 1em;
   font-family: monospace;
-  x-background: #fff !important;
   background: #ffffe5;
 }
 
 .CodeMirror-gutter {
   position: absolute; left: 0; top: 0;
-  background-color: #f7f7f7;
-  color: #aaa;
-  border-right: 1px solid #eee;
-  min-width: 3em;
+  background: #ededda;
+  color: #888;
+  border-right: 1px solid #ccb;
+  min-width: 4em;
   height: 100%;
+}
+#editor-box.editable .CodeMirror-gutter {
+  background: #ededda url(stripe.png) repeat-y;
 }
 .CodeMirror-gutter-text {
   text-align: right;
-  padding: .5em .25em .5em .5em;
+  padding: .5em .25em;
 }
+
+.CodeMirror-gutter-text .error-line {
+  color: #ff4d4d;
+  font-weight: bold;
+  background: url(silk/exclamation.png) no-repeat 10px -1px;
+  position: relative;
+}
+.error-details {
+  display: none;
+  position: absolute;
+  text-align: left;
+  background-color: #ffe5e5;
+  margin: 0;
+  padding: 4px;
+  color: #7f3500;
+  font-size: 92.3%;
+  border: 1px solid #b1b18e;
+}
+
 .CodeMirror-lines {
   padding: .5em;
+}
+
+.CodeMirror .editor-column-marker {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  left: 4em;
+  background-color: transparent;
+  border-left: 1px dashed #e0e0b4;
 }
 
 .CodeMirror pre {
