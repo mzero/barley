@@ -300,50 +300,6 @@ body.with-topbar {
   margin: 0.5em 0 1em;
 }
 
-
-#editor-box {
-  font-family:monospace;
-  font-size: 93%; /* 12pt */
-  line-height: 124%;
-  margin: 1em 0;
-  overflow: hidden;
-  background: #ededda;
-  border: 1px solid #b1b18e;
-  padding-left: 0.75em;
-}
-
-#editor-box.editable {
-  background: #ff0 url(stripe.png);
-}
-
-#editor-box .error-line {
-  color: #ff4d4d;
-  font-weight: bold;
-  background: url(silk/exclamation.png) no-repeat -1px -1px;
-  position: relative;
-}
-
-.error-details {
-  display: none;
-  position: absolute;
-  text-align: left;
-  background-color: #ffe5e5;
-  margin: 0;
-  padding: 4px;
-  color: #7f3500;
-  font-size: 92.3%;
-  border: 1px solid #b1b18e;
-}
-
-#editor-box .editor-column-marker {
-  position: absolute;
-  top: 0;
-  height: 100%;
-  left: 4em;
-  background-color: transparent;
-  border-left: 1px dashed #e0e0b4;
-}
-
 .panel {
   background-color: #eee7b9;
   width: 99%;

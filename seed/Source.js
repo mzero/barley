@@ -77,6 +77,7 @@ var mkEdit = function() {
     preview.slideUp('fast');
     editor.slideDown('fast', function() {
         cmEditor.refresh();
+        setTimeout(function(){cmEditor.refresh();}, 50); // HACK!
         adjustColumnMarker();
     });
     toggle(editImage, runImage);
