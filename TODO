@@ -72,13 +72,15 @@ Source Editor
     [] pop-out preview into own window (and leave there)
     
 CodeMirror2
-    [x] gutter color doesn't extend to left edge when not-edited
-    [] flaky initial display of rest of paragraph (call refresh?)
-    [x] re-organize haskell mode files (.js and .css)
+    [+] gutter color doesn't extend to left edge when not-edited
+    [+] re-organize haskell mode files (.js and .css)
+    [+] patch around flaky initial display of editor
+    [] command-S binding
     [?] enable other modes
     [] bug w/onChange being called on creation
     [] bug: doesn't matchBracket when typing the closer
     [] bug: double-clicking & drag
+    [] bug: flaky initial display of rest of paragraph
     [] modes should be compressed into one .js and one .css file
 
 Compilation
