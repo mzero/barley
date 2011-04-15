@@ -13,11 +13,11 @@ page = slideDeck "Chapter 1: Syntax"
         ]
     , pointSlide "Functional Application"
         "But the one big difference is in Function application:"
-        [ "There are no parenthesis around the arguments."
+        [ "There are no parentheses around the arguments."
         , "There are no commas between the arguments."
         ]
     , codeSlide "Function Application"
-        "Just drop the parenthesis..."
+        "Just drop the parentheses..."
         [ "length(s) // as in C*/P*/J*"
         , ""
         , "length s  -- Haskell"
@@ -51,7 +51,7 @@ page = slideDeck "Chapter 1: Syntax"
         [ "Be brave..."
         , "You'll soon be able to read it easily"
         , "You'll soon love how clear and consise it is"
-        , "You'll soon loath to type in those other, verbose languages."
+        , "You'll soon be loath to type in those other, verbose languages."
         ]
     ]
 

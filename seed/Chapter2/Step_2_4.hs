@@ -18,7 +18,7 @@ page = slideDeck "Chapter 2: Lists"
         , "The first item in the list, and the rest of the list"
         ]
     , codeSlide "Lists in Haskell"
-        "In Haskell, [] is the empty list, and the : operator is used to build\
+        "In Haskell, [] is the empty list, and the : operator is used to build \
          \up lists:"
         [ "[]             -- the empty list"
         , "42 : []        -- a list of one value"
@@ -44,8 +44,8 @@ page = slideDeck "Chapter 2: Lists"
         , "[2, \"bob\"]          -- NOT legal in Haskell"
         , "[[1,2,3], [10,20,30]] -- of course lists of lists are fine!"
         ]
-    , codeSlide "Syntatic Sugar"
-        "In Haskell, the way we've been writing lists is just syntatic sugar \
+    , codeSlide "Syntactic Sugar"
+        "In Haskell, the way we've been writing lists is just syntactic sugar \
         \for their construction with the : operator and []:"
         [ "[42]      == 42 : []"
         , "[1, 2, 3] ==  1 : 2 : 3 : []"
@@ -83,12 +83,12 @@ page = slideDeck "Chapter 2: Lists"
        \arguments match the given pattern:"
        [ "[] will match only the empty list"
        , "(i:is) will match a list that has a first item (i) and a rest of the \
-           \list (is). Careful: Notice that those are parenthesis, not square \
+           \list (is). Careful: Notice that those are parentheses, not square \
            \brackets around the : expression!"
        ]
     , codeSlide "Some gotchas:"
        "Look at this function to see how NOT to get caught up between matching \
-       \the : operator, vs. matching the syntatic sugar lists:"
+       \the : operator, vs. matching the syntactic sugar lists:"
        [ "funnyFunction :: [Int] -> String"
        , "funnyFunction [] = \"Empty List\""
        , "funnyFunction [i] = \"One element list\""
