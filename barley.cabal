@@ -59,12 +59,11 @@ data-files:
     seed/static/barley-logo.png
     seed/static/barley.css
     seed/static/codemirror.css
-    seed/static/codemirror_base_min.js
-    seed/static/codemirror_min.js
-    seed/static/codemirror_parse_dummy_min.js
-    seed/static/codemirror_parse_haskell.js
+    seed/static/codemirror.js
     seed/static/hslogo-16.png
     seed/static/jquery.js
+    seed/static/mode/haskell.css
+    seed/static/mode/haskell.js
     seed/static/ribbon.png
     seed/static/silk/arrow_down.png
     seed/static/silk/exclamation.png
