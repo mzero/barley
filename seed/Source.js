@@ -112,16 +112,24 @@ var cmEditor = CodeMirror.fromTextArea($("#txt-src")[0], {
     matchBrackets: true,
     mode: 'haskell',
     
-    //onChange: mkEditable,
+    onChange: mkEditable,
     onCursorActivity: function() {
         var sel = cmEditor.getSelection();
         if (!sel) return;
         var mat = sel.match(/\S(.*\S)?/);
         if (mat) { $('.research-query').val(mat[0]); }
     },
+    onKeyEvent: function(inst, e) {
+        if (e.ctrlKey && e.type == "keydown") {
+            if (e.keyCode == 82 /* R */ || e.keyCode == 83 /* S */) {
+                run();
+                e.stop();
+                return true;
+            };
+        }
+    },
 });
 
-cmEditor.setOption('onChange', mkEditable);
 
 $('<div class="editor-column-marker"></div>')
     .appendTo($('.CodeMirror-lines > div:first'));
