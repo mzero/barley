@@ -5,7 +5,7 @@ import Data.List
 -- Playing with lists
 
 fruit :: [String]
-fruit = ["apple", "bannana", "orange", "plum", "peach", "grape", "fig", "apricot"]
+fruit = ["apple", "banana", "orange", "plum", "peach", "grape", "fig", "apricot"]
 
 ages :: [Integer]
 ages = [42, 0, 18, 6, 22, 72]

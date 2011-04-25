@@ -32,7 +32,7 @@ page = slideDeck "Chapter 3"
         , "A tuple always has the number of members indicated by its type."
         ]
     , codeSlide "Type names"
-        "You can give a name to a type. This makes things more convient to \
+        "You can give a name to a type. This makes things more convenient to \
         \use:"
         [ "type Person = (Int, String)"
         , ""
@@ -45,9 +45,9 @@ page = slideDeck "Chapter 3"
         [ "type Person = (Int, String)"
         , ""
         , "amy :: Person"
-        , "amy = (28, \"Amy\""
+        , "amy = (28, \"Amy\")"
         , ""
         , "bob :: (Int, String)"
-        , "bob = (26, \"Bob\""
+        , "bob = (26, \"Bob\")"
         ]
     ]

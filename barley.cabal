@@ -1,19 +1,19 @@
-Name:                barley
-Version:             0.3.0.2
-License:             OtherLicense
-License-file:        LICENSE
-Author:              Johan Tibell, Mark Lentczner
-Maintainer:          markl@glyphic.com
-Category:            Web
-Build-type:          Simple
-Cabal-version:       >=1.8
-Synopsis:            A web based environment for learning and tinkering with Haskell
+Name:            barley
+Version:         0.3.0.2
+License:         OtherLicense
+License-file:    LICENSE
+Author:          Johan Tibell, Mark Lentczner
+Maintainer:      markl@glyphic.com
+Category:        Web
+Build-type:      Simple
+Cabal-version:   >=1.8
+Synopsis:        A web based environment for learning and tinkering with Haskell
 Description:
     Barley is an environment for tinkering with Haskell.  It is a web
     server with an embedded simple programming environment rendered as
     web pages.  The environment allows you to easily edit Haskell code
     and quickly see the result of running it.
-    
+    .
     Barley includes a tutorial aimed at people with some programming
     and web experience, but it assumes no exposure to Haskell or
     functional programming.  The tutorial takes the developer from
@@ -22,67 +22,67 @@ Description:
     to the basic idioms needed to do simple programming tasks.
 
 data-files:
-	seed/Chapter01.hs
-	seed/Chapter02.hs
-	seed/Chapter03.hs
-	seed/Chapter1/Step_1_1.hs
-	seed/Chapter1/Step_1_2.hs
-	seed/Chapter1/Step_1_3.hs
-	seed/Chapter1/Step_1_4.hs
-	seed/Chapter1/Step_1_5.hs
-	seed/Chapter1/Step_1_6.hs
-	seed/Chapter1/Step_1_7.hs
-	seed/Chapter2/Step_2_1.hs
-	seed/Chapter2/Step_2_2.hs
-	seed/Chapter2/Step_2_3.hs
-	seed/Chapter2/Step_2_4.hs
-	seed/Chapter2/Step_2_5.hs
-	seed/Chapter2/Step_2_6.hs
-	seed/Chapter3/Step_3_1.hs
-	seed/Chapter3/Step_3_2.hs
-	seed/Chapter3/Step_3_3.hs
-	seed/Chapter3/Step_3_4.hs
-	seed/Chapter3/Step_3_5.hs
-	seed/Chapter3/Step_3_6.hs
-	seed/Chapter3/Step_3_7.hs
-	seed/Documentation.hs
-	seed/EchoRequest.hs
-	seed/FirstPage.hs
-	seed/Index.hs
-	seed/lib/DevUtils.hs
-	seed/lib/Slides.hs
-	seed/lib/Tutorial.hs
-	seed/Project.hs
-	seed/Source.hs
-	seed/Source.js
-	seed/static/barley-and-beetle.png
-	seed/static/barley-logo.png
-	seed/static/barley.css
-	seed/static/codemirror.css
-	seed/static/codemirror_base_min.js
-	seed/static/codemirror_min.js
-	seed/static/codemirror_parse_dummy_min.js
-	seed/static/codemirror_parse_haskell.js
-	seed/static/hslogo-16.png
-	seed/static/jquery.js
-	seed/static/ribbon.png
-	seed/static/silk/arrow_down.png
-	seed/static/silk/exclamation.png
-	seed/static/silk/folder.png
-	seed/static/silk/image.png
-	seed/static/silk/lightning.png
-	seed/static/silk/link.png
-	seed/static/silk/magnifier.png
-	seed/static/silk/page_white.png
-	seed/static/silk/page_white_code.png
-	seed/static/silk/page_white_code_red.png
-	seed/static/silk/page_white_world.png
-	seed/static/silk/pencil.png
-	seed/static/slides.css
-	seed/static/Slides.js
-	seed/static/stripe.png
-	seed/static/switches.png
-	seed/Template.hs
+    seed/Chapter01.hs
+    seed/Chapter02.hs
+    seed/Chapter03.hs
+    seed/Chapter1/Step_1_1.hs
+    seed/Chapter1/Step_1_2.hs
+    seed/Chapter1/Step_1_3.hs
+    seed/Chapter1/Step_1_4.hs
+    seed/Chapter1/Step_1_5.hs
+    seed/Chapter1/Step_1_6.hs
+    seed/Chapter1/Step_1_7.hs
+    seed/Chapter2/Step_2_1.hs
+    seed/Chapter2/Step_2_2.hs
+    seed/Chapter2/Step_2_3.hs
+    seed/Chapter2/Step_2_4.hs
+    seed/Chapter2/Step_2_5.hs
+    seed/Chapter2/Step_2_6.hs
+    seed/Chapter3/Step_3_1.hs
+    seed/Chapter3/Step_3_2.hs
+    seed/Chapter3/Step_3_3.hs
+    seed/Chapter3/Step_3_4.hs
+    seed/Chapter3/Step_3_5.hs
+    seed/Chapter3/Step_3_6.hs
+    seed/Chapter3/Step_3_7.hs
+    seed/Documentation.hs
+    seed/EchoRequest.hs
+    seed/FirstPage.hs
+    seed/Index.hs
+    seed/lib/DevUtils.hs
+    seed/lib/Slides.hs
+    seed/lib/Tutorial.hs
+    seed/Project.hs
+    seed/Source.hs
+    seed/Source.js
+    seed/static/barley-and-beetle.png
+    seed/static/barley-logo.png
+    seed/static/barley.css
+    seed/static/codemirror.css
+    seed/static/codemirror_base_min.js
+    seed/static/codemirror_min.js
+    seed/static/codemirror_parse_dummy_min.js
+    seed/static/codemirror_parse_haskell.js
+    seed/static/hslogo-16.png
+    seed/static/jquery.js
+    seed/static/ribbon.png
+    seed/static/silk/arrow_down.png
+    seed/static/silk/exclamation.png
+    seed/static/silk/folder.png
+    seed/static/silk/image.png
+    seed/static/silk/lightning.png
+    seed/static/silk/link.png
+    seed/static/silk/magnifier.png
+    seed/static/silk/page_white.png
+    seed/static/silk/page_white_code.png
+    seed/static/silk/page_white_code_red.png
+    seed/static/silk/page_white_world.png
+    seed/static/silk/pencil.png
+    seed/static/slides.css
+    seed/static/Slides.js
+    seed/static/stripe.png
+    seed/static/switches.png
+    seed/Template.hs
 
 extra-source-files:
   LICENSE-CodeMirror
@@ -118,3 +118,7 @@ Executable barley
   ghc-options: -Wall -threaded
   if impl(ghc >= 6.8)
     ghc-options: -fwarn-tabs
+
+source-repository head
+  type:     git
+  location: https://github.com/mtnviewmark/barley.git

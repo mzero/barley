@@ -5,7 +5,7 @@ import Slides
 page = slideDeck "Chapter 3"
     [ codeSlide "Not that safe"
         "Type synonyms are quick and easy and often the right choice, but \
-        \don't offer as much type saftey as possible. Consider:"
+        \don't offer as much type safety as possible. Consider:"
         [ "type Range = (Int, Int)"
         , "inRange :: Range -> Int -> Bool"
         , "inRange (lo,hi) x = lo <= x && x <= hi"
@@ -17,7 +17,7 @@ page = slideDeck "Chapter 3"
         , "ick = inRange p 4 -- compiles!"
         ]
     , codeSlide "Data Types"
-        "Data types let you create a type that is distinct. When you so you \
+        "Data types let you create a type that is distinct. When you do so you \
         \define a constructor that builds values of the type:"
         [ "data Range = Range Int Int"
         , "inRange :: Range -> Int -> Bool"
@@ -29,7 +29,7 @@ page = slideDeck "Chapter 3"
         , ""
         , "ick = inRange p 4 -- now this is a compile error"
         ]
-    , codeSlide "Multiple Constrcutors"
+    , codeSlide "Multiple Constructors"
         "Data types are very powerful. They can have more than one constructor \
         \and each constructor can have any number of values:"
         [ "data Direction = North | East | South | West"
@@ -44,7 +44,7 @@ page = slideDeck "Chapter 3"
         , "    \"blowin' \" ++ show speed ++ \" from \" ++ show dir"
         ]
     , codeSlide "Wait, Deriving What?"
-        "The deriving clause on the data declaration is a bit of boilerplate \
+        "The deriving clause in the data declaration is a bit of boilerplate \
         \saver that will make your data do more. Here are some of the things \
         \you can 'derive' for your data automatically:"
         [ "Eq      -- works with == and /= operators"

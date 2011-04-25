@@ -4,7 +4,7 @@ import Slides
 
 page = slideDeck "Chapter 1: Types"
     [ pointSlide "Types?"
-        "Where are all those types? Isn't Haskell strongly, static typed?"
+        "Where are all those types? Isn't Haskell strongly, statically typed?"
         [ "They were all there!"
         , "Haskell uses \"type inferencing\", meaning it figures them out."
         , "When we add types to the program, it is mostly for the programmers!"
@@ -55,7 +55,7 @@ page = slideDeck "Chapter 1: Types"
         , "length :: [a] -> Int"
         ]
     , codeSlide "Two or more arguments"
-        "Mutliple arguments are written as successive terms with arrows"
+        "Multiple arguments are written as successive terms with arrows"
         [ "sumSquares :: Integer -> Integer -> Integer"
         , "sumSquares a b = a*a + b*b"
         , ""

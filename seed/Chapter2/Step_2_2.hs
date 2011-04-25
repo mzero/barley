@@ -7,7 +7,7 @@ page = thehtml <<
     , body <<
         [ h1 << "A poem from last time:"
         , pre << poemText
-        , h1 << "A to do list:"
+        , h1 << "A to-do list:"
         , thediv << toDoHtml
         ]
     ]
@@ -34,11 +34,11 @@ poemText = unlines $ lineNumbers 1 $ lines poem
 
 -- NEXT
 
--- Here's a simple to do list, and some code that converts it into Html
+-- Here's a simple to-do list, and some code that converts it into Html
 -- It doesn't do a very nice job. Which you can see if you hit Run.
 
 toDoItems :: [String] -- a list of strings
-toDoItems = ["Pick up avacados", "Make snacks", "Clean house", "Have party"]
+toDoItems = ["Pick up avocados", "Make snacks", "Clean house", "Have party"]
 
 renderToDo :: [String] -> [Html]
 renderToDo ts = [toHtml $ show ts]

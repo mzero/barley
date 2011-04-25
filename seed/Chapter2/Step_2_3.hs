@@ -7,7 +7,7 @@ page = thehtml <<
     , body <<
         [ h1 << "A poem from last time:"
         , pre << poemText
-        , h1 << "A to do list:"
+        , h1 << "A to-do list:"
         , thediv << toDoHtml
         ]
     ]
@@ -41,7 +41,7 @@ poemText = unlines $ lineNumbers 1 $ lines poem
 -- Try converting it to using guards:
 
 toDoItems :: [String] -- a list of strings
-toDoItems = ["Pick up avacados", "Make snacks", "Clean house", "Have party"]
+toDoItems = ["Pick up avocados", "Make snacks", "Clean house", "Have party"]
 
 renderToDo :: [String] -> [Html]
 renderToDo ts = 
